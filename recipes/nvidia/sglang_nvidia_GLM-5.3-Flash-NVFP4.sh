@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_glm53flash-dflash2-sglang-pr-37818"
+PYTHON_ENV="env_nvidia-glm53flash-sglang-pr-38430"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="nvidia/GLM-5.3-Flash-NVFP4"
@@ -22,7 +22,7 @@ SPECULATIVE=""
 QUANTIZATION="--quantization modelopt_fp4"
 NO_PREFIX_CACHE=""
 REASONING_PARSER_PLUGIN=""
-EXTRA_ARGS="--dsa-prefill-backend tilelang --dsa-decode-backend tilelang"
+EXTRA_ARGS=""
 
 RECIPE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 source "$RECIPE_DIR/../../tools/recipes/inference_recipe.sh"
@@ -51,12 +51,12 @@ CONTEXT_LEN_VALUE_SM103=""
 GPU_MEM_UTIL_VALUE_SM103=""
 TENSOR_PARALLEL_SIZE_SM103=""
 
-BACKEND_ATTENTION_SM120=""
+BACKEND_ATTENTION_SM120="--attention-backend dsa --dsa-prefill-backend flashinfer_sparse_mla --dsa-decode-backend flashinfer_sparse_mla"
 BACKEND_FP8_GEMM_SM120=""
-BACKEND_FP4_GEMM_SM120=""
-BACKEND_MOE_RUNNER_SM120="flashinfer_cutlass"
+BACKEND_FP4_GEMM_SM120="--fp4-gemm-backend flashinfer_cutlass"
+BACKEND_MOE_RUNNER_SM120="--moe-runner-backend flashinfer_cutlass"
 CONTEXT_LEN_VALUE_SM120=1048576
-GPU_MEM_UTIL_VALUE_SM120="0"
+GPU_MEM_UTIL_VALUE_SM120="0.77"
 TENSOR_PARALLEL_SIZE_SM120=4
 
 BACKEND_ATTENTION_SM121=""

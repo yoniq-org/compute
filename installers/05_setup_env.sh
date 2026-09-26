@@ -2,7 +2,7 @@
 
 # Script: 05_setup_env.sh
 # Purpose: Create ML virtual environment and set up environment variables
-# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-127]
+# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-130]
 # --refresh-activation updates only generated architecture settings in an existing environment.
 
 WORKSPACE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)"
@@ -227,325 +227,334 @@ resolve_env_type() {
         20|deepseek_v41_vllm_e77daef89|deepseek-v41-vllm-e77daef89)
             echo "deepseek-v41-vllm-e77daef89"
             ;;
-        21|deepseek_vision_sglang_pr_37253|deepseek-vision-sglang-pr-37253)
+        21|deepseek_v41_vllm_pr_56509|deepseek-v41-vllm-pr-56509)
+            echo "deepseek-v41-vllm-pr-56509"
+            ;;
+        22|deepseek_vision_sglang_pr_37253|deepseek-vision-sglang-pr-37253)
             echo "deepseek-vision-sglang-pr-37253"
             ;;
-        22|deepseek_vision_vllm_pr_54566|deepseek-vision-vllm-pr-54566)
+        23|deepseek_vision_vllm_pr_54566|deepseek-vision-vllm-pr-54566)
             echo "deepseek-vision-vllm-pr-54566"
             ;;
-        23|deepseek_vllm|deepseek-vllm)
+        24|deepseek_vllm|deepseek-vllm)
             echo "deepseek-vllm"
             ;;
-        24|diffusiongemma_sglang|diffusiongemma-sglang)
+        25|diffusiongemma_sglang|diffusiongemma-sglang)
             echo "diffusiongemma-sglang"
             ;;
-        25|gemma_sglang|gemma-sglang)
+        26|gemma_sglang|gemma-sglang)
             echo "gemma-sglang"
             ;;
-        26|gemma_vllm|gemma-vllm|gemma4_vllm|gemma4-vllm|gemma_4_vllm|gemma-4-vllm)
+        27|gemma_vllm|gemma-vllm|gemma4_vllm|gemma4-vllm|gemma_4_vllm|gemma-4-vllm)
             echo "gemma-vllm"
             ;;
-        27|gemma3n_vllm|gemma3n-vllm)
+        28|gemma3n_vllm|gemma3n-vllm)
             echo "gemma3n-vllm"
             ;;
-        28|glm_ktransformers|glm-ktransformers)
+        29|glm_ktransformers|glm-ktransformers)
             echo "glm-ktransformers"
             ;;
-        29|glm_sglang|glm-sglang)
+        30|glm_sglang|glm-sglang)
             echo "glm-sglang"
             ;;
-        30|glm_transformers|glm-transformers)
+        31|glm_transformers|glm-transformers)
             echo "glm-transformers"
             ;;
-        31|glm_vllm|glm-vllm)
+        32|glm_vllm|glm-vllm)
             echo "glm-vllm"
             ;;
-        32|glm53_vllm_v0290|glm53-vllm-v0290)
+        33|glm53_vllm_v0290|glm53-vllm-v0290)
             echo "glm53-vllm-v0290"
             ;;
-        33|glm53flash_dflash2_sglang_pr_37818|glm53flash-dflash2-sglang-pr-37818)
+        34|glm53flash_dflash2_sglang_pr_37818|glm53flash-dflash2-sglang-pr-37818)
             echo "glm53flash-dflash2-sglang-pr-37818"
             ;;
-        34|glm53flash_dflash2_vllm_pr_55423|glm53flash-dflash2-vllm-pr-55423)
+        35|glm53flash_dflash2_vllm_pr_55423|glm53flash-dflash2-vllm-pr-55423)
             echo "glm53flash-dflash2-vllm-pr-55423"
             ;;
-        35|glm53flash_vllm_pr_53906|glm53flash-vllm-pr-53906)
+        36|glm53flash_vllm_pr_53906|glm53flash-vllm-pr-53906)
             echo "glm53flash-vllm-pr-53906"
             ;;
-        36|gptoss_sglang|gpt-oss_sglang|gptoss-sglang|gpt-oss-sglang)
+        37|gptoss_sglang|gpt-oss_sglang|gptoss-sglang|gpt-oss-sglang)
             echo "gpt-oss-sglang"
             ;;
-        37|gptoss_transformers|gpt-oss_transformers|gptoss-transformers|gpt-oss-transformers)
+        38|gptoss_transformers|gpt-oss_transformers|gptoss-transformers|gpt-oss-transformers)
             echo "gpt-oss-transformers"
             ;;
-        38|gptoss_vllm|gpt-oss_vllm|vllm_gptoss|gptoss-vllm|gpt-oss-vllm)
+        39|gptoss_vllm|gpt-oss_vllm|vllm_gptoss|gptoss-vllm|gpt-oss-vllm)
             echo "gpt-oss-vllm"
             ;;
-        39|ibm_sglang|ibm-sglang)
+        40|ibm_sglang|ibm-sglang)
             echo "ibm-sglang"
             ;;
-        40|ibm_vllm|ibm-vllm)
+        41|ibm_vllm|ibm-vllm)
             echo "ibm-vllm"
             ;;
-        41|inclusionai_ling3_vllm|inclusionai-ling3-vllm)
+        42|inclusionai_ling3_vllm|inclusionai-ling3-vllm)
             echo "inclusionai-ling3-vllm"
             ;;
-        42|inclusionai_sglang|inclusionai-sglang)
+        43|inclusionai_sglang|inclusionai-sglang)
             echo "inclusionai-sglang"
             ;;
-        43|inclusionai_transformers|inclusionai-transformers)
+        44|inclusionai_transformers|inclusionai-transformers)
             echo "inclusionai-transformers"
             ;;
-        44|inclusionai_vllm|inclusionai-vllm)
+        45|inclusionai_vllm|inclusionai-vllm)
             echo "inclusionai-vllm"
             ;;
-        45|incoai_sglang|incoai-sglang)
+        46|incoai_sglang|incoai-sglang)
             echo "incoai-sglang"
             ;;
-        46|incoai_vllm|incoai-vllm)
+        47|incoai_vllm|incoai-vllm)
             echo "incoai-vllm"
             ;;
-        47|intel_sglang|intel-sglang)
+        48|intel_sglang|intel-sglang)
             echo "intel-sglang"
             ;;
-        48|intel_vllm|intel-vllm)
+        49|intel_vllm|intel-vllm)
             echo "intel-vllm"
             ;;
-        49|kimi_ktransformers|kimi-ktransformers)
+        50|kimi_ktransformers|kimi-ktransformers)
             echo "kimi-ktransformers"
             ;;
-        50|kimi_sglang|kimi-sglang)
+        51|kimi_sglang|kimi-sglang)
             echo "kimi-sglang"
             ;;
-        51|kimi_vllm|kimi-vllm)
+        52|kimi_vllm|kimi-vllm)
             echo "kimi-vllm"
             ;;
-        52|liquidai_sglang|liquidai-sglang)
+        53|liquidai_sglang|liquidai-sglang)
             echo "liquidai-sglang"
             ;;
-        53|liquidai_sglang_pr_31041|liquidai-sglang-pr-31041)
+        54|liquidai_sglang_pr_31041|liquidai-sglang-pr-31041)
             echo "liquidai-sglang-pr-31041"
             ;;
-        54|liquidai_transformers|liquidai-transformers)
+        55|liquidai_transformers|liquidai-transformers)
             echo "liquidai-transformers"
             ;;
-        55|liquidai_vllm|liquidai-vllm)
+        56|liquidai_vllm|liquidai-vllm)
             echo "liquidai-vllm"
             ;;
-        56|meta_sglang|meta-sglang)
+        57|meta_sglang|meta-sglang)
             echo "meta-sglang"
             ;;
-        57|meta_vllm|meta-vllm)
+        58|meta_vllm|meta-vllm)
             echo "meta-vllm"
             ;;
-        58|microsoft_sglang|microsoft-sglang)
+        59|microsoft_sglang|microsoft-sglang)
             echo "microsoft-sglang"
             ;;
-        59|microsoft_vllm|microsoft-vllm)
+        60|microsoft_vllm|microsoft-vllm)
             echo "microsoft-vllm"
             ;;
-        60|minimax_ktransformers|minimax-ktransformers)
+        61|minimax_ktransformers|minimax-ktransformers)
             echo "minimax-ktransformers"
             ;;
-        61|minimax_m2_sglang_v0510_post1|minimax-m2-sglang-v0510-post1)
+        62|minimax_m2_sglang_v0510_post1|minimax-m2-sglang-v0510-post1)
             echo "minimax-m2-sglang-v0510-post1"
             ;;
-        62|minimax_m2_vllm_0f3ce4c74|minimax-m2-vllm-0f3ce4c74)
+        63|minimax_m2_vllm_0f3ce4c74|minimax-m2-vllm-0f3ce4c74)
             echo "minimax-m2-vllm-0f3ce4c74"
             ;;
-        63|minimax_m25_vllm_v0280|minimax-m25-vllm-v0280)
+        64|minimax_m25_vllm_v0280|minimax-m25-vllm-v0280)
             echo "minimax-m25-vllm-v0280"
             ;;
-        64|minimax_sglang|minimax-sglang)
+        65|minimax_sglang|minimax-sglang)
             echo "minimax-sglang"
             ;;
-        65|minimax_transformers|minimax-transformers)
+        66|minimax_transformers|minimax-transformers)
             echo "minimax-transformers"
             ;;
-        66|minimax_vllm|minimax-vllm)
+        67|minimax_vllm|minimax-vllm)
             echo "minimax-vllm"
             ;;
-        67|mistralai_sglang|mistralai-sglang)
+        68|mistralai_sglang|mistralai-sglang)
             echo "mistralai-sglang"
             ;;
-        68|mistralai_transformers|mistralai-transformers)
+        69|mistralai_transformers|mistralai-transformers)
             echo "mistralai-transformers"
             ;;
-        69|mistralai_vllm|mistralai-vllm)
+        70|mistralai_vllm|mistralai-vllm)
             echo "mistralai-vllm"
             ;;
-        70|nanbeige_sglang|nanbeige-sglang)
+        71|nanbeige_sglang|nanbeige-sglang)
             echo "nanbeige-sglang"
             ;;
-        71|nanbeige_transformers|nanbeige-transformers)
+        72|nanbeige_transformers|nanbeige-transformers)
             echo "nanbeige-transformers"
             ;;
-        72|nanbeige_vllm|nanbeige-vllm)
+        73|nanbeige_vllm|nanbeige-vllm)
             echo "nanbeige-vllm"
             ;;
-        73|nemotron_trtllm|nemotron-trtllm|nemotron_trt_llm|nemotron-trt-llm)
+        74|nemotron_trtllm|nemotron-trtllm|nemotron_trt_llm|nemotron-trt-llm)
             echo "nemotron-trtllm"
             ;;
-        74|nemotron_ultra_vllm_9c2d21046|nemotron-ultra-vllm-9c2d21046)
+        75|nemotron_ultra_vllm_9c2d21046|nemotron-ultra-vllm-9c2d21046)
             echo "nemotron-ultra-vllm-9c2d21046"
             ;;
-        75|nex_n2_sglang_v0519|nex-n2-sglang-v0519)
+        76|nex_n2_sglang_v0519|nex-n2-sglang-v0519)
             echo "nex-n2-sglang-v0519"
             ;;
-        76|nex_n2_vllm_v0290|nex-n2-vllm-v0290)
+        77|nex_n2_vllm_v0290|nex-n2-vllm-v0290)
             echo "nex-n2-vllm-v0290"
             ;;
-        77|nvidia_deepseek_sglang|nvidia-deepseek-sglang)
+        78|nvidia_deepseek_sglang|nvidia-deepseek-sglang)
             echo "nvidia-deepseek-sglang"
             ;;
-        78|nvidia_glm53_sglang_26fd7fd|nvidia-glm53-sglang-26fd7fd)
+        79|nvidia_glm53_sglang_26fd7fd|nvidia-glm53-sglang-26fd7fd)
             echo "nvidia-glm53-sglang-26fd7fd"
             ;;
-        79|nvidia_muse_sglang_v0520|nvidia-muse-sglang-v0520)
+        80|nvidia_glm53flash_sglang_pr_38430|nvidia-glm53flash-sglang-pr-38430)
+            echo "nvidia-glm53flash-sglang-pr-38430"
+            ;;
+        81|nvidia_glm53flash_vllm_pr_55277|nvidia-glm53flash-vllm-pr-55277)
+            echo "nvidia-glm53flash-vllm-pr-55277"
+            ;;
+        82|nvidia_muse_sglang_v0520|nvidia-muse-sglang-v0520)
             echo "nvidia-muse-sglang-v0520"
             ;;
-        80|nvidia_muse_vllm_v0290|nvidia-muse-vllm-v0290)
+        83|nvidia_muse_vllm_v0290|nvidia-muse-vllm-v0290)
             echo "nvidia-muse-vllm-v0290"
             ;;
-        81|nvidia_nemotron|nvidia-nemotron)
+        84|nvidia_nemotron|nvidia-nemotron)
             echo "nvidia-nemotron"
             ;;
-        82|nvidia_sglang|nvidia-sglang)
+        85|nvidia_sglang|nvidia-sglang)
             echo "nvidia-sglang"
             ;;
-        83|nvidia_sglang_pr_33554|nvidia-sglang-pr-33554)
+        86|nvidia_sglang_pr_33554|nvidia-sglang-pr-33554)
             echo "nvidia-sglang-pr-33554"
             ;;
-        84|nvidia_sglang_pr_34966|nvidia-sglang-pr-34966)
+        87|nvidia_sglang_pr_34966|nvidia-sglang-pr-34966)
             echo "nvidia-sglang-pr-34966"
             ;;
-        85|nvidia_vllm|nvidia-vllm)
+        88|nvidia_vllm|nvidia-vllm)
             echo "nvidia-vllm"
             ;;
-        86|nvidia_vllm_pr_55222|nvidia-vllm-pr-55222)
+        89|nvidia_vllm_pr_55222|nvidia-vllm-pr-55222)
             echo "nvidia-vllm-pr-55222"
             ;;
-        87|openai_sglang_pr_38626|openai-sglang-pr-38626)
+        90|openai_sglang_pr_38626|openai-sglang-pr-38626)
             echo "openai-sglang-pr-38626"
             ;;
-        88|openai_vllm_pr_53207|openai-vllm-pr-53207)
+        91|openai_vllm_pr_53207|openai-vllm-pr-53207)
             echo "openai-vllm-pr-53207"
             ;;
-        89|paradigma_inc_vllm_v0260|paradigma-inc-vllm-v0260)
+        92|paradigma_inc_vllm_v0260|paradigma-inc-vllm-v0260)
             echo "paradigma-inc-vllm-v0260"
             ;;
-        90|poolside_laguna_xs_vllm|poolside-laguna-xs-vllm)
+        93|poolside_laguna_xs_vllm|poolside-laguna-xs-vllm)
             echo "poolside-laguna-xs-vllm"
             ;;
-        91|poolside_sglang|poolside-sglang)
+        94|poolside_sglang|poolside-sglang)
             echo "poolside-sglang"
             ;;
-        92|poolside_sglang_pr_22513|poolside-sglang-pr-22513)
+        95|poolside_sglang_pr_22513|poolside-sglang-pr-22513)
             echo "poolside-sglang-pr-22513"
             ;;
-        93|poolside_transformers|poolside-transformers)
+        96|poolside_transformers|poolside-transformers)
             echo "poolside-transformers"
             ;;
-        94|poolside_vllm|poolside-vllm)
+        97|poolside_vllm|poolside-vllm)
             echo "poolside-vllm"
             ;;
-        95|primeintellect_sglang|primeintellect-sglang)
+        98|primeintellect_sglang|primeintellect-sglang)
             echo "primeintellect-sglang"
             ;;
-        96|primeintellect_vllm|primeintellect-vllm)
+        99|primeintellect_vllm|primeintellect-vllm)
             echo "primeintellect-vllm"
             ;;
-        97|qwen_flash_next_sglang|qwen-flash-next-sglang)
+        100|qwen_flash_next_sglang|qwen-flash-next-sglang)
             echo "qwen-flash-next-sglang"
             ;;
-        98|qwen_flash_next_vllm|qwen-flash-next-vllm)
+        101|qwen_flash_next_vllm|qwen-flash-next-vllm)
             echo "qwen-flash-next-vllm"
             ;;
-        99|qwen_flash_next_vllm_pr_54129|qwen-flash-next-vllm-pr-54129)
+        102|qwen_flash_next_vllm_pr_54129|qwen-flash-next-vllm-pr-54129)
             echo "qwen-flash-next-vllm-pr-54129"
             ;;
-        100|qwen_ktransformers|qwen-ktransformers)
+        103|qwen_ktransformers|qwen-ktransformers)
             echo "qwen-ktransformers"
             ;;
-        101|qwen_sglang|qwen-sglang)
+        104|qwen_sglang|qwen-sglang)
             echo "qwen-sglang"
             ;;
-        102|qwen_sglang_pr_22121|qwen-sglang-pr-22121)
+        105|qwen_sglang_pr_22121|qwen-sglang-pr-22121)
             echo "qwen-sglang-pr-22121"
             ;;
-        103|qwen_transformers|qwen-transformers)
+        106|qwen_transformers|qwen-transformers)
             echo "qwen-transformers"
             ;;
-        104|qwen_vllm|qwen-vllm)
+        107|qwen_vllm|qwen-vllm)
             echo "qwen-vllm"
             ;;
-        105|radixark_qwen_sglang|radixark-qwen-sglang)
+        108|radixark_qwen_sglang|radixark-qwen-sglang)
             echo "radixark-qwen-sglang"
             ;;
-        106|radixark_sglang|radixark-sglang)
+        109|radixark_sglang|radixark-sglang)
             echo "radixark-sglang"
             ;;
-        107|redhat_sglang_pr_35809|redhat-sglang-pr-35809)
+        110|redhat_sglang_pr_35809|redhat-sglang-pr-35809)
             echo "redhat-sglang-pr-35809"
             ;;
-        108|redhatai_sglang|redhatai-sglang)
+        111|redhatai_sglang|redhatai-sglang)
             echo "redhatai-sglang"
             ;;
-        109|redhatai_vllm|redhatai-vllm)
+        112|redhatai_vllm|redhatai-vllm)
             echo "redhatai-vllm"
             ;;
-        110|stepfun_sglang|stepfun-sglang)
+        113|stepfun_sglang|stepfun-sglang)
             echo "stepfun-sglang"
             ;;
-        111|stepfun_transformers|stepfun-transformers)
+        114|stepfun_transformers|stepfun-transformers)
             echo "stepfun-transformers"
             ;;
-        112|stepfun_vllm|stepfun-vllm)
+        115|stepfun_vllm|stepfun-vllm)
             echo "stepfun-vllm"
             ;;
-        113|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
+        116|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
             echo "xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        114|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+        117|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
             echo "xiaomimimo-sglang-v0520"
             ;;
-        115|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+        118|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
             echo "xiaomimimo-vllm-v0300"
             ;;
-        116|z_lab_sglang|z-lab-sglang)
+        119|z_lab_sglang|z-lab-sglang)
             echo "z-lab-sglang"
             ;;
-        117|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+        120|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
             echo "z-lab-sglang-pr-35209"
             ;;
-        118|z_lab_vllm|z-lab-vllm)
+        121|z_lab_vllm|z-lab-vllm)
             echo "z-lab-vllm"
             ;;
-        119|zyphra_legacy_sglang|zyphra-legacy-sglang)
+        122|zyphra_legacy_sglang|zyphra-legacy-sglang)
             echo "zyphra-legacy-sglang"
             ;;
-        120|zyphra_legacy_transformers|zyphra-legacy-transformers)
+        123|zyphra_legacy_transformers|zyphra-legacy-transformers)
             echo "zyphra-legacy-transformers"
             ;;
-        121|zyphra_legacy_vllm|zyphra-legacy-vllm)
+        124|zyphra_legacy_vllm|zyphra-legacy-vllm)
             echo "zyphra-legacy-vllm"
             ;;
-        122|zyphra_sglang|zyphra-sglang)
+        125|zyphra_sglang|zyphra-sglang)
             echo "zyphra-sglang"
             ;;
-        123|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+        126|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
             echo "zyphra-sglang-pr-32517"
             ;;
-        124|zyphra_transformers|zyphra-transformers)
+        127|zyphra_transformers|zyphra-transformers)
             echo "zyphra-transformers"
             ;;
-        125|zyphra_vllm|zyphra-vllm)
+        128|zyphra_vllm|zyphra-vllm)
             echo "zyphra-vllm"
             ;;
-        126|custom|custom_uv|custom-uv|env_custom_uv)
+        129|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        127|custom_pip|custom-pip|env_custom_pip)
+        130|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -813,120 +822,123 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "18) DeepSeek (LMDeploy)"
     echo "19) DeepSeek (SGLang)"
     echo "20) DeepSeek V4.1 Flash (vLLM) e77daef89"
-    echo "21) DeepSeek V4 Flash Vision Exp (SGLang) PR 37253"
-    echo "22) DeepSeek V4 Flash Vision Exp (vLLM) PR 54566"
-    echo "23) DeepSeek (vLLM)"
-    echo "24) DiffusionGemma (SGLang)"
-    echo "25) Gemma (SGLang)"
-    echo "26) Gemma (vLLM)"
-    echo "27) Gemma 3n (vLLM 0.10)"
-    echo "28) GLM (KTransformers)"
-    echo "29) GLM (SGLang)"
-    echo "30) GLM (Transformers)"
-    echo "31) GLM (vLLM)"
-    echo "32) GLM 5.3 (vLLM 0.29.0)"
-    echo "33) GLM 5.3 Flash DFlash2 (SGLang) PR 37818"
-    echo "34) GLM 5.3 Flash DFlash2 (vLLM) PR 55423"
-    echo "35) GLM 5.3 Flash (vLLM) PR 53906 merge"
-    echo "36) GPT-OSS (SGLang)"
-    echo "37) gpt-oss (Transformers)"
-    echo "38) gpt-oss (vLLM)"
-    echo "39) IBM (SGLang)"
-    echo "40) IBM (vLLM)"
-    echo "41) InclusionAI Ling 3 (vLLM)"
-    echo "42) InclusionAI (SGLang)"
-    echo "43) InclusionAI (Transformers)"
-    echo "44) InclusionAI (vLLM)"
-    echo "45) IncoAI (SGLang)"
-    echo "46) IncoAI (vLLM)"
-    echo "47) Intel (SGLang)"
-    echo "48) Intel (vLLM)"
-    echo "49) Kimi (KTransformers)"
-    echo "50) Kimi (SGLang)"
-    echo "51) Kimi (vLLM)"
-    echo "52) LiquidAI (SGLang)"
-    echo "53) LiquidAI (SGLang) PR 31041"
-    echo "54) LiquidAI (Transformers)"
-    echo "55) LiquidAI (vLLM)"
-    echo "56) Meta (SGLang)"
-    echo "57) Meta (vLLM)"
-    echo "58) Microsoft (SGLang)"
-    echo "59) Microsoft (vLLM)"
-    echo "60) MiniMax (KTransformers)"
-    echo "61) MiniMax M2 family (SGLang) 0.5.10.post1"
-    echo "62) MiniMax M2 family (vLLM) 0f3ce4c74"
-    echo "63) MiniMax M2.5 (vLLM) 0.28.0"
-    echo "64) MiniMax (SGLang)"
-    echo "65) MiniMax (Transformers)"
-    echo "66) MiniMax (vLLM)"
-    echo "67) MistralAI (SGLang)"
-    echo "68) MistralAI (Transformers)"
-    echo "69) MistralAI (vLLM)"
-    echo "70) Nanbeige (SGLang)"
-    echo "71) Nanbeige (Transformers)"
-    echo "72) Nanbeige (vLLM)"
-    echo "73) Nemotron (TRT-LLM)"
-    echo "74) NVIDIA Nemotron Ultra (vLLM) PR54788 merge"
-    echo "75) Nex N2 (SGLang) 0.5.19"
-    echo "76) Nex N2 (vLLM) 0.29.0"
-    echo "77) NVIDIA DeepSeek (SGLang)"
-    echo "78) NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
-    echo "79) NVIDIA Muse Glimmer (SGLang) 0.5.20"
-    echo "80) NVIDIA Muse Glimmer (vLLM) 0.29.0"
-    echo "81) NVIDIA Nemotron (vLLM)"
-    echo "82) NVIDIA (SGLang)"
-    echo "83) NVIDIA (SGLang) PR 33554"
-    echo "84) NVIDIA (SGLang) PR 34966"
-    echo "85) NVIDIA (vLLM)"
-    echo "86) NVIDIA GLM 5.3 Flash (vLLM) PR 55222"
-    echo "87) OpenAI Whisper (SGLang) PR 38626"
-    echo "88) OpenAI Whisper (vLLM) PR 53207"
-    echo "89) Paradigma Limite (vLLM 0.26.0, official plugin)"
-    echo "90) Poolside Laguna XS (vLLM)"
-    echo "91) Poolside (SGLang)"
-    echo "92) Poolside (SGLang) PR 22513"
-    echo "93) Poolside (Transformers)"
-    echo "94) Poolside (vLLM)"
-    echo "95) PrimeIntellect (SGLang)"
-    echo "96) PrimeIntellect (vLLM)"
-    echo "97) Qwen Flash Next (SGLang)"
-    echo "98) Qwen Flash Next (vLLM)"
-    echo "99) Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "100) Qwen (KTransformers)"
-    echo "101) Qwen (SGLang)"
-    echo "102) Qwen (SGLang) PR 22121"
-    echo "103) Qwen (Transformers)"
-    echo "104) Qwen (vLLM)"
-    echo "105) RadixArk Qwen Flash Next (SGLang)"
-    echo "106) RadixArk (SGLang)"
-    echo "107) RedHat (SGLang) PR 35809"
-    echo "108) RedHatAI (SGLang)"
-    echo "109) RedHatAI (vLLM)"
-    echo "110) StepFun (SGLang)"
-    echo "111) StepFun (Transformers)"
-    echo "112) StepFun (vLLM)"
-    echo "113) XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
-    echo "114) XiaomiMiMo Distill (SGLang 0.5.20)"
-    echo "115) XiaomiMiMo Distill (vLLM 0.30.0)"
-    echo "116) z-lab (SGLang)"
-    echo "117) z-lab (SGLang) PR 35209"
-    echo "118) z-lab (vLLM)"
-    echo "119) Zyphra Legacy (SGLang)"
-    echo "120) Zyphra Legacy (Transformers)"
-    echo "121) Zyphra Legacy (vLLM)"
-    echo "122) Zyphra (SGLang)"
-    echo "123) Zyphra (SGLang) PR 32517"
-    echo "124) Zyphra (Transformers)"
-    echo "125) Zyphra (vLLM)"
-    echo "126) Custom (uv)"
-    echo "127) Custom (pip)"
+    echo "21) DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
+    echo "22) DeepSeek V4 Flash Vision Exp (SGLang) PR 37253"
+    echo "23) DeepSeek V4 Flash Vision Exp (vLLM) PR 54566"
+    echo "24) DeepSeek (vLLM)"
+    echo "25) DiffusionGemma (SGLang)"
+    echo "26) Gemma (SGLang)"
+    echo "27) Gemma (vLLM)"
+    echo "28) Gemma 3n (vLLM 0.10)"
+    echo "29) GLM (KTransformers)"
+    echo "30) GLM (SGLang)"
+    echo "31) GLM (Transformers)"
+    echo "32) GLM (vLLM)"
+    echo "33) GLM 5.3 (vLLM 0.29.0)"
+    echo "34) GLM 5.3 Flash DFlash2 (SGLang) PR 37818"
+    echo "35) GLM 5.3 Flash DFlash2 (vLLM) PR 55423"
+    echo "36) GLM 5.3 Flash (vLLM) PR 53906 merge"
+    echo "37) GPT-OSS (SGLang)"
+    echo "38) gpt-oss (Transformers)"
+    echo "39) gpt-oss (vLLM)"
+    echo "40) IBM (SGLang)"
+    echo "41) IBM (vLLM)"
+    echo "42) InclusionAI Ling 3 (vLLM)"
+    echo "43) InclusionAI (SGLang)"
+    echo "44) InclusionAI (Transformers)"
+    echo "45) InclusionAI (vLLM)"
+    echo "46) IncoAI (SGLang)"
+    echo "47) IncoAI (vLLM)"
+    echo "48) Intel (SGLang)"
+    echo "49) Intel (vLLM)"
+    echo "50) Kimi (KTransformers)"
+    echo "51) Kimi (SGLang)"
+    echo "52) Kimi (vLLM)"
+    echo "53) LiquidAI (SGLang)"
+    echo "54) LiquidAI (SGLang) PR 31041"
+    echo "55) LiquidAI (Transformers)"
+    echo "56) LiquidAI (vLLM)"
+    echo "57) Meta (SGLang)"
+    echo "58) Meta (vLLM)"
+    echo "59) Microsoft (SGLang)"
+    echo "60) Microsoft (vLLM)"
+    echo "61) MiniMax (KTransformers)"
+    echo "62) MiniMax M2 family (SGLang) 0.5.10.post1"
+    echo "63) MiniMax M2 family (vLLM) 0f3ce4c74"
+    echo "64) MiniMax M2.5 (vLLM) 0.28.0"
+    echo "65) MiniMax (SGLang)"
+    echo "66) MiniMax (Transformers)"
+    echo "67) MiniMax (vLLM)"
+    echo "68) MistralAI (SGLang)"
+    echo "69) MistralAI (Transformers)"
+    echo "70) MistralAI (vLLM)"
+    echo "71) Nanbeige (SGLang)"
+    echo "72) Nanbeige (Transformers)"
+    echo "73) Nanbeige (vLLM)"
+    echo "74) Nemotron (TRT-LLM)"
+    echo "75) NVIDIA Nemotron Ultra (vLLM) PR54788 merge"
+    echo "76) Nex N2 (SGLang) 0.5.19"
+    echo "77) Nex N2 (vLLM) 0.29.0"
+    echo "78) NVIDIA DeepSeek (SGLang)"
+    echo "79) NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+    echo "80) NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
+    echo "81) NVIDIA GLM-5.3 Flash NVFP4 (vLLM) PR 55277 merge"
+    echo "82) NVIDIA Muse Glimmer (SGLang) 0.5.20"
+    echo "83) NVIDIA Muse Glimmer (vLLM) 0.29.0"
+    echo "84) NVIDIA Nemotron (vLLM)"
+    echo "85) NVIDIA (SGLang)"
+    echo "86) NVIDIA (SGLang) PR 33554"
+    echo "87) NVIDIA (SGLang) PR 34966"
+    echo "88) NVIDIA (vLLM)"
+    echo "89) NVIDIA GLM 5.3 Flash (vLLM) PR 55222"
+    echo "90) OpenAI Whisper (SGLang) PR 38626"
+    echo "91) OpenAI Whisper (vLLM) PR 53207"
+    echo "92) Paradigma Limite (vLLM 0.26.0, official plugin)"
+    echo "93) Poolside Laguna XS (vLLM)"
+    echo "94) Poolside (SGLang)"
+    echo "95) Poolside (SGLang) PR 22513"
+    echo "96) Poolside (Transformers)"
+    echo "97) Poolside (vLLM)"
+    echo "98) PrimeIntellect (SGLang)"
+    echo "99) PrimeIntellect (vLLM)"
+    echo "100) Qwen Flash Next (SGLang)"
+    echo "101) Qwen Flash Next (vLLM)"
+    echo "102) Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "103) Qwen (KTransformers)"
+    echo "104) Qwen (SGLang)"
+    echo "105) Qwen (SGLang) PR 22121"
+    echo "106) Qwen (Transformers)"
+    echo "107) Qwen (vLLM)"
+    echo "108) RadixArk Qwen Flash Next (SGLang)"
+    echo "109) RadixArk (SGLang)"
+    echo "110) RedHat (SGLang) PR 35809"
+    echo "111) RedHatAI (SGLang)"
+    echo "112) RedHatAI (vLLM)"
+    echo "113) StepFun (SGLang)"
+    echo "114) StepFun (Transformers)"
+    echo "115) StepFun (vLLM)"
+    echo "116) XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
+    echo "117) XiaomiMiMo Distill (SGLang 0.5.20)"
+    echo "118) XiaomiMiMo Distill (vLLM 0.30.0)"
+    echo "119) z-lab (SGLang)"
+    echo "120) z-lab (SGLang) PR 35209"
+    echo "121) z-lab (vLLM)"
+    echo "122) Zyphra Legacy (SGLang)"
+    echo "123) Zyphra Legacy (Transformers)"
+    echo "124) Zyphra Legacy (vLLM)"
+    echo "125) Zyphra (SGLang)"
+    echo "126) Zyphra (SGLang) PR 32517"
+    echo "127) Zyphra (Transformers)"
+    echo "128) Zyphra (vLLM)"
+    echo "129) Custom (uv)"
+    echo "130) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-127): " choice
+        read -r -p "Enter your choice (1-130): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 127."
+            print_error "Invalid choice. Please enter a number between 1 and 130."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -937,7 +949,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 126."
+        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 130."
         if [ "$BEING_SOURCED" = true ]; then
             return 1
         fi
