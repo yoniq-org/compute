@@ -311,6 +311,8 @@ For each benchmark, truncate `/tmp/benchmark.log` immediately before launch and 
 
 Always inspect **both process outcome and fresh benchmark results**. Current upstream can return exit code 0 after a connection failure with `No results collected.`, and can save partial JSON after interruption. Neither exit code 0 nor `Results saved` alone proves success.
 
+The cookbook recipe's 16 GiB (16,384 MiB) per-GPU reserve applies only at settled API readiness after model loading, warmup, and graph capture, before workload traffic. Do not require that reserve during or after benchmarking, including after the server becomes idle. Lower free memory alone is neither a benchmark failure nor grounds to retune the server or withhold an otherwise completed result. Record later memory readings as telemetry; continue to classify actual OOMs, crashes, request errors, invalid measurements, and incomplete sweeps under the rules below.
+
 Inspect the current checkout's output schema. Known fields include `metadata`, `results`, `prefill`, `event_log`, and `startup_diagnostics.args`. Decode cells can contain `failure_reason`, `num_errors`, `loop_detected`, `capacity_limited`, and negative `aggregate_tps` sentinels. Some capacity-skipped cells are omitted from exported `results`, so reconcile coverage with logs/events and the expected context/concurrency matrix; do not simply demand that the number of JSON rows equals the raw matrix size.
 
 **Mandatory saved-result endpoint gate, before declaring success or copying JSON:**

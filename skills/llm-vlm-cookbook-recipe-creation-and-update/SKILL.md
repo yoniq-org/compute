@@ -528,26 +528,28 @@ For each GPU count, set only `TENSOR_PARALLEL_SIZE_<ARCH>` in the target block a
 
 The selected value MUST leave at least **16 GiB = 16,384 MiB** free on **every selected GPU** after the engine has fully loaded the model, completed internal warmup/graph capture, exposed the API, and reached its true ready state. Aggregate free memory is not sufficient; the least-free selected GPU controls the result.
 
+This is a **startup-only reserve**, measured at settled API readiness before behavioral requests or benchmark traffic. It is not a minimum that must remain during or after inference, long-context tests, or benchmarking. Retain that launch's startup measurement separately from later memory telemetry. A later drop below 16,384 MiB, including after requests finish, is not a failure and must not trigger a lower utilization setting, rejection of validation, or withholding of a completed benchmark. Actual OOMs, crashes, incorrect responses, and incomplete benchmarks still fail their applicable checks. Do not add a post-workload reserve gate.
+
 For each GPU count:
 
 1. Confirm all selected target GPUs are clean and record their IDs, vendor/model, architecture identifiers, and total/free device memory in MiB. On NVIDIA, use `nvidia-smi` (`compute_cap`, `memory.total`, `memory.free`); for another supported vendor, use its authoritative equivalent and normalize units to MiB. Do not substitute host RAM, aggregate memory, or estimates for per-device readings. Select the exact devices externally; verify the helper resolves the intended architecture block.
 2. Keep `CONTEXT_LEN_VALUE_<ARCH>` at the maximum officially supported checkpoint context and keep validated backends and every protected request, batch, cache, precision, CUDA-graph, and checkpoint-embedded RoPE setting unchanged. Do not edit non-target blocks or model-wide fields during the sweep.
-3. Compute a theoretical two-decimal upper cap from each selected GPU's total memory:
+3. Compute an initial two-decimal utilization estimate from each selected GPU's total memory:
 
    ```text
    floor_to_2_decimals((total_mib - 16384) / total_mib)
    ```
 
-   Use the smallest cap across selected GPUs and never test above `0.99`.
+   Use the smallest estimate across selected GPUs as a starting point, not a hard upper cap. Engine utilization does not map exactly to observed free memory, so a higher value may still leave the required startup reserve. The measured per-GPU startup readings determine the limit. Never test above `0.99`.
 4. Write each utilization candidate only into the temporary recipe's `GPU_MEM_UTIL_VALUE_<ARCH>` for the target block. Leave `TENSOR_PARALLEL_SIZE_<ARCH>` at this ladder count. Launch from a clean process/GPU state.
 5. A candidate passes the memory sweep only if the server reaches its final ready state and the supported vendor telemetry reports at least 16,384 MiB free on every selected GPU after memory settles.
-6. A startup crash, OOM, inability to allocate KV cache for maximum context, or reserve below 16,384 MiB is a failed candidate. Classify non-VRAM software/configuration errors separately. In full mode, fix them through an allowed engine source and retry the same GPU count; in sweep-only mode, obey its narrower repair rules. On SM120/SM121 vLLM backend failures, follow the b12x recovery policy. Restart measurements if the engine, backend, or dependencies change.
+6. A startup crash, OOM, inability to allocate KV cache for maximum context, or startup reserve below 16,384 MiB is a failed candidate. Classify non-VRAM software/configuration errors separately. In full mode, fix them through an allowed engine source and retry the same GPU count; in sweep-only mode, obey its narrower repair rules. On SM120/SM121 vLLM backend failures, follow the b12x recovery policy. Restart measurements if the engine, backend, or dependencies change.
 7. Establish a passing/failing bracket and use bounded search in `0.01` increments, keeping every candidate at exactly two decimal places. Runtime behavior is authoritative; do not assume engine memory utilization is perfectly linear.
-8. Prove maximality: after finding a passing two-decimal value, test the next value `+0.01` when it does not exceed the theoretical cap. If the next value also passes, continue the search. If the theoretical cap itself passes, it is the maximum without an additional failing probe.
+8. Prove maximality: after finding a passing two-decimal value, test the next value `+0.01` up to `0.99`, including values above the initial calculated estimate. If the next value also passes, continue the search. The selected value requires an actual failing adjacent `+0.01` startup trial, unless `0.99` itself passes. Do not claim the calculated estimate is the measured maximum.
 9. Restart once more at the selected value, wait for final API readiness, resample every selected GPU, and retain the measured free MiB as evidence.
 10. Stop cleanly and confirm GPU memory is released before any next candidate or GPU-count attempt.
 
-If no utilization value can both start the maximum-context model and preserve 16,384 MiB free per selected GPU, that GPU count fails for insufficient VRAM. Continue to the next available eligible ladder count. If the next count does not physically exist on the target architecture, stop; do not substitute another topology or use GPUs from another architecture. Stop increasing the count as soon as the smallest count passes.
+If no utilization value can both start the maximum-context model and leave 16,384 MiB free per selected GPU at settled API readiness, that GPU count fails for insufficient VRAM. Continue to the next available eligible ladder count. If the next count does not physically exist on the target architecture, stop; do not substitute another topology or use GPUs from another architecture. Stop increasing the count as soon as the smallest count passes.
 
 NEVER respond to sweep failure by:
 
@@ -557,7 +559,7 @@ NEVER respond to sweep failure by:
 - disabling CUDA graphs;
 - changing the selected recipe variant's established cache behavior as a memory workaround;
 - changing precision away from the requested checkpoint;
-- accepting less than 16,384 MiB free on any selected GPU.
+- accepting less than 16,384 MiB free on any selected GPU at settled API readiness before workload traffic.
 
 If no available ladder count through eight GPUs passes, record every attempted count, utilization bound, and failure, then mark the recipe failed.
 
@@ -594,7 +596,7 @@ Do not claim a model/engine combination works unless this complete suite passes 
 
 Mark the effort failed when any of these remain true after exhausting applicable sources allowed by the engine-source policy and the available GPU ladder:
 
-- insufficient per-GPU VRAM to run maximum context while preserving at least 16,384 MiB free on every selected GPU;
+- insufficient per-GPU VRAM to start at maximum context with at least 16,384 MiB free on every selected GPU at settled API readiness before workload traffic;
 - no allowed engine source or supported integration can serve the required configuration. A reproducible provider fork, recorded integration patchset, official plugin, or supported b12x dependency is not itself a failure. Required integrations must not add recipe script lines or alter the shared template;
 - required modality, reasoning, or tool behavior fails its applicable API checks; an unavailable or inapplicable reasoning parser alone is not a failure;
 - startup requires a forbidden context/batch/CUDA workaround;
@@ -627,7 +629,7 @@ Before copying, set the target `TENSOR_PARALLEL_SIZE_<ARCH>` to the smallest lad
 7. update menu ranges and validation messages;
 8. keep `custom_uv` and `custom_pip` as the final two entries at the bottom;
 9. verify the three catalogs, `ENV_TYPES`, descriptions, dispatch, and installer function all agree;
-10. run the copied repository script again from its final path on the same selected target GPUs, repeating the mode-required behavioral checks and per-GPU reserve check; do not claim validation for other architecture blocks;
+10. run the copied repository script again from its final path on the same selected target GPUs, check the per-GPU reserve at settled API readiness before traffic, then repeat the mode-required behavioral checks; later free-memory readings are telemetry, not reserve gates. Do not claim validation for other architecture blocks;
 11. run final `bash -n` and ShellCheck for every changed shell file.
 
 Do not promote a partially validated script or leave a temporary-only dependency undocumented.
@@ -647,7 +649,7 @@ Report, with evidence:
 - for existing-recipe updates, the initial in-place run result or why it was not applicable to an unconfigured block, whether temporary setup/recovery was entered, any source-verified changes outside the target block, and any environment auto-creation/install;
 - for SM120/SM121 vLLM backend failures, b12x selectors attempted, supporting engine/b12x versions and sources, runtime selection evidence, and the fallback outcome or exact unsupported-integration blocker;
 - total and free MiB for every selected GPU at final API readiness;
-- evidence that the next `+0.01` candidate failed, or that the theoretical reserve cap passed;
+- evidence that the next `+0.01` candidate failed startup or the startup reserve check, or that `0.99` itself passed;
 - successful API/modalities/features exercised;
 - for each requested regular or speculative script, its filename, stored speculative configuration, `ENABLE_SPECULATIVE` value, independent sweep and behavioral results, and any failure; report cache configuration and its model-card exception separately;
 - peak or relevant memory observations when available;
