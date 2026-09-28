@@ -63,7 +63,7 @@ This NVIDIA table is not exhaustive. For older/newer NVIDIA GPUs, use NVIDIA's [
 
 ### Backend selection and flag mapping
 
-Verify accepted flags and backend values against the exact installed engine release/commit and its selection logic, then confirm the effective choices in launch logs. This table distinguishes the value stored in each recipe field from the engine option emitted at launch:
+Verify accepted flags and backend values against the exact installed engine commit and its selection logic, then confirm the effective choices in launch logs. This table distinguishes the value stored in each recipe field from the engine option emitted at launch:
 
 | Architecture field | Recipe field contains | SGLang flag | vLLM flag |
 | --- | --- | --- | --- |
@@ -112,7 +112,7 @@ For SGLang, also set `METRICS_FLAG="--enable-metrics"`. vLLM does not require th
 | Fields | Configuration guidance |
 | --- | --- |
 | `PYTHON_ENV`, `INFERENCE_PROVIDER` | Select the reproducible environment and the correct helper-recognized provider (`SGLang` or `vLLM`). |
-| `INFERENCE_ENV` | Use `""` or the validated `env NAME=value ...` prefix for model/engine compatibility, integration, backend, startup, or performance settings. Environment-based GEMM selectors are permitted and take precedence over competing CLI backend selectors for the same GEMM path. |
+| `INFERENCE_ENV` | Use `""` or the validated `env NAME=value ...` prefix for supported model/engine, backend, startup, or performance settings. Environment-based GEMM selectors are permitted and take precedence over competing CLI backend selectors for the same GEMM path. |
 | `MODEL_REPO`, `MODEL_NAME`, `SERVED_MODEL_NAME` | Set the exact checkpoint repository and the appropriate model/parser alias and API-served name using validated repository conventions. |
 | `TRUST_REMOTE_CODE` | Follow the validated model/engine configuration; use `"--trust-remote-code"` when applicable, otherwise `""`. Do not make it universally required. |
 | `REASONING_PARSER` | Prioritize finding a compatible reasoning parser and configure it when available and applicable. Native/automatic handling or an empty field may be valid. Do not invent a parser or fail the recipe solely because none is available. |
@@ -121,7 +121,7 @@ For SGLang, also set `METRICS_FLAG="--enable-metrics"`. vLLM does not require th
 | `METRICS_FLAG` | SGLang: `"--enable-metrics"`. vLLM: empty by default; this is not a cross-engine requirement. |
 | `ENABLE_CACHE_FLAG`, `NO_PREFIX_CACHE` | Always populate `NO_PREFIX_CACHE` in new recipes: SGLang uses `"--disable-radix-cache"`; vLLM uses `"--no-enable-prefix-caching"`. Set `ENABLE_CACHE_FLAG=0` unless the exact model card explicitly requires disabling the cache for that configuration; only that exception uses `1`. This setting is independent of `ENABLE_SPECULATIVE`. Route the disabling flag through these fields, not `EXTRA_ARGS`. |
 | `ENABLE_SPECULATIVE`, `SPECULATIVE` | When the exact model card provides an applicable primary speculative configuration, create regular and speculative scripts unless the user explicitly limits the requested variants. Store the same complete configuration in both files; set `ENABLE_SPECULATIVE=0` in the regular file and `1` in the speculative file. A populated string alone does not activate speculation. Without an applicable configuration, use `0` and `""`. This switch does not control cache behavior. |
-| `ENABLE_REASONING_PARSER`, `REASONING_PARSER_PLUGIN` | Normally use `0` and `""`. Use `1` and a validated official plugin path only when that plugin is needed. Native reasoning parsers do not require this switch; it controls the helper's plugin-file check, not native reasoning parsing. The helper emits any nonempty plugin path, so leave it empty when unused. |
+| `ENABLE_REASONING_PARSER`, `REASONING_PARSER_PLUGIN` | Normally use `0` and `""`. Use `1` and a validated plugin path only for a required plugin shipped with the permitted engine commit. Native reasoning parsers do not require this switch; it controls the helper's plugin-file check, not native reasoning parsing. The helper emits any nonempty plugin path, so leave it empty when unused. |
 | `QUANTIZATION`, `EXTRA_ARGS` | Preserve validated explicit quantization choices and other model/engine settings, including tuning. For new recipes, include explicit `--dtype` only when the exact model card's launch command supplies it; do not inherit it solely from an existing recipe. Leave optional fields empty when appropriate. Do not duplicate cache-disabling flags or backend selectors that belong in their dedicated fields, and do not add CLI selectors competing with an environment-selected GEMM backend. |
 
 Populate the numeric switches `ENABLE_CACHE_FLAG`, `ENABLE_SPECULATIVE`, and `ENABLE_REASONING_PARSER` with explicit `0` or `1`, not empty assignments. `ENABLE_AUTO_TOOL_CHOICE` remains a flag string or `""`. Keep the template's fixed `RECIPE_DIR` expression and the temporary-source/promotion rules unchanged. Inspect the final emitted command to confirm intended fields are active: stored configuration, numeric switches, and engine-native behavior have distinct roles.
@@ -347,21 +347,20 @@ This prohibition also covers:
 
 In full recipe creation or broad update mode, strip all such revision selectors from the temporary candidate even if the template contains them. The higher-precedence existing-recipe sweep-only mode preserves unrelated existing flags but still never adds a new revision selector. If an exact model-card command itself includes a model revision during full mode, do not copy it: test the repository default. If the default cannot work without a model-revision pin, mark the recipe attempt as failed rather than adding the pin.
 
-This rule applies to model artifacts referenced by the recipe. It does **not** prohibit pinning the SGLang or vLLM engine source in the candidate environment installer. Engine release, commit, or PR pins belong only in `installers/06_install_packages.sh` and MUST NOT be emitted as model revision flags in the serve command.
+This rule applies to model artifacts referenced by the recipe. It does **not** prohibit pinning an allowed SGLang or vLLM engine commit in the candidate environment installer. Engine commit pins belong only in `installers/06_install_packages.sh` and MUST NOT be emitted as model revision flags in the serve command.
 
 ## Engine-source policy
 
-Use a reproducible engine source appropriate to the exact recipe:
+Use only an unmodified commit from the official `vllm-project/vllm` or `sgl-project/sglang` repository:
 
-- official release/tag;
-- upstream `main`;
-- specific upstream commit;
-- a specific pull request at the exact tested source commit; or
-- a model-publisher/provider-maintained SGLang or vLLM fork at a recorded repository URL and exact tested commit.
+- a verified commit on upstream `main`; or
+- a verified commit from an upstream pull request.
 
-Provider-maintained forks are valid engine sources; do not replace a validated fork with upstream solely to satisfy a source-location convention. Recorded compatibility patchsets used by validated recipe installers are also allowed when the upstream/fork base, complete patch, resulting source identity, installation commands, and any separately selected binary source are captured reproducibly.
+Record the exact tested SHA and verify its membership in upstream `main` or the identified upstream PR. A PR branch originating in a contributor's fork is acceptable only through that verified upstream PR. A release label, fork URL, or locally generated SHA alone is not sufficient provenance.
 
-NEVER use an unexplained fork, unrecorded local patch, or hidden site-packages edit. Allowing recorded integrations does not authorize inventing an ad hoc engine modification to make a candidate pass.
+NEVER assemble an engine by applying patches, cherry-picking commits, merging branches locally, copying replacement source files, or modifying installed Python files. Recorded patchsets, provider forks outside verified upstream PRs, custom compatibility shims, and locally synthesized merge commits are prohibited. If no permitted commit works, report the blocker instead of assembling a custom engine.
+
+Keep the tested engine installation commands and dependency pins in the existing function in `installers/06_install_packages.sh`. Do not create auxiliary installer directories, patch assets, source-assembly scripts, or a separate installer framework. Normal package installation and upstream-supported build commands remain allowed; they must install the permitted source without modifying it.
 
 For a new PR-specific environment, use repository naming conventions, for example:
 
@@ -370,19 +369,19 @@ env_<publisher>-sglang-pr-<number>
 env_<publisher>-vllm-pr-<number>
 ```
 
-Record an unambiguous PR identity and the exact tested source commit in the installer function and final report. A PR URL or its canonical repository plus PR number is sufficient; a literal URL is not mandatory when those identifiers are already recorded. Record the actual tested source identity, including a documented merge/test-merge commit when applicable, rather than requiring it to be the PR head. Preserve established environment names and mappings; do not recreate environments or rewrite recipes solely to expand a PR URL.
+Record an unambiguous upstream PR identity and the exact tested source commit in the installer function and final report. A PR URL or its canonical repository plus PR number is sufficient. An upstream-published merge/test-merge commit is acceptable when verified against that upstream PR; a locally assembled equivalent is not. Preserve established environment names and mappings when they still identify an allowed source.
 
 ### SM120 / SM121 vLLM b12x recovery
 
 For **both creation and update**, if vLLM cannot launch on `SM120` or `SM121` because of backend/kernel incompatibility, MUST try the Local Inference Lab team's **b12x** kernels in one or more applicable backend fields in the target architecture block using a vLLM version that supports them. Classify the failure first: b12x is a backend recovery path, not a substitute for the GPU ladder or an excuse to ignore insufficient VRAM.
 
-1. Follow the source skill's lookup order, then inspect the chosen vLLM source's exact version/commit, backend registry, CLI, and integration code together with the [b12x project](https://github.com/local-inference-lab/b12x). The upstream [attention-backend documentation](https://github.com/vllm-project/vllm/blob/main/docs/design/attention_backends.md) documents optional b12x attention integration; current `main` documentation is not proof of support in the installed version or provider fork.
+1. Follow the source skill's lookup order, then inspect the chosen permitted vLLM commit's backend registry, CLI, and built-in b12x support together with the [b12x project](https://github.com/local-inference-lab/b12x). The upstream [attention-backend documentation](https://github.com/vllm-project/vllm/blob/main/docs/design/attention_backends.md) documents optional b12x attention support; current `main` documentation is not proof of support in the installed commit.
 2. Verify each flag/value independently. For a compatible version, try `--attention-backend b12x` in `BACKEND_ATTENTION_SM120` or `BACKEND_ATTENTION_SM121`. Try `--linear-backend b12x` in the applicable FP8/FP4 GEMM field and/or `--moe-backend b12x` in the MoE field **only if that exact engine source supports that selector for the checkpoint and hardware**. Never assume all four backend fields accept `b12x`, copy an attention identifier into another flag, or enable inapplicable precision/MoE fields.
-3. Install any required unmodified b12x package and a compatible vLLM source allowed by the engine-source policy in the temporary candidate environment using exact recorded installation commands. Local Inference Lab's published b12x dependency is explicitly allowed for this requested fallback. Existing reproducible provider forks and recorded integrations remain allowed; do not invent an unrecorded fork, local patch, copied integration, unofficial parser, or hidden site-packages edit to add b12x support. Promote tested dependencies only through the reproducible installer.
+3. Install any required unmodified b12x package and a permitted upstream vLLM commit that already supports it in the temporary candidate environment using exact recorded installation commands. Local Inference Lab's published b12x dependency is allowed; patching the engine to add support is prohibited. Record tested dependencies in the existing package installer function.
 4. Keep maximum context, requested precision, speculative configuration, cache/CUDA-graph protections, the selected variant's weight/native-table placement, and the per-GPU reserve unchanged. Do not import loader, offload, n-gram, or batch-limit settings from a b12x example. Change only the applicable target backend fields and source-required environment/dependency settings; leave other architecture blocks untouched.
 5. Record the original backend failure, exact engine and b12x versions/commits, selectors attempted, and outcomes. Confirm b12x is actually selected in runtime logs. A backend or dependency change exits sweep-only validation: rerun the target GPU-count/utilization sweep and the full behavioral suite before promotion.
 
-If no allowed engine source supports an applicable b12x integration, or the fallback still fails, report the tested sources and exact blocker and leave the original recipe/catalogs unchanged. Do not claim b12x success from package installation or CLI acceptance alone.
+If no permitted engine commit supports the applicable b12x backend, or the fallback still fails, report the tested sources and exact blocker and leave the original recipe/catalogs unchanged. Do not claim b12x success from package installation or CLI acceptance alone.
 
 ## Python-environment integrity
 
@@ -390,16 +389,15 @@ If no allowed engine source supports an applicable b12x integration, or the fall
 
 - Create a new candidate environment under `/tmp` for this task.
 - Install packages into that temporary environment with exact, recorded package-manager commands derived from repository installer conventions.
-- Install or reinstall an engine source allowed by the engine-source policy, including a pinned provider fork or recorded integration, in the temporary candidate environment while evaluating compatibility.
+- Install or reinstall a permitted upstream main or verified upstream PR commit in the temporary candidate environment while evaluating compatibility.
 - Let the package manager populate the environment normally.
 - Use installer-managed engine checkouts and editable installs, including under `$HOME/env_*/sglang` or `$HOME/env_*/vllm`, when the source identity and installation commands are recorded. These are not prohibited merely because they are editable.
-- Run recorded upstream/provider dependency-build or installation scripts and generate normal activation/CUDA metadata as part of the reproducible environment setup.
-- Use unmodified plugins from official engine or model-publisher sources, recording the exact source and installation. Configure them through existing recipe fields without adding script lines or changing the shared template.
-- Store required official plugin artifacts under `recipes/<repo>/plugin/`, where `<repo>` is the lowercase publisher/organization directory, not the inference provider. Stage the same layout under `/tmp` during validation and promote the plugin artifacts only with a validated recipe. Reference or install them through existing recipe fields and the reproducible environment installer; do not add script lines or change the shared template.
+- Run the permitted upstream source's normal dependency-build or installation commands and generate normal activation/CUDA metadata as part of environment setup.
+- Use parsers and plugins shipped with the permitted engine commit through its supported interface. Do not copy model-publisher code or add a plugin as a substitute for selecting a working permitted engine commit.
 
 ### Forbidden
 
-NEVER make unrecorded or ad hoc source/config/helper changes inside a Python environment, including:
+NEVER directly edit source/config/helper files inside a Python environment, including:
 
 ```text
 $HOME/env_*/lib/python*/site-packages
@@ -407,13 +405,13 @@ $HOME/env_*/sglang
 $HOME/env_*/vllm
 ```
 
-NEVER introduce ad hoc import monkey-patches, hidden site-packages edits, or unrecorded copied model code. Reproduce allowed source changes through the captured installation procedure rather than hand-editing an established environment.
+NEVER introduce import monkey-patches, site-packages edits, copied model code, or a patch application step. Change engine versions only by installing another permitted upstream commit through normal package/build commands.
 
-NEVER create or modify a repository serving helper, unofficial reasoning parser plugin, unofficial tool parser plugin, or ad hoc compatibility shim to make the model work. Reuse `tools/recipes/inference_recipe.sh` unchanged. Official plugins, provider forks, recorded engine integration patchsets, and supported b12x dependencies remain allowed under their source and validation requirements; fail only when no allowed configuration supports the required model behavior.
+NEVER create or modify a repository serving helper, reasoning/tool parser plugin, or compatibility shim to make the model work. Reuse `tools/recipes/inference_recipe.sh` unchanged. Unmodified supported dependencies such as b12x remain allowed; they do not authorize changing engine source.
 
 ### Additional Python packages
 
-During `/tmp` validation, install source-required additional packages with exact, recorded package-manager commands or the recorded upstream/provider dependency-build and installation scripts allowed above. Do not edit `installers/05_setup_env.sh`, `installers/06_install_packages.sh`, or `launch_env.sh` yet.
+During `/tmp` validation, install source-required additional packages with exact, recorded package-manager commands or the permitted upstream source's normal build/install commands. Do not edit `installers/05_setup_env.sh`, `installers/06_install_packages.sh`, or `launch_env.sh` yet.
 
 Only after the temporary environment and `/tmp` recipe reach API readiness and pass behavioral validation, promote the exact tested installation by adding its environment mapping and installer definition to those repository scripts. Then recreate or reinstall the promoted environment from that definition and revalidate it. A failed candidate MUST leave all three repository environment scripts unchanged.
 
@@ -430,7 +428,7 @@ MUST perform the cookbook/model-card/source lookup before constructing commands,
 - model precision and loader requirements;
 - reasoning/tool parsers;
 - multimodal limits and API format;
-- engine minimum version and exact source repository/revision, including any required provider fork, PR, or recorded integration patchset;
+- exact permitted upstream engine commit and its verified main/PR provenance;
 - model-card-mandated environment variables and backend flags.
 - target GPU vendor/model, architecture identifier, eligible GPU IDs/count, and the helper's selected architecture suffix;
 - applicable backend flags and the engine's source-verified automatic selections for that checkpoint and architecture.
@@ -456,13 +454,13 @@ In full recipe creation or broad update mode, prioritize researching compatible 
 - For vLLM tool-parser configurations, set `ENABLE_AUTO_TOOL_CHOICE="--enable-auto-tool-choice"`. Leave that field empty for SGLang; it is a flag string, not a numeric switch.
 - Exercise both reasoning and tool behavior when available. An unavailable reasoning parser does not excuse skipping supported tool behavior or make a valid native reasoning configuration incomplete.
 - Leave unsupported or inapplicable parser fields empty rather than copying an unrelated model's parser. Record unavailable reasoning-parser support as a limitation, not a standalone failure.
-- `REASONING_PARSER_PLUGIN` normally remains `""`, with `ENABLE_REASONING_PARSER=0`. Use a validated official plugin path and switch `1` only when needed. The switch requests the helper's plugin-file check; it does not gate native reasoning parsing, and any nonempty plugin path is emitted independently of it.
+- `REASONING_PARSER_PLUGIN` normally remains `""`, with `ENABLE_REASONING_PARSER=0`. Use a validated plugin path and switch `1` only for a required plugin shipped with the permitted engine commit. The switch requests the helper's plugin-file check; it does not gate native reasoning parsing, and any nonempty plugin path is emitted independently of it.
 
-Verify parser choices against the applicable validated recipe, exact engine release/main/commit/PR, or official plugin and model guidance. Do not create an unofficial parser plugin or helper. A missing reasoning parser alone is not a failure condition. Required structured tool behavior must still work through native handling or a compatible parser; verify the actual API response rather than treating field nonemptiness as proof.
+Verify parser choices against the applicable validated recipe, permitted upstream engine commit, and model guidance. Do not create or copy a parser plugin or helper to add missing engine support. A missing reasoning parser alone is not a failure condition. Required structured tool behavior must still work through native handling or a compatible parser shipped with the permitted commit; verify the actual API response rather than treating field nonemptiness as proof.
 
 ### 3. Create the temporary environment (full recipe creation or broad update mode)
 
-Create a new candidate environment under `/tmp`; do not experiment inside an established environment used by other recipes. Record every exact installation command and engine source identity used, including any allowed provider fork or recorded integration.
+Create a new candidate environment under `/tmp`; do not experiment inside an established environment used by other recipes. Record every exact installation command and the permitted upstream engine commit used.
 
 Keep the shared helper's `$HOME/$PYTHON_ENV` lookup unchanged, and keep `PYTHON_ENV` as a logical `env_*` name rather than an absolute path. For isolated candidate setup and launch, use a process-local `HOME` under the task's `/tmp` staging directory and pre-create the candidate at that `$HOME/$PYTHON_ENV`. Apply the override only to those validation processes, never globally. Preserve required model-cache and credential locations through explicit supported settings, and verify the selected Python and engine executables are under the staging directory. Merely activating a different environment is not sufficient. Promotion and final repository validation use the original `$HOME` and its normal managed environment.
 
@@ -487,7 +485,7 @@ The temporary script MUST invoke the existing helper at:
 tools/recipes/inference_recipe.sh
 ```
 
-Do not create a helper copy, helper symlink, unofficial plugin, unrecorded patch, or ad hoc shim under `/tmp`. Allowed engine checkouts and recorded integration work stay inside the temporary environment under the installation contract above. Keep the template's `RECIPE_DIR` assignment unchanged. For temporary validation, adjust only the helper source path to the existing helper's absolute path, resolved from the actual target cookbook repository, not the skill installation. This exception applies only to the `/tmp` copy: restore the exact relative source line from the current template before promotion and rerun the final repository script.
+Do not create a helper copy, helper symlink, plugin, engine patch, or compatibility shim under `/tmp`. Install only the permitted engine source in the temporary environment. Keep the template's `RECIPE_DIR` assignment unchanged. For temporary validation, adjust only the helper source path to the existing helper's absolute path, resolved from the actual target cookbook repository, not the skill installation. This exception applies only to the `/tmp` copy: restore the exact relative source line from the current template before promotion and rerun the final repository script.
 
 ### Engine-stable launch logs
 
@@ -597,7 +595,7 @@ Do not claim a model/engine combination works unless this complete suite passes 
 Mark the effort failed when any of these remain true after exhausting applicable sources allowed by the engine-source policy and the available GPU ladder:
 
 - insufficient per-GPU VRAM to start at maximum context with at least 16,384 MiB free on every selected GPU at settled API readiness before workload traffic;
-- no allowed engine source or supported integration can serve the required configuration. A reproducible provider fork, recorded integration patchset, official plugin, or supported b12x dependency is not itself a failure. Required integrations must not add recipe script lines or alter the shared template;
+- no permitted upstream main or verified upstream PR commit can serve the required configuration with unmodified supported dependencies;
 - required modality, reasoning, or tool behavior fails its applicable API checks; an unavailable or inapplicable reasoning parser alone is not a failure;
 - startup requires a forbidden context/batch/CUDA workaround;
 - a required dependency cannot be captured reproducibly in the environment installer.
@@ -619,7 +617,7 @@ Before copying, set the target `TENSOR_PARALLEL_SIZE_<ARCH>` to the smallest lad
 
 1. copy the validated script into its respective repository directory `recipes/<repo>` (where `<repo>` is the lowercased publisher parsed from the script name); reuse or create only that lowercase directory, preserve the script's basename and unchanged template `RECIPE_DIR` assignment, and restore the exact helper source line from the current template. For an update, replace the supplied recipe at its existing path only now; retain its pre-update copy through final-path validation;
 2. ensure executable mode;
-3. retain the exact validated engine source, any recorded integration patchset and build/install commands, and the package list in `installers/06_install_packages.sh`;
+3. retain the exact validated upstream engine commit, its verified main/PR provenance, normal build/install commands, and dependency pins in the existing function in `installers/06_install_packages.sh`;
 4. if a new or changed environment is required, add or update the validated environment consistently in:
    - `installers/05_setup_env.sh`
    - `installers/06_install_packages.sh`
@@ -640,14 +638,14 @@ Report, with evidence:
 
 - exact model repository and checkpoint variant;
 - maximum officially supported checkpoint context and authoritative source, or the same-file donor `CONTEXT_LEN_VALUE_<ARCH>` reused without a redundant context lookup;
-- engine repository, release/commit, any provider fork or PR identity, and the exact tested source identity plus provenance of any recorded integration patchset;
+- official engine repository, exact tested commit, and verified upstream main or PR identity;
 - extra packages added to the installer;
 - requested/detected target GPU vendor/model and architecture suffix, physical device selection, and eligible GPU counts attempted in order;
 - the utilization sweep candidates and two-decimal search bounds;
 - before/after values for all target architecture fields from the current template, including final `GPU_MEM_UTIL_VALUE_<ARCH>` and `TENSOR_PARALLEL_SIZE_<ARCH>`, and confirmation that non-target blocks were preserved or left blank for a new recipe;
 - backend auto-selection evidence, explicit flag mappings, environment-based GEMM selections and their precedence, and reasons for any intentionally blank backend fields;
 - for existing-recipe updates, the initial in-place run result or why it was not applicable to an unconfigured block, whether temporary setup/recovery was entered, any source-verified changes outside the target block, and any environment auto-creation/install;
-- for SM120/SM121 vLLM backend failures, b12x selectors attempted, supporting engine/b12x versions and sources, runtime selection evidence, and the fallback outcome or exact unsupported-integration blocker;
+- for SM120/SM121 vLLM backend failures, b12x selectors attempted, supporting engine/b12x commits and packages, runtime selection evidence, and the fallback outcome or exact unsupported-backend blocker;
 - total and free MiB for every selected GPU at final API readiness;
 - evidence that the next `+0.01` candidate failed startup or the startup reserve check, or that `0.99` itself passed;
 - successful API/modalities/features exercised;

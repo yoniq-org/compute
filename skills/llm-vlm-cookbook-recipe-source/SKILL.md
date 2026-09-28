@@ -65,6 +65,8 @@ Distinguish embedded checkpoint metadata from a launch-time `--rope-scaling`, en
 
 ## Version and validation discipline
 
+Use only unmodified commits from the official `vllm-project/vllm` or `sgl-project/sglang` repository, verified as belonging to upstream `main` or an identified upstream PR. Record the exact tested SHA. Do not assemble an engine from local patches, cherry-picks, copied source files, provider forks outside verified upstream PRs, or locally synthesized merges. An upstream-published PR merge/test-merge commit must be verified against that PR. Normal package installation and supported upstream build commands are allowed; keep installation commands in the repository's existing package installer rather than creating an auxiliary installer framework.
+
 Cookbooks generally document current upstream behavior. Compare their commands against the project's pinned engine version or commit before applying them. If current cookbook guidance needs a newer commit or PR, name that dependency.
 
 Distinguish clearly between:
