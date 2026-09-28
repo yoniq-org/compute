@@ -138,6 +138,7 @@ ENV_TYPES=(
   "stepfun-transformers"
   "stepfun-vllm"
   "xiaomimimo-flash-vllm-1ea7c63"
+  "xiaomimimo-flash-vllm-pr-58177"
   "xiaomimimo-sglang-v0520"
   "xiaomimimo-vllm-v0300"
   "z-lab-sglang"
@@ -271,6 +272,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["stepfun-transformers"]="StepFun (Transformers)"
   ["stepfun-vllm"]="StepFun (vLLM)"
   ["xiaomimimo-flash-vllm-1ea7c63"]="XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
+  ["xiaomimimo-flash-vllm-pr-58177"]="XiaomiMiMo Flash (vLLM PR 58177, audio)"
   ["xiaomimimo-sglang-v0520"]="XiaomiMiMo Distill (SGLang 0.5.20)"
   ["xiaomimimo-vllm-v0300"]="XiaomiMiMo Distill (vLLM 0.30.0)"
   ["z-lab-sglang"]="z-lab (SGLang)"
@@ -639,46 +641,49 @@ resolve_env_type() {
         116|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
             echo "xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        117|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+        117|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
+            echo "xiaomimimo-flash-vllm-pr-58177"
+            ;;
+        118|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
             echo "xiaomimimo-sglang-v0520"
             ;;
-        118|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+        119|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
             echo "xiaomimimo-vllm-v0300"
             ;;
-        119|z_lab_sglang|z-lab-sglang)
+        120|z_lab_sglang|z-lab-sglang)
             echo "z-lab-sglang"
             ;;
-        120|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+        121|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
             echo "z-lab-sglang-pr-35209"
             ;;
-        121|z_lab_vllm|z-lab-vllm)
+        122|z_lab_vllm|z-lab-vllm)
             echo "z-lab-vllm"
             ;;
-        122|zyphra_legacy_sglang|zyphra-legacy-sglang)
+        123|zyphra_legacy_sglang|zyphra-legacy-sglang)
             echo "zyphra-legacy-sglang"
             ;;
-        123|zyphra_legacy_transformers|zyphra-legacy-transformers)
+        124|zyphra_legacy_transformers|zyphra-legacy-transformers)
             echo "zyphra-legacy-transformers"
             ;;
-        124|zyphra_legacy_vllm|zyphra-legacy-vllm)
+        125|zyphra_legacy_vllm|zyphra-legacy-vllm)
             echo "zyphra-legacy-vllm"
             ;;
-        125|zyphra_sglang|zyphra-sglang)
+        126|zyphra_sglang|zyphra-sglang)
             echo "zyphra-sglang"
             ;;
-        126|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+        127|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
             echo "zyphra-sglang-pr-32517"
             ;;
-        127|zyphra_transformers|zyphra-transformers)
+        128|zyphra_transformers|zyphra-transformers)
             echo "zyphra-transformers"
             ;;
-        128|zyphra_vllm|zyphra-vllm)
+        129|zyphra_vllm|zyphra-vllm)
             echo "zyphra-vllm"
             ;;
-        129|custom|custom_uv|custom-uv|env_custom_uv)
+        130|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        130|custom_pip|custom-pip|env_custom_pip)
+        131|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2217,6 +2222,63 @@ install_xiaomimimo_flash_vllm_1ea7c63() {
     run_uv_install -U --prerelease=allow "vllm[audio] @ ${wheel_url}" --torch-backend=cu130 || return 1
 }
 
+install_xiaomimimo_flash_vllm_pr_58177() {
+    local source_commit="ed073f5eb93c1f407ffabc7411449f027910caf0"
+    local binary_commit="0549e8d0ab88d3edf152147e14171f964c6e6f07"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev22%2Bg0549e8d0a-cp38-abi3-manylinux_2_28_x86_64.whl"
+    local cubin_url="https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab"
+    local source_dir=""
+
+    ensure_active_environment_matches xiaomimimo-flash-vllm-pr-58177 || return 1
+    "$VIRTUAL_ENV/bin/python" -c 'import sys; raise SystemExit(sys.version_info[:2] != (3, 12))' || {
+        print_error "XiaomiMiMo vLLM PR 58177 requires the validated Python 3.12 environment."
+        return 1
+    }
+    source_dir="$VIRTUAL_ENV/vllm-pr-58177"
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "vLLM PR 58177 target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command git init "$source_dir" || return 1
+        run_command git -C "$source_dir" remote add origin \
+            https://github.com/vllm-project/vllm.git || return 1
+        run_command git -C "$source_dir" fetch --depth 1 --no-tags \
+            origin "$source_commit" || return 1
+        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "https://github.com/vllm-project/vllm.git" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ "$(git -C "$source_dir" rev-list --count HEAD)" != "1" ] ||
+       [ -n "$(git -C "$source_dir" tag --list)" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "vLLM PR 58177 checkout must match the clean, shallow, tag-free validated source."
+        return 1
+    fi
+
+    print_info "Installing upstream vLLM PR 58177 at ${source_commit} with its official base wheel..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
+        run_uv_install -U --prerelease=allow \
+        -e "${source_dir}[audio]" \
+        "flashinfer-cubin @ ${cubin_url}" \
+        "av==18.1.0" \
+        "flashinfer-python==0.6.18.post1" \
+        "humming-kernels==0.1.16" \
+        "mistral-common==1.12.0" \
+        "nvidia-cudnn-cu13==9.20.0.48" \
+        "scipy==1.18.1" \
+        "setuptools==80.10.2" \
+        "soundfile==0.14.0" \
+        "soxr==1.1.0" \
+        "tokenizers==0.23.2" \
+        "torch==2.13.0+cu130" \
+        "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" \
+        "transformers==5.17.0" \
+        --torch-backend=cu130 || return 1
+}
+
 install_xiaomimimo_sglang_v0520() {
     ensure_active_environment_matches "xiaomimimo-sglang-v0520" || return 1
     print_info "Installing official SGLang 0.5.20 for XiaomiMiMo Distill..."
@@ -2746,6 +2808,9 @@ perform_environment_action() {
             ;;
         xiaomimimo-flash-vllm-1ea7c63)
             install_xiaomimimo_flash_vllm_1ea7c63 || return 1
+            ;;
+        xiaomimimo-flash-vllm-pr-58177)
+            install_xiaomimimo_flash_vllm_pr_58177 || return 1
             ;;
         xiaomimimo-sglang-v0520)
             install_xiaomimimo_sglang_v0520 || return 1

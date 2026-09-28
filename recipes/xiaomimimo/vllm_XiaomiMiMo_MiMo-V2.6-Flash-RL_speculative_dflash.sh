@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_xiaomimimo-flash-vllm-1ea7c63"
+PYTHON_ENV="env_xiaomimimo-flash-vllm-pr-58177"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="${MIMO_MODEL_PATH:?Set MIMO_MODEL_PATH to the complete local XiaomiMiMo/MiMo-V2.6-Flash-RL checkpoint}"
@@ -56,7 +56,7 @@ BACKEND_FP8_GEMM_SM120="--linear-backend deep_gemm"
 BACKEND_FP4_GEMM_SM120=""
 BACKEND_MOE_RUNNER_SM120="--moe-backend deep_gemm"
 CONTEXT_LEN_VALUE_SM120=1048576
-GPU_MEM_UTIL_VALUE_SM120=0.78
+GPU_MEM_UTIL_VALUE_SM120="0.80"
 TENSOR_PARALLEL_SIZE_SM120=4
 
 BACKEND_ATTENTION_SM121=""
