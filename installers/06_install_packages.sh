@@ -1665,6 +1665,7 @@ install_glm53flash_vllm_2617fe938() {
     print_info "Installing the official vLLM GLM-5.3-Flash SM120 wheel at ${source_commit}..."
     run_uv_install "vllm @ ${wheel_url}" \
         "transformers==5.17.0" "tokenizers==0.23.2" "torchcodec==0.16.0+cu130" \
+        "blake3==1.0.9" "msgspec==0.21.1" \
         --torch-backend=cu130 || return 1
     # Official merged GLM NoPE eight-head scratch fix: https://github.com/flashinfer-ai/flashinfer/pull/5075
     local flashinfer_commit="915e7c49aececa5ba4fdf60ac0f4038ca1455fc1"
