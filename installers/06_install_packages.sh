@@ -36,6 +36,8 @@ ENV_TYPES=(
   "cohere-transformers"
   "cohere-vllm"
   "cohere-vllm-pr-54479"
+  "custom_pip"
+  "custom_uv"
   "datalab-sglang"
   "datalab-vllm"
   "deepseek-ktransformers"
@@ -135,7 +137,21 @@ ENV_TYPES=(
   "redhat-sglang-pr-35809"
   "redhatai-sglang"
   "redhatai-vllm"
+  "rtxpro6k-deepseek-v41-vllm-pr-56509"
+  "rtxpro6k-glm53flash-vllm-2617fe938"
+  "rtxpro6k-intel-sglang"
+  "rtxpro6k-liquidai-sglang"
+  "rtxpro6k-liquidai-sglang-pr-31041"
+  "rtxpro6k-nanbeige-sglang"
   "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
+  "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
+  "rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
+  "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
+  "rtxpro6k-primeintellect-sglang"
+  "rtxpro6k-qwen-flash-next-vllm"
+  "rtxpro6k-qwen-flash-next-vllm-pr-54129"
+  "rtxpro6k-qwen-sglang"
+  "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
   "stepfun-sglang"
   "stepfun-transformers"
   "stepfun-vllm"
@@ -153,8 +169,6 @@ ENV_TYPES=(
   "zyphra-sglang-pr-32517"
   "zyphra-transformers"
   "zyphra-vllm"
-  "custom_uv"
-  "custom_pip"
 )
 
 declare -A ENV_DESCRIPTIONS=(
@@ -172,6 +186,8 @@ declare -A ENV_DESCRIPTIONS=(
   ["cohere-transformers"]="Cohere (Transformers)"
   ["cohere-vllm"]="Cohere (vLLM)"
   ["cohere-vllm-pr-54479"]="Cohere (vLLM) PR 54479"
+  ["custom_pip"]="Custom (pip)"
+  ["custom_uv"]="Custom (uv)"
   ["datalab-sglang"]="DataLab (SGLang)"
   ["datalab-vllm"]="DataLab (vLLM)"
   ["deepseek-ktransformers"]="DeepSeek (KTransformers)"
@@ -271,7 +287,21 @@ declare -A ENV_DESCRIPTIONS=(
   ["redhat-sglang-pr-35809"]="RedHat (SGLang) PR 35809"
   ["redhatai-sglang"]="RedHatAI (SGLang)"
   ["redhatai-vllm"]="RedHatAI (vLLM)"
+  ["rtxpro6k-deepseek-v41-vllm-pr-56509"]="RTX PRO 6000 DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
+  ["rtxpro6k-glm53flash-vllm-2617fe938"]="RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
+  ["rtxpro6k-intel-sglang"]="RTX PRO 6000 Intel (SGLang)"
+  ["rtxpro6k-liquidai-sglang"]="RTX PRO 6000 LiquidAI (SGLang)"
+  ["rtxpro6k-liquidai-sglang-pr-31041"]="RTX PRO 6000 LiquidAI (SGLang) PR 31041"
+  ["rtxpro6k-nanbeige-sglang"]="RTX PRO 6000 Nanbeige (SGLang)"
   ["rtxpro6k-nvidia-glm53-sglang-26fd7fd"]="RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+  ["rtxpro6k-nvidia-glm53flash-sglang-pr-38430"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
+  ["rtxpro6k-nvidia-glm53flash-vllm-pr-55277"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (vLLM) PR 55277 merge"
+  ["rtxpro6k-nvidia-qwen38-vllm-9c2d21046"]="RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
+  ["rtxpro6k-primeintellect-sglang"]="RTX PRO 6000 PrimeIntellect (SGLang)"
+  ["rtxpro6k-qwen-flash-next-vllm"]="RTX PRO 6000 Qwen Flash Next (vLLM)"
+  ["rtxpro6k-qwen-flash-next-vllm-pr-54129"]="RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
+  ["rtxpro6k-qwen-sglang"]="RTX PRO 6000 Qwen (SGLang)"
+  ["rtxpro6k-xiaomimimo-flash-vllm-pr-58177"]="RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
   ["stepfun-sglang"]="StepFun (SGLang)"
   ["stepfun-transformers"]="StepFun (Transformers)"
   ["stepfun-vllm"]="StepFun (vLLM)"
@@ -289,8 +319,6 @@ declare -A ENV_DESCRIPTIONS=(
   ["zyphra-sglang-pr-32517"]="Zyphra (SGLang) PR 32517"
   ["zyphra-transformers"]="Zyphra (Transformers)"
   ["zyphra-vllm"]="Zyphra (vLLM)"
-  ["custom_uv"]="Custom (uv)"
-  ["custom_pip"]="Custom (pip)"
 )
 
 resolve_env_type() {
@@ -339,362 +367,404 @@ resolve_env_type() {
         14|cohere_vllm_pr_54479|cohere-vllm-pr-54479)
             echo "cohere-vllm-pr-54479"
             ;;
-        15|datalab_sglang|datalab-sglang)
-            echo "datalab-sglang"
+        15|custom_pip|custom-pip|env_custom_pip)
+            echo "custom_pip"
             ;;
-        16|datalab_vllm|datalab-vllm)
-            echo "datalab-vllm"
-            ;;
-        17|deepseek_ktransformers|deepseek-ktransformers)
-            echo "deepseek-ktransformers"
-            ;;
-        18|deepseek_lmdeploy|deepseek-lmdeploy)
-            echo "deepseek-lmdeploy"
-            ;;
-        19|deepseek_sglang|deepseek-sglang)
-            echo "deepseek-sglang"
-            ;;
-        20|deepseek_v41_vllm_e77daef89|deepseek-v41-vllm-e77daef89)
-            echo "deepseek-v41-vllm-e77daef89"
-            ;;
-        21|deepseek_v41_vllm_pr_56509|deepseek-v41-vllm-pr-56509)
-            echo "deepseek-v41-vllm-pr-56509"
-            ;;
-        22|deepseek_vision_sglang_pr_37253|deepseek-vision-sglang-pr-37253)
-            echo "deepseek-vision-sglang-pr-37253"
-            ;;
-        23|deepseek_vision_vllm_pr_54566|deepseek-vision-vllm-pr-54566)
-            echo "deepseek-vision-vllm-pr-54566"
-            ;;
-        24|deepseek_vllm|deepseek-vllm)
-            echo "deepseek-vllm"
-            ;;
-        25|diffusiongemma_sglang|diffusiongemma-sglang)
-            echo "diffusiongemma-sglang"
-            ;;
-        26|gemma_sglang|gemma-sglang)
-            echo "gemma-sglang"
-            ;;
-        27|gemma_vllm|gemma-vllm|gemma4_vllm|gemma4-vllm|gemma_4_vllm|gemma-4-vllm)
-            echo "gemma-vllm"
-            ;;
-        28|gemma3n_vllm|gemma3n-vllm)
-            echo "gemma3n-vllm"
-            ;;
-        29|glm_ktransformers|glm-ktransformers)
-            echo "glm-ktransformers"
-            ;;
-        30|glm_sglang|glm-sglang)
-            echo "glm-sglang"
-            ;;
-        31|glm_transformers|glm-transformers)
-            echo "glm-transformers"
-            ;;
-        32|glm_vllm|glm-vllm)
-            echo "glm-vllm"
-            ;;
-        33|glm53_vllm_v0290|glm53-vllm-v0290)
-            echo "glm53-vllm-v0290"
-            ;;
-        34|glm53flash_dflash2_sglang_pr_37818|glm53flash-dflash2-sglang-pr-37818)
-            echo "glm53flash-dflash2-sglang-pr-37818"
-            ;;
-        35|glm53flash_dflash2_vllm_pr_55423|glm53flash-dflash2-vllm-pr-55423)
-            echo "glm53flash-dflash2-vllm-pr-55423"
-            ;;
-        36|glm53flash_vllm_2617fe938|glm53flash-vllm-2617fe938)
-            echo "glm53flash-vllm-2617fe938"
-            ;;
-        37|glm53flash_vllm_pr_53906|glm53flash-vllm-pr-53906)
-            echo "glm53flash-vllm-pr-53906"
-            ;;
-        38|gptoss_sglang|gpt-oss_sglang|gptoss-sglang|gpt-oss-sglang)
-            echo "gpt-oss-sglang"
-            ;;
-        39|gptoss_transformers|gpt-oss_transformers|gptoss-transformers|gpt-oss-transformers)
-            echo "gpt-oss-transformers"
-            ;;
-        40|gptoss_vllm|gpt-oss_vllm|vllm_gptoss|gptoss-vllm|gpt-oss-vllm)
-            echo "gpt-oss-vllm"
-            ;;
-        41|ibm_sglang|ibm-sglang)
-            echo "ibm-sglang"
-            ;;
-        42|ibm_vllm|ibm-vllm)
-            echo "ibm-vllm"
-            ;;
-        43|inclusionai_ling3_vllm|inclusionai-ling3-vllm)
-            echo "inclusionai-ling3-vllm"
-            ;;
-        44|inclusionai_sglang|inclusionai-sglang)
-            echo "inclusionai-sglang"
-            ;;
-        45|inclusionai_transformers|inclusionai-transformers)
-            echo "inclusionai-transformers"
-            ;;
-        46|inclusionai_vllm|inclusionai-vllm)
-            echo "inclusionai-vllm"
-            ;;
-        47|incoai_sglang|incoai-sglang)
-            echo "incoai-sglang"
-            ;;
-        48|incoai_vllm|incoai-vllm)
-            echo "incoai-vllm"
-            ;;
-        49|intel_sglang|intel-sglang)
-            echo "intel-sglang"
-            ;;
-        50|intel_vllm|intel-vllm)
-            echo "intel-vllm"
-            ;;
-        51|kimi_ktransformers|kimi-ktransformers)
-            echo "kimi-ktransformers"
-            ;;
-        52|kimi_sglang|kimi-sglang)
-            echo "kimi-sglang"
-            ;;
-        53|kimi_vllm|kimi-vllm)
-            echo "kimi-vllm"
-            ;;
-        54|liquidai_sglang|liquidai-sglang)
-            echo "liquidai-sglang"
-            ;;
-        55|liquidai_sglang_pr_31041|liquidai-sglang-pr-31041)
-            echo "liquidai-sglang-pr-31041"
-            ;;
-        56|liquidai_transformers|liquidai-transformers)
-            echo "liquidai-transformers"
-            ;;
-        57|liquidai_vllm|liquidai-vllm)
-            echo "liquidai-vllm"
-            ;;
-        58|meta_sglang|meta-sglang)
-            echo "meta-sglang"
-            ;;
-        59|meta_vllm|meta-vllm)
-            echo "meta-vllm"
-            ;;
-        60|microsoft_sglang|microsoft-sglang)
-            echo "microsoft-sglang"
-            ;;
-        61|microsoft_vllm|microsoft-vllm)
-            echo "microsoft-vllm"
-            ;;
-        62|minimax_ktransformers|minimax-ktransformers)
-            echo "minimax-ktransformers"
-            ;;
-        63|minimax_m2_sglang_v0510_post1|minimax-m2-sglang-v0510-post1)
-            echo "minimax-m2-sglang-v0510-post1"
-            ;;
-        64|minimax_m2_vllm_0f3ce4c74|minimax-m2-vllm-0f3ce4c74)
-            echo "minimax-m2-vllm-0f3ce4c74"
-            ;;
-        65|minimax_m25_vllm_v0280|minimax-m25-vllm-v0280)
-            echo "minimax-m25-vllm-v0280"
-            ;;
-        66|minimax_sglang|minimax-sglang)
-            echo "minimax-sglang"
-            ;;
-        67|minimax_transformers|minimax-transformers)
-            echo "minimax-transformers"
-            ;;
-        68|minimax_vllm|minimax-vllm)
-            echo "minimax-vllm"
-            ;;
-        69|mistralai_sglang|mistralai-sglang)
-            echo "mistralai-sglang"
-            ;;
-        70|mistralai_transformers|mistralai-transformers)
-            echo "mistralai-transformers"
-            ;;
-        71|mistralai_vllm|mistralai-vllm)
-            echo "mistralai-vllm"
-            ;;
-        72|nanbeige_sglang|nanbeige-sglang)
-            echo "nanbeige-sglang"
-            ;;
-        73|nanbeige_transformers|nanbeige-transformers)
-            echo "nanbeige-transformers"
-            ;;
-        74|nanbeige_vllm|nanbeige-vllm)
-            echo "nanbeige-vllm"
-            ;;
-        75|nemotron_trtllm|nemotron-trtllm|nemotron_trt_llm|nemotron-trt-llm)
-            echo "nemotron-trtllm"
-            ;;
-        76|nemotron_ultra_vllm_9c2d21046|nemotron-ultra-vllm-9c2d21046)
-            echo "nemotron-ultra-vllm-9c2d21046"
-            ;;
-        77|nex_n2_sglang_v0519|nex-n2-sglang-v0519)
-            echo "nex-n2-sglang-v0519"
-            ;;
-        78|nex_n2_vllm_v0290|nex-n2-vllm-v0290)
-            echo "nex-n2-vllm-v0290"
-            ;;
-        79|nvidia_deepseek_sglang|nvidia-deepseek-sglang)
-            echo "nvidia-deepseek-sglang"
-            ;;
-        80|nvidia_glm53_sglang_26fd7fd|nvidia-glm53-sglang-26fd7fd)
-            echo "nvidia-glm53-sglang-26fd7fd"
-            ;;
-        81|nvidia_glm53flash_sglang_pr_38430|nvidia-glm53flash-sglang-pr-38430)
-            echo "nvidia-glm53flash-sglang-pr-38430"
-            ;;
-        82|nvidia_glm53flash_vllm_pr_55277|nvidia-glm53flash-vllm-pr-55277)
-            echo "nvidia-glm53flash-vllm-pr-55277"
-            ;;
-        83|nvidia_muse_sglang_v0520|nvidia-muse-sglang-v0520)
-            echo "nvidia-muse-sglang-v0520"
-            ;;
-        84|nvidia_muse_vllm_v0290|nvidia-muse-vllm-v0290)
-            echo "nvidia-muse-vllm-v0290"
-            ;;
-        85|nvidia_nemotron|nvidia-nemotron)
-            echo "nvidia-nemotron"
-            ;;
-        86|nvidia_sglang|nvidia-sglang)
-            echo "nvidia-sglang"
-            ;;
-        87|nvidia_sglang_pr_33554|nvidia-sglang-pr-33554)
-            echo "nvidia-sglang-pr-33554"
-            ;;
-        88|nvidia_sglang_pr_34966|nvidia-sglang-pr-34966)
-            echo "nvidia-sglang-pr-34966"
-            ;;
-        89|nvidia_vllm|nvidia-vllm)
-            echo "nvidia-vllm"
-            ;;
-        90|nvidia_vllm_pr_55222|nvidia-vllm-pr-55222)
-            echo "nvidia-vllm-pr-55222"
-            ;;
-        91|openai_sglang_pr_38626|openai-sglang-pr-38626)
-            echo "openai-sglang-pr-38626"
-            ;;
-        92|openai_vllm_pr_53207|openai-vllm-pr-53207)
-            echo "openai-vllm-pr-53207"
-            ;;
-        93|paradigma_inc_vllm_v0260|paradigma-inc-vllm-v0260)
-            echo "paradigma-inc-vllm-v0260"
-            ;;
-        94|poolside_laguna_xs_vllm|poolside-laguna-xs-vllm)
-            echo "poolside-laguna-xs-vllm"
-            ;;
-        95|poolside_sglang|poolside-sglang)
-            echo "poolside-sglang"
-            ;;
-        96|poolside_sglang_pr_22513|poolside-sglang-pr-22513)
-            echo "poolside-sglang-pr-22513"
-            ;;
-        97|poolside_transformers|poolside-transformers)
-            echo "poolside-transformers"
-            ;;
-        98|poolside_vllm|poolside-vllm)
-            echo "poolside-vllm"
-            ;;
-        99|primeintellect_sglang|primeintellect-sglang)
-            echo "primeintellect-sglang"
-            ;;
-        100|primeintellect_vllm|primeintellect-vllm)
-            echo "primeintellect-vllm"
-            ;;
-        101|qwen_flash_next_sglang|qwen-flash-next-sglang)
-            echo "qwen-flash-next-sglang"
-            ;;
-        102|qwen_flash_next_vllm|qwen-flash-next-vllm)
-            echo "qwen-flash-next-vllm"
-            ;;
-        103|qwen_flash_next_vllm_pr_54129|qwen-flash-next-vllm-pr-54129)
-            echo "qwen-flash-next-vllm-pr-54129"
-            ;;
-        104|qwen_ktransformers|qwen-ktransformers)
-            echo "qwen-ktransformers"
-            ;;
-        105|qwen_sglang|qwen-sglang)
-            echo "qwen-sglang"
-            ;;
-        106|qwen_sglang_pr_22121|qwen-sglang-pr-22121)
-            echo "qwen-sglang-pr-22121"
-            ;;
-        107|qwen_transformers|qwen-transformers)
-            echo "qwen-transformers"
-            ;;
-        108|qwen_vllm|qwen-vllm)
-            echo "qwen-vllm"
-            ;;
-        109|radixark_qwen_sglang|radixark-qwen-sglang)
-            echo "radixark-qwen-sglang"
-            ;;
-        110|radixark_sglang|radixark-sglang)
-            echo "radixark-sglang"
-            ;;
-        111|redhat_sglang_pr_35809|redhat-sglang-pr-35809)
-            echo "redhat-sglang-pr-35809"
-            ;;
-        112|redhatai_sglang|redhatai-sglang)
-            echo "redhatai-sglang"
-            ;;
-        113|redhatai_vllm|redhatai-vllm)
-            echo "redhatai-vllm"
-            ;;
-        114|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
-            echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
-            ;;
-        115|stepfun_sglang|stepfun-sglang)
-            echo "stepfun-sglang"
-            ;;
-        116|stepfun_transformers|stepfun-transformers)
-            echo "stepfun-transformers"
-            ;;
-        117|stepfun_vllm|stepfun-vllm)
-            echo "stepfun-vllm"
-            ;;
-        118|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
-            echo "xiaomimimo-flash-vllm-1ea7c63"
-            ;;
-        119|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
-            echo "xiaomimimo-flash-vllm-pr-58177"
-            ;;
-        120|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
-            echo "xiaomimimo-sglang-v0520"
-            ;;
-        121|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
-            echo "xiaomimimo-vllm-v0300"
-            ;;
-        122|z_lab_sglang|z-lab-sglang)
-            echo "z-lab-sglang"
-            ;;
-        123|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
-            echo "z-lab-sglang-pr-35209"
-            ;;
-        124|z_lab_vllm|z-lab-vllm)
-            echo "z-lab-vllm"
-            ;;
-        125|zyphra_legacy_sglang|zyphra-legacy-sglang)
-            echo "zyphra-legacy-sglang"
-            ;;
-        126|zyphra_legacy_transformers|zyphra-legacy-transformers)
-            echo "zyphra-legacy-transformers"
-            ;;
-        127|zyphra_legacy_vllm|zyphra-legacy-vllm)
-            echo "zyphra-legacy-vllm"
-            ;;
-        128|zyphra_sglang|zyphra-sglang)
-            echo "zyphra-sglang"
-            ;;
-        129|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
-            echo "zyphra-sglang-pr-32517"
-            ;;
-        130|zyphra_transformers|zyphra-transformers)
-            echo "zyphra-transformers"
-            ;;
-        131|zyphra_vllm|zyphra-vllm)
-            echo "zyphra-vllm"
-            ;;
-        132|custom|custom_uv|custom-uv|env_custom_uv)
+        16|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        133|custom_pip|custom-pip|env_custom_pip)
-            echo "custom_pip"
+        17|datalab_sglang|datalab-sglang)
+            echo "datalab-sglang"
+            ;;
+        18|datalab_vllm|datalab-vllm)
+            echo "datalab-vllm"
+            ;;
+        19|deepseek_ktransformers|deepseek-ktransformers)
+            echo "deepseek-ktransformers"
+            ;;
+        20|deepseek_lmdeploy|deepseek-lmdeploy)
+            echo "deepseek-lmdeploy"
+            ;;
+        21|deepseek_sglang|deepseek-sglang)
+            echo "deepseek-sglang"
+            ;;
+        22|deepseek_v41_vllm_e77daef89|deepseek-v41-vllm-e77daef89)
+            echo "deepseek-v41-vllm-e77daef89"
+            ;;
+        23|deepseek_v41_vllm_pr_56509|deepseek-v41-vllm-pr-56509)
+            echo "deepseek-v41-vllm-pr-56509"
+            ;;
+        24|deepseek_vision_sglang_pr_37253|deepseek-vision-sglang-pr-37253)
+            echo "deepseek-vision-sglang-pr-37253"
+            ;;
+        25|deepseek_vision_vllm_pr_54566|deepseek-vision-vllm-pr-54566)
+            echo "deepseek-vision-vllm-pr-54566"
+            ;;
+        26|deepseek_vllm|deepseek-vllm)
+            echo "deepseek-vllm"
+            ;;
+        27|diffusiongemma_sglang|diffusiongemma-sglang)
+            echo "diffusiongemma-sglang"
+            ;;
+        28|gemma_sglang|gemma-sglang)
+            echo "gemma-sglang"
+            ;;
+        29|gemma_vllm|gemma-vllm|gemma4_vllm|gemma4-vllm|gemma_4_vllm|gemma-4-vllm)
+            echo "gemma-vllm"
+            ;;
+        30|gemma3n_vllm|gemma3n-vllm)
+            echo "gemma3n-vllm"
+            ;;
+        31|glm_ktransformers|glm-ktransformers)
+            echo "glm-ktransformers"
+            ;;
+        32|glm_sglang|glm-sglang)
+            echo "glm-sglang"
+            ;;
+        33|glm_transformers|glm-transformers)
+            echo "glm-transformers"
+            ;;
+        34|glm_vllm|glm-vllm)
+            echo "glm-vllm"
+            ;;
+        35|glm53_vllm_v0290|glm53-vllm-v0290)
+            echo "glm53-vllm-v0290"
+            ;;
+        36|glm53flash_dflash2_sglang_pr_37818|glm53flash-dflash2-sglang-pr-37818)
+            echo "glm53flash-dflash2-sglang-pr-37818"
+            ;;
+        37|glm53flash_dflash2_vllm_pr_55423|glm53flash-dflash2-vllm-pr-55423)
+            echo "glm53flash-dflash2-vllm-pr-55423"
+            ;;
+        38|glm53flash_vllm_2617fe938|glm53flash-vllm-2617fe938)
+            echo "glm53flash-vllm-2617fe938"
+            ;;
+        39|glm53flash_vllm_pr_53906|glm53flash-vllm-pr-53906)
+            echo "glm53flash-vllm-pr-53906"
+            ;;
+        40|gptoss_sglang|gpt-oss_sglang|gptoss-sglang|gpt-oss-sglang)
+            echo "gpt-oss-sglang"
+            ;;
+        41|gptoss_transformers|gpt-oss_transformers|gptoss-transformers|gpt-oss-transformers)
+            echo "gpt-oss-transformers"
+            ;;
+        42|gptoss_vllm|gpt-oss_vllm|vllm_gptoss|gptoss-vllm|gpt-oss-vllm)
+            echo "gpt-oss-vllm"
+            ;;
+        43|ibm_sglang|ibm-sglang)
+            echo "ibm-sglang"
+            ;;
+        44|ibm_vllm|ibm-vllm)
+            echo "ibm-vllm"
+            ;;
+        45|inclusionai_ling3_vllm|inclusionai-ling3-vllm)
+            echo "inclusionai-ling3-vllm"
+            ;;
+        46|inclusionai_sglang|inclusionai-sglang)
+            echo "inclusionai-sglang"
+            ;;
+        47|inclusionai_transformers|inclusionai-transformers)
+            echo "inclusionai-transformers"
+            ;;
+        48|inclusionai_vllm|inclusionai-vllm)
+            echo "inclusionai-vllm"
+            ;;
+        49|incoai_sglang|incoai-sglang)
+            echo "incoai-sglang"
+            ;;
+        50|incoai_vllm|incoai-vllm)
+            echo "incoai-vllm"
+            ;;
+        51|intel_sglang|intel-sglang)
+            echo "intel-sglang"
+            ;;
+        52|intel_vllm|intel-vllm)
+            echo "intel-vllm"
+            ;;
+        53|kimi_ktransformers|kimi-ktransformers)
+            echo "kimi-ktransformers"
+            ;;
+        54|kimi_sglang|kimi-sglang)
+            echo "kimi-sglang"
+            ;;
+        55|kimi_vllm|kimi-vllm)
+            echo "kimi-vllm"
+            ;;
+        56|liquidai_sglang|liquidai-sglang)
+            echo "liquidai-sglang"
+            ;;
+        57|liquidai_sglang_pr_31041|liquidai-sglang-pr-31041)
+            echo "liquidai-sglang-pr-31041"
+            ;;
+        58|liquidai_transformers|liquidai-transformers)
+            echo "liquidai-transformers"
+            ;;
+        59|liquidai_vllm|liquidai-vllm)
+            echo "liquidai-vllm"
+            ;;
+        60|meta_sglang|meta-sglang)
+            echo "meta-sglang"
+            ;;
+        61|meta_vllm|meta-vllm)
+            echo "meta-vllm"
+            ;;
+        62|microsoft_sglang|microsoft-sglang)
+            echo "microsoft-sglang"
+            ;;
+        63|microsoft_vllm|microsoft-vllm)
+            echo "microsoft-vllm"
+            ;;
+        64|minimax_ktransformers|minimax-ktransformers)
+            echo "minimax-ktransformers"
+            ;;
+        65|minimax_m2_sglang_v0510_post1|minimax-m2-sglang-v0510-post1)
+            echo "minimax-m2-sglang-v0510-post1"
+            ;;
+        66|minimax_m2_vllm_0f3ce4c74|minimax-m2-vllm-0f3ce4c74)
+            echo "minimax-m2-vllm-0f3ce4c74"
+            ;;
+        67|minimax_m25_vllm_v0280|minimax-m25-vllm-v0280)
+            echo "minimax-m25-vllm-v0280"
+            ;;
+        68|minimax_sglang|minimax-sglang)
+            echo "minimax-sglang"
+            ;;
+        69|minimax_transformers|minimax-transformers)
+            echo "minimax-transformers"
+            ;;
+        70|minimax_vllm|minimax-vllm)
+            echo "minimax-vllm"
+            ;;
+        71|mistralai_sglang|mistralai-sglang)
+            echo "mistralai-sglang"
+            ;;
+        72|mistralai_transformers|mistralai-transformers)
+            echo "mistralai-transformers"
+            ;;
+        73|mistralai_vllm|mistralai-vllm)
+            echo "mistralai-vllm"
+            ;;
+        74|nanbeige_sglang|nanbeige-sglang)
+            echo "nanbeige-sglang"
+            ;;
+        75|nanbeige_transformers|nanbeige-transformers)
+            echo "nanbeige-transformers"
+            ;;
+        76|nanbeige_vllm|nanbeige-vllm)
+            echo "nanbeige-vllm"
+            ;;
+        77|nemotron_trtllm|nemotron-trtllm|nemotron_trt_llm|nemotron-trt-llm)
+            echo "nemotron-trtllm"
+            ;;
+        78|nemotron_ultra_vllm_9c2d21046|nemotron-ultra-vllm-9c2d21046)
+            echo "nemotron-ultra-vllm-9c2d21046"
+            ;;
+        79|nex_n2_sglang_v0519|nex-n2-sglang-v0519)
+            echo "nex-n2-sglang-v0519"
+            ;;
+        80|nex_n2_vllm_v0290|nex-n2-vllm-v0290)
+            echo "nex-n2-vllm-v0290"
+            ;;
+        81|nvidia_deepseek_sglang|nvidia-deepseek-sglang)
+            echo "nvidia-deepseek-sglang"
+            ;;
+        82|nvidia_glm53_sglang_26fd7fd|nvidia-glm53-sglang-26fd7fd)
+            echo "nvidia-glm53-sglang-26fd7fd"
+            ;;
+        83|nvidia_glm53flash_sglang_pr_38430|nvidia-glm53flash-sglang-pr-38430)
+            echo "nvidia-glm53flash-sglang-pr-38430"
+            ;;
+        84|nvidia_glm53flash_vllm_pr_55277|nvidia-glm53flash-vllm-pr-55277)
+            echo "nvidia-glm53flash-vllm-pr-55277"
+            ;;
+        85|nvidia_muse_sglang_v0520|nvidia-muse-sglang-v0520)
+            echo "nvidia-muse-sglang-v0520"
+            ;;
+        86|nvidia_muse_vllm_v0290|nvidia-muse-vllm-v0290)
+            echo "nvidia-muse-vllm-v0290"
+            ;;
+        87|nvidia_nemotron|nvidia-nemotron)
+            echo "nvidia-nemotron"
+            ;;
+        88|nvidia_sglang|nvidia-sglang)
+            echo "nvidia-sglang"
+            ;;
+        89|nvidia_sglang_pr_33554|nvidia-sglang-pr-33554)
+            echo "nvidia-sglang-pr-33554"
+            ;;
+        90|nvidia_sglang_pr_34966|nvidia-sglang-pr-34966)
+            echo "nvidia-sglang-pr-34966"
+            ;;
+        91|nvidia_vllm|nvidia-vllm)
+            echo "nvidia-vllm"
+            ;;
+        92|nvidia_vllm_pr_55222|nvidia-vllm-pr-55222)
+            echo "nvidia-vllm-pr-55222"
+            ;;
+        93|openai_sglang_pr_38626|openai-sglang-pr-38626)
+            echo "openai-sglang-pr-38626"
+            ;;
+        94|openai_vllm_pr_53207|openai-vllm-pr-53207)
+            echo "openai-vllm-pr-53207"
+            ;;
+        95|paradigma_inc_vllm_v0260|paradigma-inc-vllm-v0260)
+            echo "paradigma-inc-vllm-v0260"
+            ;;
+        96|poolside_laguna_xs_vllm|poolside-laguna-xs-vllm)
+            echo "poolside-laguna-xs-vllm"
+            ;;
+        97|poolside_sglang|poolside-sglang)
+            echo "poolside-sglang"
+            ;;
+        98|poolside_sglang_pr_22513|poolside-sglang-pr-22513)
+            echo "poolside-sglang-pr-22513"
+            ;;
+        99|poolside_transformers|poolside-transformers)
+            echo "poolside-transformers"
+            ;;
+        100|poolside_vllm|poolside-vllm)
+            echo "poolside-vllm"
+            ;;
+        101|primeintellect_sglang|primeintellect-sglang)
+            echo "primeintellect-sglang"
+            ;;
+        102|primeintellect_vllm|primeintellect-vllm)
+            echo "primeintellect-vllm"
+            ;;
+        103|qwen_flash_next_sglang|qwen-flash-next-sglang)
+            echo "qwen-flash-next-sglang"
+            ;;
+        104|qwen_flash_next_vllm|qwen-flash-next-vllm)
+            echo "qwen-flash-next-vllm"
+            ;;
+        105|qwen_flash_next_vllm_pr_54129|qwen-flash-next-vllm-pr-54129)
+            echo "qwen-flash-next-vllm-pr-54129"
+            ;;
+        106|qwen_ktransformers|qwen-ktransformers)
+            echo "qwen-ktransformers"
+            ;;
+        107|qwen_sglang|qwen-sglang)
+            echo "qwen-sglang"
+            ;;
+        108|qwen_sglang_pr_22121|qwen-sglang-pr-22121)
+            echo "qwen-sglang-pr-22121"
+            ;;
+        109|qwen_transformers|qwen-transformers)
+            echo "qwen-transformers"
+            ;;
+        110|qwen_vllm|qwen-vllm)
+            echo "qwen-vllm"
+            ;;
+        111|radixark_qwen_sglang|radixark-qwen-sglang)
+            echo "radixark-qwen-sglang"
+            ;;
+        112|radixark_sglang|radixark-sglang)
+            echo "radixark-sglang"
+            ;;
+        113|redhat_sglang_pr_35809|redhat-sglang-pr-35809)
+            echo "redhat-sglang-pr-35809"
+            ;;
+        114|redhatai_sglang|redhatai-sglang)
+            echo "redhatai-sglang"
+            ;;
+        115|redhatai_vllm|redhatai-vllm)
+            echo "redhatai-vllm"
+            ;;
+        116|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
+            echo "rtxpro6k-deepseek-v41-vllm-pr-56509"
+            ;;
+        117|rtxpro6k_glm53flash_vllm_2617fe938|rtxpro6k-glm53flash-vllm-2617fe938)
+            echo "rtxpro6k-glm53flash-vllm-2617fe938"
+            ;;
+        118|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+            echo "rtxpro6k-intel-sglang"
+            ;;
+        119|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+            echo "rtxpro6k-liquidai-sglang"
+            ;;
+        120|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+            echo "rtxpro6k-liquidai-sglang-pr-31041"
+            ;;
+        121|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+            echo "rtxpro6k-nanbeige-sglang"
+            ;;
+        122|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+            echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
+            ;;
+        123|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+            echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
+            ;;
+        124|rtxpro6k_nvidia_glm53flash_vllm_pr_55277|rtxpro6k-nvidia-glm53flash-vllm-pr-55277)
+            echo "rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
+            ;;
+        125|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+            echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
+            ;;
+        126|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+            echo "rtxpro6k-primeintellect-sglang"
+            ;;
+        127|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+            echo "rtxpro6k-qwen-flash-next-vllm"
+            ;;
+        128|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+            echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
+            ;;
+        129|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+            echo "rtxpro6k-qwen-sglang"
+            ;;
+        130|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+            echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
+            ;;
+        131|stepfun_sglang|stepfun-sglang)
+            echo "stepfun-sglang"
+            ;;
+        132|stepfun_transformers|stepfun-transformers)
+            echo "stepfun-transformers"
+            ;;
+        133|stepfun_vllm|stepfun-vllm)
+            echo "stepfun-vllm"
+            ;;
+        134|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
+            echo "xiaomimimo-flash-vllm-1ea7c63"
+            ;;
+        135|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
+            echo "xiaomimimo-flash-vllm-pr-58177"
+            ;;
+        136|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+            echo "xiaomimimo-sglang-v0520"
+            ;;
+        137|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+            echo "xiaomimimo-vllm-v0300"
+            ;;
+        138|z_lab_sglang|z-lab-sglang)
+            echo "z-lab-sglang"
+            ;;
+        139|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+            echo "z-lab-sglang-pr-35209"
+            ;;
+        140|z_lab_vllm|z-lab-vllm)
+            echo "z-lab-vllm"
+            ;;
+        141|zyphra_legacy_sglang|zyphra-legacy-sglang)
+            echo "zyphra-legacy-sglang"
+            ;;
+        142|zyphra_legacy_transformers|zyphra-legacy-transformers)
+            echo "zyphra-legacy-transformers"
+            ;;
+        143|zyphra_legacy_vllm|zyphra-legacy-vllm)
+            echo "zyphra-legacy-vllm"
+            ;;
+        144|zyphra_sglang|zyphra-sglang)
+            echo "zyphra-sglang"
+            ;;
+        145|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+            echo "zyphra-sglang-pr-32517"
+            ;;
+        146|zyphra_transformers|zyphra-transformers)
+            echo "zyphra-transformers"
+            ;;
+        147|zyphra_vllm|zyphra-vllm)
+            echo "zyphra-vllm"
             ;;
         *)
             return 1
@@ -914,23 +984,46 @@ sys.exit(1)
 PY
 }
 
-install_sglang_cuda_129_wheels() {
-    print_info "CUDA 12.9 detected; installing CUDA 12.9 PyTorch and SGLang kernel wheels..."
+check_kt_kernel_build_dependencies() {
+    local missing=()
 
-    run_uv_install --force-reinstall \
-        torch==2.11.0 \
-        torchaudio==2.11.0 \
-        torchvision \
-        --index-url https://download.pytorch.org/whl/cu129 || return 1
+    if ! command -v cmake >/dev/null 2>&1; then
+        missing+=("cmake")
+    fi
+    if ! command -v pkg-config >/dev/null 2>&1; then
+        missing+=("pkg-config")
+    elif ! pkg-config --exists hwloc >/dev/null 2>&1; then
+        missing+=("libhwloc-dev")
+    fi
 
-    run_uv_install --force-reinstall \
-        sglang-kernel \
-        --index-url https://docs.sglang.ai/whl/cu129/ || return 1
+    if [ "${#missing[@]}" -eq 0 ]; then
+        return 0
+    fi
 
-    run_uv_install --force-reinstall \
-        sgl-deep-gemm \
-        --index-url https://docs.sglang.ai/whl/cu129/ \
-        --no-deps || return 1
+    print_error "Missing kt-kernel build dependencies: ${missing[*]}"
+    print_info "Install them with your OS package manager, then rerun this script."
+    print_info "On Debian/Ubuntu: sudo apt install -y cmake libhwloc-dev pkg-config"
+    return 1
+}
+
+install_arcee_deepgemm() {
+    if [ -z "${VIRTUAL_ENV:-}" ]; then
+        print_error "No active virtual environment detected for DeepGEMM install."
+        return 1
+    fi
+
+    local vllm_ref="${1:-v0.18.0}"
+    local deepgemm_installer="$VIRTUAL_ENV/install_deepgemm.sh"
+    local deepgemm_installer_url="https://raw.githubusercontent.com/vllm-project/vllm/$vllm_ref/tools/install_deepgemm.sh"
+
+    print_info "Downloading vLLM $vllm_ref DeepGEMM installer into $VIRTUAL_ENV..."
+    run_command curl -fsSL "$deepgemm_installer_url" -o "$deepgemm_installer" || return 1
+    run_command chmod +x "$deepgemm_installer" || return 1
+
+    print_info "Installing vLLM $vllm_ref's pinned DeepGEMM build for Arcee..."
+    # The child Bash expands its positional arguments.
+    run_command env VIRTUAL_ENV="$VIRTUAL_ENV" PATH="$VIRTUAL_ENV/bin:$PATH" \
+        bash -c 'cd "$1" && bash "$2"' _ "$VIRTUAL_ENV" "$deepgemm_installer" || return 1
 }
 
 install_bleeding_edge_sglang() {
@@ -973,1391 +1066,6 @@ install_bleeding_edge_sglang() {
     else
         print_warning "Could not detect active CUDA version; skipping CUDA 12.9-specific wheel reinstall."
     fi
-}
-
-install_pinned_sglang_commit() {
-    local expected_env="$1"
-    local description="$2"
-    local repository="$3"
-    local commit="$4"
-
-    ensure_active_environment_matches "$expected_env" || return 1
-    print_info "Installing $description..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+$repository@$commit#subdirectory=python" || return 1
-}
-
-install_allenai_sglang() {
-    install_pinned_sglang_commit \
-        "allenai-sglang" \
-        "AllenAI (SGLang) commit cef8a32b9de616c85b515c099fecfd1a81bbf8d0" \
-        "https://github.com/sgl-project/sglang.git" \
-        "cef8a32b9de616c85b515c099fecfd1a81bbf8d0"
-}
-
-install_arcee_sglang() {
-    install_pinned_sglang_commit \
-        "arcee-sglang" \
-        "Arcee (SGLang) commit cef8a32b9de616c85b515c099fecfd1a81bbf8d0" \
-        "https://github.com/sgl-project/sglang.git" \
-        "cef8a32b9de616c85b515c099fecfd1a81bbf8d0"
-}
-
-install_cohere_sglang() {
-    install_pinned_sglang_commit \
-        "cohere-sglang" \
-        "Cohere (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
-}
-
-install_datalab_sglang() {
-    install_pinned_sglang_commit \
-        "datalab-sglang" \
-        "DataLab (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
-}
-
-install_microsoft_sglang() {
-    install_pinned_sglang_commit \
-        "microsoft-sglang" \
-        "Microsoft (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
-}
-
-install_nemotron_ultra_vllm_9c2d21046() {
-    ensure_active_environment_matches "nemotron-ultra-vllm-9c2d21046" || return 1
-    # Complete upstream PR54788 merge: native V2 draft MoE backend isolation.
-    # https://github.com/vllm-project/vllm/pull/54788
-    local source_commit="9c2d21046bb39f56ee93a5fab4f899714a5579ef"
-    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.28.1rc1.dev562%2Bg9c2d21046-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing native Nemotron Ultra vLLM PR54788 merge..."
-    run_uv_install -U --prerelease=allow \
-        "vllm @ ${wheel_url}" "transformers==5.12.1" "tokenizers==0.22.2" \
-        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-    # Released CUDA requirements keep FlashInfer cubin outside PyPI install_requires.
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" || return 1
-}
-
-install_nex_n2_sglang_v0519() {
-    ensure_active_environment_matches "nex-n2-sglang-v0519" || return 1
-    # Native Qwen3.5 MoE backend for Nex-N2: https://github.com/nex-agi/Nex-N2.
-    # SGLang v0.5.19: 0bcd822377da7b5718e674eaf9c870d349424dd1; CPython 3.11 wheels.
-    # NVIDIA publishes the required cuda-tile RC wheel outside its PyPI sdist listing.
-    print_info "Installing official SGLang 0.5.19 for Nex N2..."
-    run_uv_install -U --reinstall \
-        'sglang @ https://files.pythonhosted.org/packages/97/f3/53f3a6c074be264bb389bb7e620fb99c26950a0f452a5d1415e5c5f58af9/sglang-0.5.19-cp311-cp311-manylinux_2_34_x86_64.whl#sha256=425e87377e725d03db8262382008f3fd9561a6cf5d82f485f8b9929f02ffe12b' \
-        'cuda-tile @ https://pypi.nvidia.com/cuda-tile/cuda_tile-1.6.0rc5-cp311-cp311-manylinux2014_x86_64.whl#sha256=a14ff257522a017430e98f16aabdfd514bbcf38ecb64a0fba1d3f86cd02a21bb' \
-        'torchvision==0.28.0' \
-        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-    # Keep native BF16 vision convolutions on the host-matched cuDNN 9.26 family.
-    # This source-backed repair overrides Torch's 9.20 pin: pytorch/pytorch#188892.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_nex_n2_vllm_v0290() {
-    ensure_active_environment_matches "nex-n2-vllm-v0290" || return 1
-    # Native Nex-N2/Qwen3.5 MoE and incremental tools: vLLM v0.29.0.
-    # Upstream commit: 98dff2a81d747d1dba01a47f939f48c3526d4206.
-    print_info "Installing official vLLM 0.29.0 for Nex N2..."
-    run_uv_install -U --reinstall \
-        "vllm==0.29.0" "transformers==5.12.1" "tokenizers==0.22.2" \
-        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
-        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
-    # Preserve native Conv3d with version-aligned cuDNN sublibraries.
-    # This source-backed repair overrides Torch's 9.20 pin: pytorch/pytorch#188892.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_nvidia_deepseek_sglang() {
-    print_info "Installing SGLang 0.5.16 for NVIDIA DeepSeek..."
-    run_uv_install -U --prerelease=allow "sglang[all]==0.5.16" || return 1
-}
-
-install_nvidia_glm53_sglang_26fd7fd() {
-    ensure_active_environment_matches "nvidia-glm53-sglang-26fd7fd" || return 1
-    print_info "Installing the validated SGLang commit for NVIDIA GLM-5.3 NVFP4..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@26fd7fdaa2732abbad6d63b21cf0944aa88e977e#subdirectory=python" \
-        "compressed-tensors==0.19.1a20260923" || return 1
-}
-
-install_nvidia_glm53flash_sglang_pr_38430() {
-    ensure_active_environment_matches "nvidia-glm53flash-sglang-pr-38430" || return 1
-    # The unmodified official source build requires the existing Rust toolchain.
-    if ! command -v rustc >/dev/null 2>&1 || ! command -v cargo >/dev/null 2>&1; then
-        print_error "Rust and Cargo are required; install them with installers/01_install_dependencies.sh --rust first."
-        return 1
-    fi
-    # Native GLM5Next NoPE sparse MLA: https://github.com/sgl-project/sglang/pull/38430
-    print_info "Installing NVIDIA GLM-5.3 Flash SGLang PR 38430..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang @ git+https://github.com/sgl-project/sglang.git@28379a7c55687b9694a886550e39120853c9d000#subdirectory=python" \
-        --torch-backend=cu130 || return 1
-    # Official FlashInfer includes compact NoPE rows and the complete SM120 sparse path.
-    # https://github.com/flashinfer-ai/flashinfer/pull/5075
-    run_uv_install --force-reinstall --no-deps \
-        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" || return 1
-    # Exact tested multimodal tokenizer stack and matching cuDNN sublibraries.
-    run_uv_install --force-reinstall --no-deps \
-        "transformers==5.17.0" "tokenizers==0.23.2" "nvidia-cudnn-cu13==9.26.0.51" || return 1
-    run_uv_install "nccl-extensions==0.1.0" || return 1
-}
-
-install_nvidia_glm53flash_vllm_pr_55277() {
-    ensure_active_environment_matches "nvidia-glm53flash-vllm-pr-55277" || return 1
-    # Native GLM5Next NoPE cache writer: https://github.com/vllm-project/vllm/pull/55277
-    # Complete official merge wheel, including its CUDA 13.0 binaries.
-    local source_commit="c843f0cab78b413f2b0a5c2282cb71e3a3937b11"
-    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev11%2Bgc843f0cab-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing native NVIDIA GLM-5.3 Flash vLLM PR 55277 merge..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
-    # Official FlashInfer includes compact NoPE rows and the complete SM120 sparse path.
-    # https://github.com/flashinfer-ai/flashinfer/pull/5075
-    run_uv_install --force-reinstall --no-deps \
-        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" || return 1
-    # Exact tested multimodal tokenizer stack and matching cuDNN sublibraries.
-    run_uv_install --force-reinstall --no-deps \
-        "transformers==5.17.0" "tokenizers==0.23.2" "nvidia-cudnn-cu13==9.26.0.51" || return 1
-    run_uv_install "nccl-extensions==0.1.0" || return 1
-}
-
-install_nvidia_sglang() {
-    install_pinned_sglang_commit \
-        "nvidia-sglang" \
-        "NVIDIA (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" || return 1
-    run_uv_install librosa || return 1
-}
-
-install_nvidia_sglang_pr_33554() {
-    install_pinned_sglang_commit \
-        "nvidia-sglang-pr-33554" \
-        "NVIDIA (SGLang) PR 33554 commit ccfcdd93a8c21b21d37b6036f3071ff2d9171f9b" \
-        "https://github.com/rystewart-nvidia/sglang.git" \
-        "ccfcdd93a8c21b21d37b6036f3071ff2d9171f9b" || return 1
-    run_uv_install librosa || return 1
-}
-
-install_nvidia_sglang_pr_34966() {
-    install_pinned_sglang_commit \
-        "nvidia-sglang-pr-34966" \
-        "NVIDIA (SGLang) PR 34966 commit ef5d293e52375c75224ee9a5a373fe1daed56f84" \
-        "https://github.com/mochgolf/sglang.git" \
-        "ef5d293e52375c75224ee9a5a373fe1daed56f84"
-}
-
-install_poolside_sglang_pr_22513() {
-    install_pinned_sglang_commit \
-        "poolside-sglang-pr-22513" \
-        "Poolside (SGLang) PR 22513 commit 693b32b73d5031bc82ec851659ae94bd02a2b5f6" \
-        "https://github.com/Godmook/sglang.git" \
-        "693b32b73d5031bc82ec851659ae94bd02a2b5f6"
-}
-
-install_primeintellect_sglang() {
-    install_pinned_sglang_commit \
-        "primeintellect-sglang" \
-        "PrimeIntellect (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
-}
-
-install_qwen_sglang_pr_22121() {
-    install_pinned_sglang_commit \
-        "qwen-sglang-pr-22121" \
-        "Qwen (SGLang) PR 22121 commit ce79bc7e3964613c87f79181353f09838d1c7459" \
-        "https://github.com/Chevron7Locked/sglang.git" \
-        "ce79bc7e3964613c87f79181353f09838d1c7459"
-}
-
-install_qwen_flash_next_sglang() {
-    install_pinned_sglang_commit \
-        "qwen-flash-next-sglang" \
-        "Qwen Flash Next (SGLang) PR 36497 commit 73a255206f916366c8d26d4022f82ddfb0ab558d" \
-        "https://github.com/sgl-project/sglang.git" \
-        "73a255206f916366c8d26d4022f82ddfb0ab558d"
-}
-
-install_radixark_qwen_sglang() {
-    install_pinned_sglang_commit \
-        "radixark-qwen-sglang" \
-        "RadixArk Qwen Flash Next (SGLang) PR 36497 commit 73a255206f916366c8d26d4022f82ddfb0ab558d" \
-        "https://github.com/sgl-project/sglang.git" \
-        "73a255206f916366c8d26d4022f82ddfb0ab558d" || return 1
-    run_uv_install "transformers==5.12.1" "nvidia-modelopt[torch]==0.46.0" || return 1
-}
-
-install_radixark_sglang() {
-    install_pinned_sglang_commit \
-        "radixark-sglang" \
-        "RadixArk (SGLang) PR 35292 commit 0c088029ccba502c6aa4c408cd516a706af5b253" \
-        "https://github.com/alphabetc1/sglang.git" \
-        "0c088029ccba502c6aa4c408cd516a706af5b253" || return 1
-    run_uv_install "transformers==5.12.1" || return 1
-}
-
-install_redhatai_sglang() {
-    install_pinned_sglang_commit \
-        "redhatai-sglang" \
-        "RedHatAI (SGLang) commit 05c584c44fb0450c894cf9d08a7827c10cd5b2c5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "05c584c44fb0450c894cf9d08a7827c10cd5b2c5" || return 1
-    run_uv_install "transformers==5.12.1" || return 1
-}
-
-install_redhat_sglang_pr_35809() {
-    install_pinned_sglang_commit \
-        "redhat-sglang-pr-35809" \
-        "RedHat (SGLang) PR 35809 commit d5bd07850f6200eff1cf0529e5ba31de1fc3abff" \
-        "https://github.com/fechaMe/sglang.git" \
-        "d5bd07850f6200eff1cf0529e5ba31de1fc3abff" || return 1
-    run_uv_install "transformers==5.12.1" || return 1
-}
-
-install_zyphra_legacy_sglang() {
-    install_pinned_sglang_commit \
-        "zyphra-legacy-sglang" \
-        "Zyphra Legacy (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
-}
-
-install_zyphra_sglang() {
-    install_pinned_sglang_commit \
-        "zyphra-sglang" \
-        "Zyphra (SGLang) commit 1cf2b8c54d81802abc15dcf23a29b9cc687bc01e" \
-        "https://github.com/sgl-project/sglang.git" \
-        "1cf2b8c54d81802abc15dcf23a29b9cc687bc01e"
-}
-
-install_zyphra_sglang_pr_32517() {
-    install_pinned_sglang_commit \
-        "zyphra-sglang-pr-32517" \
-        "Zyphra (SGLang) PR 32517 commit a43c7793f95609db15cd1c4060de4e3424af171d" \
-        "https://github.com/zaddle55/sglang.git" \
-        "a43c7793f95609db15cd1c4060de4e3424af171d"
-}
-
-check_kt_kernel_build_dependencies() {
-    local missing=()
-
-    if ! command -v cmake >/dev/null 2>&1; then
-        missing+=("cmake")
-    fi
-    if ! command -v pkg-config >/dev/null 2>&1; then
-        missing+=("pkg-config")
-    elif ! pkg-config --exists hwloc >/dev/null 2>&1; then
-        missing+=("libhwloc-dev")
-    fi
-
-    if [ "${#missing[@]}" -eq 0 ]; then
-        return 0
-    fi
-
-    print_error "Missing kt-kernel build dependencies: ${missing[*]}"
-    print_info "Install them with your OS package manager, then rerun this script."
-    print_info "On Debian/Ubuntu: sudo apt install -y cmake libhwloc-dev pkg-config"
-    return 1
-}
-
-install_kt_kernel() {
-    local ktransformers_dir="$1"
-    local kt_kernel_dir="$ktransformers_dir/kt-kernel"
-
-    if [ ! -d "$kt_kernel_dir" ]; then
-        print_warning "kt-kernel directory not found at $kt_kernel_dir"
-        return 1
-    fi
-
-    check_kt_kernel_build_dependencies || return 1
-    run_command bash -c "cd \"$kt_kernel_dir\" && ./install.sh build"
-}
-
-install_flashinfer_python311_compatible() {
-    local incompatible_package
-
-    if ! python -c 'import sys; raise SystemExit(0 if sys.version_info < (3, 12) else 1)'; then
-        return 0
-    fi
-
-    print_info "Installing FlashInfer 0.6.17 for Python 3.10/3.11 annotation compatibility..."
-    run_uv_install --upgrade --no-deps "flashinfer-python==0.6.17" || return 1
-
-    for incompatible_package in flashinfer-cubin flashinfer-jit-cache; do
-        if python -c 'import importlib.metadata as m, sys; m.version(sys.argv[1])' \
-            "$incompatible_package" >/dev/null 2>&1; then
-            print_info "Removing incompatible $incompatible_package companion package..."
-            run_command uv pip uninstall "$incompatible_package" || return 1
-        fi
-    done
-}
-
-install_vllm_pinned_commit_python311_compatible() {
-    local source_commit="52be12cfac0c5a18ba906814b2d2bcadb40a9c4b"
-    local source_dir=""
-
-    if [ -z "${VIRTUAL_ENV:-}" ]; then
-        print_error "No active virtual environment detected for the vLLM source checkout."
-        return 1
-    fi
-    source_dir="$VIRTUAL_ENV/vllm"
-
-    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
-        print_error "vLLM target exists but is not a git checkout: $source_dir"
-        return 1
-    fi
-
-    if [ ! -d "$source_dir/.git" ]; then
-        run_command git clone https://github.com/vllm-project/vllm.git \
-            "$source_dir" || return 1
-    fi
-
-    run_command git -C "$source_dir" fetch origin --tags || return 1
-    run_command git -C "$source_dir" checkout --force "$source_commit" || return 1
-
-    print_info "Installing pinned GitHub commit $source_commit from $source_dir..."
-    VLLM_USE_PRECOMPILED=1 \
-        VLLM_PRECOMPILED_WHEEL_COMMIT="$source_commit" \
-        run_uv_install -U --reinstall --prerelease=allow \
-        -e "$source_dir" --torch-backend=auto || return 1
-
-    install_flashinfer_python311_compatible || return 1
-}
-
-install_allenai_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for AllenAI..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_arcee_deepgemm() {
-    if [ -z "${VIRTUAL_ENV:-}" ]; then
-        print_error "No active virtual environment detected for DeepGEMM install."
-        return 1
-    fi
-
-    local vllm_ref="${1:-v0.18.0}"
-    local deepgemm_installer="$VIRTUAL_ENV/install_deepgemm.sh"
-    local deepgemm_installer_url="https://raw.githubusercontent.com/vllm-project/vllm/$vllm_ref/tools/install_deepgemm.sh"
-
-    print_info "Downloading vLLM $vllm_ref DeepGEMM installer into $VIRTUAL_ENV..."
-    run_command curl -fsSL "$deepgemm_installer_url" -o "$deepgemm_installer" || return 1
-    run_command chmod +x "$deepgemm_installer" || return 1
-
-    print_info "Installing vLLM $vllm_ref's pinned DeepGEMM build for Arcee..."
-    # The child Bash expands its positional arguments.
-    run_command env VIRTUAL_ENV="$VIRTUAL_ENV" PATH="$VIRTUAL_ENV/bin:$PATH" \
-        bash -c 'cd "$1" && bash "$2"' _ "$VIRTUAL_ENV" "$deepgemm_installer" || return 1
-}
-
-install_arcee_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for Arcee..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-    install_arcee_deepgemm "52be12cfac0c5a18ba906814b2d2bcadb40a9c4b" || return 1
-}
-
-install_vllm_pr_54479() {
-    ensure_active_environment_matches "$1" || return 1
-    # Upstream PR https://github.com/vllm-project/vllm/pull/54479 separates compilation from KV-memory profiling.
-    local source_commit="22f931fe2177912ddf33e5a033948473fe9720f2"
-    # This Python-only PR uses unmodified binaries from its exact upstream merge base.
-    local wheel_url="https://wheels.vllm.ai/144e79c8106da23141ac010394b782f730cc7fe8/vllm-0.28.1rc1.dev452%2Bg144e79c81-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing upstream vLLM PR 54479 at ${source_commit}..."
-    VLLM_USE_PRECOMPILED=1 \
-        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
-        run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
-        --torch-backend=cu130 || return 1
-}
-
-install_arcee_nvfp4_vllm() {
-    print_info "Installing vLLM 0.18.0 for Arcee NVFP4..."
-    run_uv_install -U "vllm==0.18.0" || return 1
-    install_arcee_deepgemm "v0.18.0" || return 1
-}
-
-install_cohere_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit and Cohere Melody for Cohere..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-    run_uv_install "transformers>=5,<6" || return 1
-    run_uv_install "cohere_melody>=0.9.0" || return 1
-}
-
-install_cohere_vllm_pr_54479() {
-    install_vllm_pr_54479 "cohere-vllm-pr-54479" || return 1
-    run_uv_install "transformers==5.17.0" || return 1
-    run_uv_install "cohere_melody==0.13.4" || return 1
-}
-
-install_datalab_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for DataLab..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_diffusiongemma_sglang() {
-    print_info "Installing the DiffusionGemma SGLang commit..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@11ffa55479124f85aabeb6db264c3b337395a55d#subdirectory=python" || return 1
-    run_uv_install --force-reinstall --no-deps "transformers==5.12.1" || return 1
-}
-
-install_gemma_sglang() {
-    print_info "Installing the tested Gemma SGLang commit..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@f7d4e44d82ac35b9b10ce80348e4a5421f89435a#subdirectory=python" || return 1
-    run_uv_install "git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897" || return 1
-}
-
-install_gemma_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for Gemma..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_glm_sglang() {
-    print_info "Installing packages for GLM (SGLang)..."
-    
-    install_bleeding_edge_sglang glm-sglang || return 1
-    run_uv_install "kernels==0.14.1"
-}
-
-install_glm_transformers() {
-    print_info "Installing packages for GLM (Transformers)..."
-
-    run_uv_install git+https://github.com/huggingface/transformers.git@76732b4e7120808ff989edbd16401f61fa6a0afa
-}
-
-install_glm_vllm() {
-    print_info "Installing packages for GLM (vLLM)..."
-    local packages=(
-        "git+https://github.com/huggingface/transformers.git"
-        "pre-commit>=4.2.0"
-        "accelerate>=1.10.1"
-    )
-
-    run_uv_install -U vllm --index-url https://pypi.org/simple || return 1
-    run_uv_install "${packages[@]}"
-}
-
-install_deepseek_lmdeploy() {
-    print_info "Installing LMDeploy for DeepSeek..."
-    local target_dir=""
-    if [ -n "${LMDEPLOY_DIR:-}" ]; then
-        target_dir="$LMDEPLOY_DIR"
-    elif [ -n "${VIRTUAL_ENV:-}" ]; then
-        target_dir="$VIRTUAL_ENV/lmdeploy"
-    else
-        target_dir="$HOME/lmdeploy"
-    fi
-
-    if [ -d "$target_dir/.git" ]; then
-        print_info "Updating existing repository at $target_dir"
-        run_command git -C "$target_dir" fetch origin || return 1
-        run_command git -C "$target_dir" checkout support-dsv3 || return 1
-        run_command git -C "$target_dir" pull --ff-only || return 1
-    else
-        local parent_dir
-        parent_dir=$(dirname "$target_dir")
-        if [ ! -d "$parent_dir" ]; then
-            run_command mkdir -p "$parent_dir" || return 1
-        fi
-        run_command git clone -b support-dsv3 https://github.com/InternLM/lmdeploy.git "$target_dir" || return 1
-    fi
-
-    run_uv_install -e "$target_dir"
-}
-
-install_deepseek_ktransformers() {
-    print_info "Installing KTransformers for DeepSeek..."
-    ensure_active_environment_matches deepseek-ktransformers || return 1
-
-    local ktransformers_dir=""
-    if [ -n "${KTRANSFORMERS_DIR:-}" ]; then
-        ktransformers_dir="$KTRANSFORMERS_DIR"
-    elif [ -n "${VIRTUAL_ENV:-}" ]; then
-        ktransformers_dir="$VIRTUAL_ENV/ktransformers"
-    else
-        ktransformers_dir="$HOME/ktransformers"
-    fi
-
-    if [ ! -d "$ktransformers_dir/.git" ]; then
-        local parent_dir
-        parent_dir=$(dirname "$ktransformers_dir")
-        if [ ! -d "$parent_dir" ]; then
-            run_command mkdir -p "$parent_dir" || return 1
-        fi
-        run_command git clone https://github.com/kvcache-ai/ktransformers.git "$ktransformers_dir" || return 1
-    fi
-
-    run_command git -C "$ktransformers_dir" submodule update --init --recursive || return 1
-
-    install_kt_kernel "$ktransformers_dir" || return 1
-
-    print_info "Installing SGLang for DeepSeek from ktransformers checkout..."
-
-    if [ ! -x "$ktransformers_dir/install.sh" ]; then
-        print_error "ktransformers installer not found or not executable at $ktransformers_dir/install.sh"
-        return 1
-    fi
-
-    run_command bash -c "cd \"$ktransformers_dir\" && ./install.sh sglang --editable" || return 1
-    run_pip_install "tilelang==0.1.8" || return 1
-    run_pip_install "apache-tvm-ffi==0.1.9" || return 1
-    run_pip_install --upgrade flashinfer-python flashinfer-cubin || return 1
-    run_pip_install "transformers==4.57.1" || return 1
-
-    print_info "Installing FlashMLA for DeepSeek V4 compressed attention..."
-    local flash_mla_env=(
-        env
-        "NVCC_THREADS=${NVCC_THREADS:-8}"
-    )
-
-    local cuda_home="${CUDA_HOME:-${CUDA_PATH:-}}"
-    if [ -z "$cuda_home" ] && command -v nvcc >/dev/null 2>&1; then
-        cuda_home=$(cd -- "$(dirname -- "$(command -v nvcc)")/.." && pwd)
-    fi
-
-    if [ -z "$cuda_home" ] || [ ! -x "$cuda_home/bin/nvcc" ]; then
-        print_error "No active CUDA toolkit with nvcc detected for FlashMLA."
-        print_info "Activate an environment configured by installers/05_setup_env.sh or launch_env.sh with a CUDA toolkit selected."
-        return 1
-    fi
-
-    flash_mla_env+=(
-        "CUDA_HOME=$cuda_home"
-        "CUDA_PATH=$cuda_home"
-        "PATH=$cuda_home/bin:$PATH"
-        "LD_LIBRARY_PATH=$cuda_home/lib:$cuda_home/lib64:${LD_LIBRARY_PATH:-}"
-        "LIBRARY_PATH=$cuda_home/lib:$cuda_home/lib64:${LIBRARY_PATH:-}"
-    )
-
-    if [ -d "$cuda_home/include/cccl" ]; then
-        flash_mla_env+=("CPATH=$cuda_home/include/cccl:${CPATH:-}")
-    fi
-
-    local gpu_name=""
-    if command -v nvidia-smi >/dev/null 2>&1; then
-        gpu_name=$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1 | tr '[:lower:]' '[:upper:]')
-    fi
-    if [[ "$gpu_name" != *"B200"* && "$gpu_name" != *"BLACKWELL"* ]]; then
-        flash_mla_env+=("FLASH_MLA_DISABLE_SM100=1")
-    fi
-
-    run_command "${flash_mla_env[@]}" python -m pip install --no-build-isolation \
-        'flash-mla @ git+https://github.com/deepseek-ai/FlashMLA.git@9241ae3ef9bac614dd25e45e507e089f888280e0' || return 1
-
-    run_command python -c "import flash_mla; from flash_mla.flash_mla_interface import FlashMLASchedMeta; print('flash_mla import OK')" || return 1
-
-    run_pip_install nvidia-cudnn-cu12==9.16.0.29 || return 1
-}
-
-install_deepseek_sglang() {
-    print_info "Installing SGLang 0.5.16 for DeepSeek..."
-    run_uv_install -U --prerelease=allow "sglang[all]==0.5.16" || return 1
-}
-
-install_deepseek_v41_vllm_e77daef89() {
-    ensure_active_environment_matches "deepseek-v41-vllm-e77daef89" || return 1
-    # Native DeepSeek V4.1 support: https://github.com/vllm-project/vllm/pull/56214
-    local source_commit="e77daef89e18e08321ae7b8b24827eedd5fe8673"
-    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.1.1.dev5%2Bge77daef89-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing the official DeepSeek V4.1 vLLM e77daef89 wheel..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ ${wheel_url}" "uvicorn==0.53.0" --torch-backend=cu130 || return 1
-    # Required by the pinned CUDA manifest; this cubin release is not published on PyPI.
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab" || return 1
-}
-
-install_deepseek_v41_vllm_pr_56509() {
-    ensure_active_environment_matches "deepseek-v41-vllm-pr-56509" || return 1
-    # Complete official SM120 sparse-attention integration: https://github.com/vllm-project/vllm/pull/56509
-    # This Python-only PR uses its direct parent's unchanged CUDA 13.0 binaries.
-    local source_commit="02ee13be210777a86fe61180d33135ebaa728a08"
-    local binary_commit="378504a5442b8a9240b359dae3e6f75f35c38f19"
-    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev146%2Bg378504a54-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing native DeepSeek V4.1 vLLM PR 56509 at ${source_commit}..."
-    VLLM_USE_PRECOMPILED=1 \
-        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
-        run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
-        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" \
-        "filelock==4.0.3" \
-        --torch-backend=cu130 || return 1
-    # Native SM120 NVFP4 TP padding and narrow-gated prefill recovery.
-    # Keep engine CUTLASS 4.7.1; B12X 1.2.6 declares 4.6.2 (recorded exception).
-    run_uv_install --no-deps --reinstall-package b12x \
-        "b12x @ git+https://github.com/local-inference-lab/b12x.git@11e27c04977875aed3c0cbf03c9c211b71fcdc68" || return 1
-}
-
-install_deepseek_vision_sglang_pr_37253() {
-    ensure_active_environment_matches "deepseek-vision-sglang-pr-37253" || return 1
-    # Native Vision and bundled DSpark: https://github.com/sgl-project/sglang/pull/37253
-    local source_commit="d5a3b7725374070669f4d23c1e99e186f4dfc309"
-    print_info "Installing upstream DeepSeek Vision SGLang PR 37253 at ${source_commit}..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
-        --torch-backend=cu130 || return 1
-}
-
-install_deepseek_vision_vllm_pr_54566() {
-    ensure_active_environment_matches "deepseek-vision-vllm-pr-54566" || return 1
-    # Native Vision CUDA support: https://github.com/vllm-project/vllm/pull/54566
-    # Official merge: 1356635d837c4ef002ec98c1a0296e7ff60be3c1; PR head: 047c353c99a6ab5f2ad09a70c3ccc6aa67deddfc.
-    local wheel_url="https://wheels.vllm.ai/1356635d837c4ef002ec98c1a0296e7ff60be3c1/vllm-0.28.1rc1.dev317%2Bg1356635d8-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing the official DeepSeek Vision vLLM PR 54566 merge wheel..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
-    # Required by the pinned CUDA manifest; this cubin release is not published on PyPI.
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" || return 1
-}
-
-install_deepseek_vllm() {
-    print_info "Installing vLLM 0.25.0 for DeepSeek..."
-    run_uv_install "vllm==0.25.0" || return 1
-}
-
-install_glm53flash_dflash2_sglang_pr_37818() {
-    ensure_active_environment_matches "glm53flash-dflash2-sglang-pr-37818" || return 1
-    # Native DFlash Mamba checkpoint tracking: https://github.com/sgl-project/sglang/pull/37818
-    # Official test merge retains GLM5Next support; PR head: df464a48213f5e40e29c7453a7db07880435f777.
-    local source_commit="787299797931749c8f9bb15453f375bd1f9bed5c"
-    print_info "Installing upstream SGLang PR 37818 test merge at ${source_commit}..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
-        --torch-backend=cu130 || return 1
-    # Native GLM5Next image/video processors need the newer HF stack.
-    # SGLang's declared pins lag this integration: https://github.com/sgl-project/sglang/pull/38522
-    run_uv_install --force-reinstall --no-deps \
-        "transformers==5.17.0" "tokenizers==0.23.2" || return 1
-    # Keep native BF16 vision convolutions on a matching cuDNN sublibrary set.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_glm53flash_dflash2_vllm_pr_55423() {
-    ensure_active_environment_matches "glm53flash-dflash2-vllm-pr-55423" || return 1
-    # Native DFlash2/mHC and hybrid draft-cache integration: https://github.com/vllm-project/vllm/pull/55423
-    local source_commit="374e367e2b87ee65332b03468b76dc4c40e69519"
-    # This Python-only PR uses unmodified binaries from its exact upstream parent.
-    local wheel_url="https://wheels.vllm.ai/c81ace18596f75660bbc04efc2075a5f17a76791/vllm-0.28.1rc1.dev420%2Bgc81ace185-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing native vLLM Flash DFlash2 PR 55423 at ${source_commit}..."
-    VLLM_USE_PRECOMPILED=1 \
-        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
-        run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
-        --torch-backend=cu130 || return 1
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
-        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
-    # Torch's 9.20 wheel loads the host's 9.26 tensor-IR sublibrary during BF16 Conv2d.
-    # Keep the native cuDNN sublibraries aligned; this overrides Torch's exact 9.20 pin.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_glm53flash_vllm_2617fe938() {
-    ensure_active_environment_matches "glm53flash-vllm-2617fe938" || return 1
-    # Official main commit and merged KPool MTP fix: https://github.com/vllm-project/vllm/pull/58454
-    local source_commit="2617fe938355594c48d4512a2ef6b470962aac1a"
-    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev162%2Bg2617fe938-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing the official vLLM GLM-5.3-Flash SM120 wheel at ${source_commit}..."
-    run_uv_install "vllm @ ${wheel_url}" \
-        "transformers==5.17.0" "tokenizers==0.23.2" "torchcodec==0.16.0+cu130" \
-        "blake3==1.0.9" "msgspec==0.21.1" \
-        --torch-backend=cu130 || return 1
-    # Official merged GLM NoPE eight-head scratch fix: https://github.com/flashinfer-ai/flashinfer/pull/5075
-    local flashinfer_commit="915e7c49aececa5ba4fdf60ac0f4038ca1455fc1"
-    BUILD_NVEP=0 FLASHINFER_BUILD_NO_PIP=1 FLASHINFER_LOCAL_VERSION=g915e7c49 \
-        run_uv_install --reinstall-package flashinfer-python --no-deps \
-        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@${flashinfer_commit}" || return 1
-    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
-}
-
-install_glm53flash_vllm_pr_53906() {
-    ensure_active_environment_matches "glm53flash-vllm-pr-53906" || return 1
-    # Native GLM-5.3-Flash integration: https://github.com/vllm-project/vllm/pull/53906
-    # Official merge commit: 98ed0856f31fa3aaf5e27464e2b4ef5a8ee6b2f5.
-    local wheel_url="https://wheels.vllm.ai/98ed0856f31fa3aaf5e27464e2b4ef5a8ee6b2f5/vllm-0.28.1rc1.dev359%2Bg98ed0856f-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing the official vLLM GLM-5.3-Flash PR 53906 merge wheel..."
-    run_uv_install -U --reinstall --prerelease=allow         "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
-    run_uv_install         "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873"         "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
-    # Keep native BF16 vision convolutions on a matching cuDNN sublibrary set.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_glm53_vllm_v0290() {
-    ensure_active_environment_matches "glm53-vllm-v0290" || return 1
-    # Official GLM-5.3 recipe requires vLLM 0.28.0+ and Transformers 5.15.0+.
-    print_info "Installing official vLLM 0.29.0 for GLM 5.3..."
-    run_uv_install -U --reinstall \
-        "vllm==0.29.0" "transformers==5.15.0" "tokenizers==0.22.2" \
-        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
-        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_gptoss_sglang() {
-    print_info "Installing the pinned SGLang main commit for GPT-OSS..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
-}
-
-install_gptoss_transformers() {
-    print_info "Installing Transformers stack for gpt-oss..."
-    run_uv_install -U transformers accelerate torch triton==3.4 kernels
-}
-
-install_gptoss_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for GPT-OSS..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_ibm_sglang() {
-    print_info "Installing SGLang 0.5.18 for IBM Granite..."
-    run_uv_install -U --prerelease=allow "sglang[all]==0.5.18" || return 1
-}
-
-install_ibm_vllm() {
-    print_info "Installing vLLM 0.25.0 for IBM Granite..."
-    run_uv_install "vllm==0.25.0" || return 1
-}
-
-install_intel_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for Intel..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_kimi_ktransformers() {
-    print_info "Installing KTransformers for Kimi..."
-
-    local ktransformers_dir=""
-    if [ -n "${KTRANSFORMERS_DIR:-}" ]; then
-        ktransformers_dir="$KTRANSFORMERS_DIR"
-    elif [ -n "${VIRTUAL_ENV:-}" ]; then
-        ktransformers_dir="$VIRTUAL_ENV/ktransformers"
-    else
-        ktransformers_dir="$HOME/ktransformers"
-    fi
-
-    if [ ! -d "$ktransformers_dir/.git" ]; then
-	local parent_dir
-        parent_dir=$(dirname "$ktransformers_dir")
-        if [ ! -d "$parent_dir" ]; then
-            run_command mkdir -p "$parent_dir" || return 1
-        fi
-        run_command git clone https://github.com/kvcache-ai/ktransformers.git "$ktransformers_dir" || return 1
-    fi
-
-    run_command git -C "$ktransformers_dir" submodule update --init --recursive || return 1
-
-    install_kt_kernel "$ktransformers_dir" || return 1
-
-    print_info "Installing SGLang for Kimi..."
-
-    local sglang_dir=""
-    if [ -n "${SGLANG_DIR:-}" ]; then
-        sglang_dir="$SGLANG_DIR"
-    elif [ -n "${VIRTUAL_ENV:-}" ]; then
-        sglang_dir="$VIRTUAL_ENV/sglang"
-    else
-        sglang_dir="$HOME/sglang"
-    fi
-
-    if [ ! -d "$sglang_dir/.git" ]; then
-        local parent_dir
-        parent_dir=$(dirname "$sglang_dir")
-        if [ ! -d "$parent_dir" ]; then
-            run_command mkdir -p "$parent_dir" || return 1
-        fi
-        run_command git clone https://github.com/kvcache-ai/sglang.git "$sglang_dir" || return 1
-    fi
-
-    run_pip_install -e "$sglang_dir/python[all]" || return 1
-    run_pip_install nvidia-cudnn-cu12==9.16.0.29 || return 1
-}
-install_kimi_sglang() {
-    print_info "Installing SGLang for Kimi..."
-    install_bleeding_edge_sglang kimi-sglang || return 1
-    run_uv_install remote_pdb
-    run_uv_install imageio
-    run_uv_install diffusers
-    run_uv_install addict
-    run_uv_install cache_dit
-    run_uv_install nvidia-cudnn-cu12==9.16.0.29
-}
-
-install_kimi_vllm() {
-    print_info "Installing vLLM for Kimi..."
-    run_uv_install -U vllm --index-url https://pypi.org/simple || return 1
-}
-
-install_liquidai_sglang() {
-    print_info "Installing the pinned SGLang main commit for LiquidAI..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@05c584c44fb0450c894cf9d08a7827c10cd5b2c5#subdirectory=python" || return 1
-}
-
-install_liquidai_sglang_pr_31041() {
-    install_pinned_sglang_commit \
-        "liquidai-sglang-pr-31041" \
-        "LiquidAI (SGLang) PR 31041 commit c26ae043924fffe413df8a90329f8734869d7fd1" \
-        "https://github.com/tugot17/sglang.git" \
-        "c26ae043924fffe413df8a90329f8734869d7fd1"
-}
-
-install_liquidai_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for LiquidAI..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_inclusionai_sglang() {
-    print_info "Installing the validated Ling 3.0 SGLang commit..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@e1a24a189fe4164596c3a6472e96715717df9012#subdirectory=python" || return 1
-}
-
-install_incoai_sglang() {
-    install_pinned_sglang_commit \
-        "incoai-sglang" \
-        "IncoAI (SGLang) commit 05c584c44fb0450c894cf9d08a7827c10cd5b2c5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "05c584c44fb0450c894cf9d08a7827c10cd5b2c5" || return 1
-    run_uv_install "transformers==5.12.1" || return 1
-}
-
-install_inclusionai_transformers() {
-    print_info "No package install configured for InclusionAI (Transformers) yet."
-}
-
-install_inclusionai_vllm() {
-    local vllm_version="0.27.2rc1.dev113+g5cecfc013"
-    local vllm_wheel="https://wheels.vllm.ai/5cecfc01375052698823fc401e31518fb32a981e/vllm-0.27.2rc1.dev113%2Bg5cecfc013-cp38-abi3-manylinux_2_28_x86_64.whl#sha256=7858cbbd1fbf426a6eac5a9e2dc3779e04ee63705f65c90ab5baca4705a4a638"
-
-    print_info "Installing vLLM $vllm_version for InclusionAI from its immutable commit wheel..."
-    run_uv_install --upgrade --reinstall --prerelease=allow \
-        "$vllm_wheel" --torch-backend=auto || return 1
-    install_flashinfer_python311_compatible || return 1
-}
-
-install_inclusionai_ling3_vllm() {
-    print_info "Installing upstream vLLM 0.29.0 with native Ling 3 support..."
-    run_uv_install --upgrade --reinstall \
-        "vllm==0.29.0" --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-}
-
-install_intel_sglang() {
-    install_pinned_sglang_commit \
-        "intel-sglang" \
-        "Intel (SGLang) commit f7d4e44d82ac35b9b10ce80348e4a5421f89435a" \
-        "https://github.com/sgl-project/sglang.git" \
-        "f7d4e44d82ac35b9b10ce80348e4a5421f89435a" || return 1
-    run_uv_install \
-        "git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897" || return 1
-}
-
-
-install_meta_sglang() {
-    print_info "Installing the pinned SGLang main commit for Meta..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@05c584c44fb0450c894cf9d08a7827c10cd5b2c5#subdirectory=python" || return 1
-}
-
-install_meta_vllm() {
-    local vllm_version="0.27.2rc1.dev113+g5cecfc013"
-    local vllm_wheel="https://wheels.vllm.ai/5cecfc01375052698823fc401e31518fb32a981e/vllm-0.27.2rc1.dev113%2Bg5cecfc013-cp38-abi3-manylinux_2_28_x86_64.whl#sha256=7858cbbd1fbf426a6eac5a9e2dc3779e04ee63705f65c90ab5baca4705a4a638"
-
-    print_info "Installing vLLM $vllm_version for Meta from its immutable commit wheel..."
-    ensure_active_environment_matches meta-vllm || return 1
-    run_uv_install --upgrade --reinstall --prerelease=allow \
-        "$vllm_wheel" --torch-backend=auto || return 1
-    install_flashinfer_python311_compatible || return 1
-    run_uv_install timm || return 1
-}
-
-install_microsoft_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for Microsoft..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_minimax_m2_sglang_v0510_post1() {
-    ensure_active_environment_matches "minimax-m2-sglang-v0510-post1" || return 1
-    # Official v0.5.10.post1: 7c35342c10e201899e22fe2972d40e60da19ff3e.
-    # Includes the native MiniMax partial-RoPE fix for Transformers 5.
-    # This required TorchAO release is on PyPI, not the selected PyTorch CUDA index.
-    local torchao_wheel="https://files.pythonhosted.org/packages/7d/fe/a24225d30775192a4c5d9cea3ecb95e6adc69d0a8b5ed98eb8e58d362344/torchao-0.9.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl#sha256=bc708910301a9f98344d43f3fe2aa6d5e1fab706d772b6df47ff05087d664145"
-    print_info "Installing official SGLang 0.5.10.post1 for MiniMax M2..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang==0.5.10.post1" "torchao @ ${torchao_wheel}" --torch-backend=cu128 || return 1
-}
-
-install_minimax_m2_vllm_0f3ce4c74() {
-    ensure_active_environment_matches "minimax-m2-vllm-0f3ce4c74" || return 1
-    # Accuracy-verified official MiniMax recipe commit: 0f3ce4c74b1875791d6604e006b6e905fde9f698.
-    # https://docs.vllm.ai/projects/recipes/en/latest/MiniMax/MiniMax-M2.html
-    local wheel_url="https://wheels.vllm.ai/0f3ce4c74b1875791d6604e006b6e905fde9f698/vllm-0.19.1rc1.dev203%2Bg0f3ce4c74-cp38-abi3-manylinux_2_31_x86_64.whl"
-    print_info "Installing the official MiniMax vLLM 0f3ce4c74 wheel..."
-    # CUDA bindings 13.4 removed IPC handle fields used by the native Lamport workspace.
-    # https://github.com/smg-project/smg/pull/2494 validates the compatible 13.3.1 pin.
-    run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ ${wheel_url}" wheel "cuda-python==13.3.1" "cuda-bindings==13.3.1" \
-        --torch-backend=cu130 || return 1
-    # Exact upstream ref from this vLLM commit's tools/install_deepgemm.sh.
-    # The wheel's vendored extension is CPython 3.12-only; build for the active interpreter.
-    local source_dir
-    source_dir=$(mktemp -d -t minimax-m2-deepgemm.XXXXXX) || return 1
-    (
-        trap 'rm -rf "$source_dir"' EXIT
-        run_command git clone --filter=blob:none --no-checkout \
-            https://github.com/deepseek-ai/DeepGEMM.git "$source_dir" || exit 1
-        run_command git -C "$source_dir" checkout --detach \
-            477618cd51baffca09c4b0b87e97c03fe827ef03 || exit 1
-        run_command git -C "$source_dir" submodule update --init --recursive --depth 1 || exit 1
-        run_uv_install --no-build-isolation --no-deps "$source_dir"
-    ) || return 1
-}
-
-install_minimax_m25_vllm_v0280() {
-    ensure_active_environment_matches "minimax-m25-vllm-v0280" || return 1
-    # Official H200 recipe: https://recipes.vllm.ai/MiniMaxAI/MiniMax-M2.5/hw/h200.json
-    # v0.28.0: 2cf0a6915ce544dc493a0990f2ea38d81601128a.
-    # CUDA bindings 13.4 removed IPC handle fields used by native MiniMax Lamport QK norm.
-    # https://github.com/smg-project/smg/pull/2494 validates the compatible 13.3.1 pin.
-    print_info "Installing official vLLM 0.28.0 for MiniMax M2.5..."
-    run_uv_install -U --reinstall \
-        "vllm==0.28.0" "cuda-python==13.3.1" "cuda-bindings==13.3.1" \
-        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-    # FlashInfer 0.6.17 fixes Python 3.10/3.11 imports; vLLM's exact 0.6.16.post3 pin is affected.
-    # https://github.com/flashinfer-ai/flashinfer/pull/4354; runtime dependencies are unchanged.
-    run_uv_install --upgrade --no-deps "flashinfer-python==0.6.17" || return 1
-}
-
-install_minimax_sglang() {
-    print_info "Installing SGLang for MiniMax..."
-
-    install_bleeding_edge_sglang minimax-sglang || return 1
-}
-
-install_minimax_transformers() {
-    print_info "Installing Transformers for MiniMax..."
-    run_uv_install "transformers==4.57.1" "torch" "accelerate" "--torch-backend=auto"
-}
-
-install_minimax_vllm() {
-    print_info "Installing vLLM for MiniMax..."
-    run_uv_install -U vllm --index-url https://pypi.org/simple || return 1
-}
-
-install_mistralai_sglang() {
-    install_pinned_sglang_commit \
-        "mistralai-sglang" \
-        "MistralAI (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
-        "https://github.com/sgl-project/sglang.git" \
-        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
-}
-
-install_mistralai_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for MistralAI..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-
-
-install_nanbeige_sglang() {
-    local source_commit="3e59d89e53490d3b6957cb72754abf6a98c2b8a8"
-    print_info "Installing the pinned Nanbeige SGLang fork commit $source_commit..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/Nanbeige/sglang.git@${source_commit}#subdirectory=python" || return 1
-}
-
-install_nanbeige_vllm() {
-    local source_commit="62f6de733d7ae63b759329993bc209e67afdf431"
-
-    print_info "Installing the proven Nanbeige vLLM commit $source_commit..."
-    ensure_active_environment_matches nanbeige-vllm || return 1
-
-    local target_dir="$VIRTUAL_ENV/vllm"
-
-    if [ -e "$target_dir" ] && [ ! -d "$target_dir/.git" ]; then
-        print_error "vLLM target exists but is not a git checkout: $target_dir"
-        return 1
-    fi
-
-    if [ ! -d "$target_dir/.git" ]; then
-        run_command git clone -b nanbeige42 \
-            https://github.com/Nanbeige/vllm.git "$target_dir" || return 1
-    fi
-
-    run_command git -C "$target_dir" fetch origin nanbeige42 --tags || return 1
-    run_command git -C "$target_dir" checkout --force "$source_commit" || return 1
-
-    run_pip_install -e "$target_dir" || return 1
-}
-
-
-
-install_nemotron_trtllm() {
-    print_info "Installing TRT-LLM dependencies for Nemotron..."
-    run_uv_install torch==2.9.1 openai==2.6.1 requests
-}
-
-install_nvidia_muse_sglang_v0520() {
-    ensure_active_environment_matches "nvidia-muse-sglang-v0520" || return 1
-    print_info "Installing official SGLang 0.5.20 for NVIDIA Muse Glimmer..."
-    run_uv_install "sglang[all]==0.5.20" "mistral-common==1.11.7" --prerelease=allow || return 1
-}
-
-install_nvidia_muse_vllm_v0290() {
-    ensure_active_environment_matches "nvidia-muse-vllm-v0290" || return 1
-    print_info "Installing official vLLM 0.29.0 for NVIDIA Muse Glimmer..."
-    run_uv_install "vllm==0.29.0" "mistral-common==1.11.7" --torch-backend=cu130 || return 1
-}
-
-install_nvidia_nemotron() {
-    print_info "Installing the pinned GitHub vLLM commit for NVIDIA Nemotron..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-
-    if [ -z "${VIRTUAL_ENV:-}" ]; then
-        print_error "No active virtual environment detected for DeepGEMM install."
-        return 1
-    fi
-
-    local deepgemm_installer="$VIRTUAL_ENV/install_deepgemm.sh"
-    local deepgemm_installer_url="https://raw.githubusercontent.com/vllm-project/vllm/v0.20.0/tools/install_deepgemm.sh"
-
-    print_info "Installing the proven vLLM 0.20.0 DeepGEMM companion build for NVIDIA Nemotron..."
-    run_command curl -fsSL "$deepgemm_installer_url" -o "$deepgemm_installer" || return 1
-    run_command env VIRTUAL_ENV="$VIRTUAL_ENV" PATH="$VIRTUAL_ENV/bin:$PATH" \
-        bash "$deepgemm_installer" || return 1
-}
-
-install_nvidia_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for NVIDIA..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_nvidia_vllm_pr_55222() {
-    ensure_active_environment_matches "nvidia-vllm-pr-55222" || return 1
-    # Hopper sparse-MLA FP8 KV planning repair: https://github.com/vllm-project/vllm/pull/55222
-    # Exact tested PR head: 24b07cd3b099400b10a4a4bd58626216ebbd5b9f.
-    # This Python-only PR uses unmodified binaries from its exact upstream parent.
-    local source_commit="24b07cd3b099400b10a4a4bd58626216ebbd5b9f"
-    local wheel_url="https://wheels.vllm.ai/21a22110404d98dcab5f51cd90e9acb0acc15e47/vllm-0.28.1rc1.dev364%2Bg21a221104-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing upstream vLLM PR 55222 at ${source_commit}..."
-    VLLM_USE_PRECOMPILED=1 \
-        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
-        run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
-        --torch-backend=cu130 || return 1
-    # Pin the exact native GLM-5.3 multimodal stack used by the validated candidate.
-    run_uv_install --force-reinstall --no-deps \
-        "transformers==5.17.0" "tokenizers==0.23.2" || return 1
-    run_uv_install \
-        "flashinfer-python==0.6.18" \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
-        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
-    # Keep native BF16 vision convolutions on a matching cuDNN sublibrary set.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_poolside_sglang() {
-    print_info "Installing the pinned SGLang main commit for Poolside..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
-}
-
-install_openai_sglang_pr_38626() {
-    ensure_active_environment_matches "openai-sglang-pr-38626" || return 1
-    # Complete upstream encoder-decoder atomic-prefill repair, not a local overlay.
-    # https://github.com/sgl-project/sglang/pull/38626
-    local source_commit="409c5280782dacef59fb7c878f3321ffd59cca46"
-    print_info "Installing native Whisper SGLang PR38626..."
-    run_uv_install -U --prerelease=allow \
-        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
-        "cuda-tile @ https://pypi.nvidia.com/cuda-tile/cuda_tile-1.6.0rc5-cp311-cp311-manylinux2014_x86_64.whl#sha256=a14ff257522a017430e98f16aabdfd514bbcf38ecb64a0fba1d3f86cd02a21bb" \
-        "torchvision==0.28.0" \
-        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-    # Keep Whisper Conv1d on the host-matched cuDNN 9.26 family.
-    # Source-backed repair for the sublibrary mismatch: pytorch/pytorch#188892.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_openai_vllm_pr_53207() {
-    ensure_active_environment_matches "openai-vllm-pr-53207" || return 1
-    # Complete upstream Whisper conditioning-token repair, including native audio extras.
-    # https://github.com/vllm-project/vllm/pull/53207
-    local source_commit="070f6e70937e60379d2e85414753513425b1d6f4"
-    print_info "Installing native Whisper vLLM PR53207..."
-    run_uv_install -U --prerelease=allow \
-        "vllm[audio] @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
-        "transformers==5.12.1" "tokenizers==0.22.2" \
-        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
-    # This source requires FlashInfer 0.6.17; cubin is outside wheel install_requires.
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.17/flashinfer_cubin-0.6.17-py3-none-any.whl#sha256=771f037a828cdf3f15db1c3784574197546d1b09735fb9058f384bdd12010afa" || return 1
-    # Whisper uses the same native Torch Conv1d path as the validated SGLang candidate.
-    # Source-backed sublibrary alignment: pytorch/pytorch#188892.
-    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
-}
-
-install_paradigma_inc_vllm_v0260() {
-    ensure_active_environment_matches "paradigma-inc-vllm-v0260" || return 1
-    # Official plugin: https://github.com/paradigma-inc/limite-violetto/tree/cd68d27f100ebb7c84f05603d5af0e8f934b28b5
-    print_info "Installing the official Limite plugin with vLLM 0.26.0..."
-    run_uv_install "vllm==0.26.0" "torch==2.11.0" "transformers==5.6.2" \
-        "$(dirname -- "${BASH_SOURCE[0]}")/../recipes/paradigma-inc/plugin/limite_vllm-0.1.0-py3-none-any.whl" \
-        --torch-backend=cu130 || return 1
-}
-
-install_poolside_laguna_xs_vllm() {
-    print_info "Installing vLLM 0.26.0 for Poolside Laguna XS..."
-    run_uv_install "vllm==0.26.0" || return 1
-}
-
-install_poolside_vllm() {
-    print_info "Installing vLLM 0.27.1 for Poolside..."
-    run_uv_install -U "vllm==0.27.1" || return 1
-    install_flashinfer_python311_compatible || return 1
-}
-
-install_primeintellect_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for PrimeIntellect..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_qwen_ktransformers() {
-    print_info "Installing KTransformers stack for Qwen..."
-    ensure_active_environment_matches qwen-ktransformers || return 1
-
-    run_pip_install --upgrade --force-reinstall \
-        'torch==2.9.1' \
-        'torchvision==0.24.1' \
-        'torchaudio==2.9.1' \
-        'sglang-kt==0.5.2.post2' \
-        'tilelang' \
-        'kt-kernel==0.5.2' || return 1
-
-    run_pip_install --force-reinstall --no-deps 'nvidia-cudnn-cu12==9.16.0.29'
-}
-
-install_qwen_sglang() {
-    print_info "Installing the validated Qwen DFlash2 SGLang commit..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@1cf2b8c54d81802abc15dcf23a29b9cc687bc01e#subdirectory=python" || return 1
-}
-
-install_qwen_transformers() {
-    print_info "Installing Transformers stack for Qwen..."
-    run_uv_install "transformers>=4.51.0" "torch>=2.6"
-}
-
-install_qwen_flash_next_vllm() {
-    local source_commit="e77daef89e18e08321ae7b8b24827eedd5fe8673"
-    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.1.1.dev5%2Bge77daef89-cp38-abi3-manylinux_2_28_x86_64.whl"
-
-    ensure_active_environment_matches qwen-flash-next-vllm || return 1
-    print_info "Installing the official vLLM e77daef89 wheel for Qwen Flash Next..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
-    # Required by the pinned CUDA manifest; this cubin release is not published on PyPI.
-    run_uv_install \
-        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab" || return 1
-}
-
-install_qwen_flash_next_vllm_pr_54129() {
-    local source_commit="50a061f792f36364f5f95a93eee21f1e9d77f65e"
-    local binary_commit="3b45d053b4bbc61ce437f00891b52ce5ddde7c5a"
-    local source_dir=""
-
-    ensure_active_environment_matches qwen-flash-next-vllm-pr-54129 || return 1
-    source_dir="$VIRTUAL_ENV/vllm-pr-54129"
-    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
-        print_error "vLLM PR 54129 target exists but is not a git checkout: $source_dir"
-        return 1
-    fi
-    if [ ! -d "$source_dir/.git" ]; then
-        run_command git init "$source_dir" || return 1
-        run_command git -C "$source_dir" remote add origin \
-            https://github.com/vllm-project/vllm.git || return 1
-    fi
-    run_command git -C "$source_dir" fetch --depth 1 \
-        origin refs/pull/54129/head || return 1
-    run_command git -C "$source_dir" checkout --force "$source_commit" || return 1
-
-    print_info "Installing upstream vLLM PR 54129 at ${source_commit}..."
-    VLLM_USE_PRECOMPILED=1 \
-        VLLM_PRECOMPILED_WHEEL_COMMIT="$binary_commit" \
-        run_uv_install -U --reinstall --prerelease=allow \
-        -e "$source_dir" --torch-backend=cu130 || return 1
-    install_flashinfer_python311_compatible || return 1
-}
-
-install_qwen_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit for Qwen..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-}
-
-install_redhatai_vllm() {
-    local vllm_version="0.27.2rc1.dev113+g5cecfc013"
-    local vllm_wheel="https://wheels.vllm.ai/5cecfc01375052698823fc401e31518fb32a981e/vllm-0.27.2rc1.dev113%2Bg5cecfc013-cp38-abi3-manylinux_2_28_x86_64.whl#sha256=7858cbbd1fbf426a6eac5a9e2dc3779e04ee63705f65c90ab5baca4705a4a638"
-
-    print_info "Installing vLLM $vllm_version for RedHatAI from its immutable commit wheel..."
-    ensure_active_environment_matches redhatai-vllm || return 1
-    run_uv_install --upgrade --reinstall --prerelease=allow \
-        "$vllm_wheel" --torch-backend=auto || return 1
-    install_flashinfer_python311_compatible || return 1
-    run_uv_install timm || return 1
-}
-
-install_gemma3n_vllm() {
-    print_info "Installing the model-card validated vLLM stack for Gemma 3n..."
-    ensure_active_environment_matches gemma3n-vllm || return 1
-    run_uv_install --upgrade --reinstall \
-        "vllm==0.10.0" \
-        "transformers==4.53.2" \
-        "numpy==2.2.6" \
-        "timm" \
-        --torch-backend=auto || return 1
-}
-
-install_rtxpro6k_nvidia_glm53_sglang_26fd7fd() {
-    ensure_active_environment_matches "rtxpro6k-nvidia-glm53-sglang-26fd7fd" || return 1
-    print_info "Installing the validated SGLang commit for NVIDIA GLM-5.3 NVFP4 on RTX PRO 6000..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@26fd7fdaa2732abbad6d63b21cf0944aa88e977e#subdirectory=python" \
-        "transformers==5.12.1" \
-        "compressed-tensors==0.19.1a20260923" || return 1
-}
-
-install_stepfun_sglang() {
-    print_info "Installing the pinned SGLang main commit for StepFun..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
-}
-
-install_stepfun_vllm() {
-    print_info "Installing the pinned GitHub vLLM commit and required Transformers 5 for StepFun..."
-    install_vllm_pinned_commit_python311_compatible || return 1
-    run_uv_install "transformers>=5,<6" || return 1
-}
-
-
-install_xiaomimimo_flash_vllm_1ea7c63() {
-    ensure_active_environment_matches "xiaomimimo-flash-vllm-1ea7c63" || return 1
-    # Official MiMo V2.6 support: https://github.com/vllm-project/vllm/pull/57784
-    local source_commit="1ea7c63f4af7bb4fd6f025c8db44434ab274cb51"
-    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.29.1rc1.dev533%2Bg1ea7c63f4-cp38-abi3-manylinux_2_28_x86_64.whl"
-    print_info "Installing the official Flash vLLM wheel with audio support..."
-    run_uv_install -U --prerelease=allow "vllm[audio] @ ${wheel_url}" --torch-backend=cu130 || return 1
-}
-
-install_xiaomimimo_flash_vllm_pr_58177() {
-    local source_commit="ed073f5eb93c1f407ffabc7411449f027910caf0"
-    local binary_commit="0549e8d0ab88d3edf152147e14171f964c6e6f07"
-    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev22%2Bg0549e8d0a-cp38-abi3-manylinux_2_28_x86_64.whl"
-    local cubin_url="https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab"
-    local source_dir=""
-
-    ensure_active_environment_matches xiaomimimo-flash-vllm-pr-58177 || return 1
-    "$VIRTUAL_ENV/bin/python" -c 'import sys; raise SystemExit(sys.version_info[:2] != (3, 12))' || {
-        print_error "XiaomiMiMo vLLM PR 58177 requires the validated Python 3.12 environment."
-        return 1
-    }
-    source_dir="$VIRTUAL_ENV/vllm-pr-58177"
-    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
-        print_error "vLLM PR 58177 target exists but is not a git checkout: $source_dir"
-        return 1
-    fi
-    if [ ! -d "$source_dir/.git" ]; then
-        run_command git init "$source_dir" || return 1
-        run_command git -C "$source_dir" remote add origin \
-            https://github.com/vllm-project/vllm.git || return 1
-        run_command git -C "$source_dir" fetch --depth 1 --no-tags \
-            origin "$source_commit" || return 1
-        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
-    fi
-    if [ "$(git -C "$source_dir" remote get-url origin)" != "https://github.com/vllm-project/vllm.git" ] ||
-       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
-       [ "$(git -C "$source_dir" rev-list --count HEAD)" != "1" ] ||
-       [ -n "$(git -C "$source_dir" tag --list)" ] ||
-       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
-        print_error "vLLM PR 58177 checkout must match the clean, shallow, tag-free validated source."
-        return 1
-    fi
-
-    print_info "Installing upstream vLLM PR 58177 at ${source_commit} with its official base wheel..."
-    VLLM_USE_PRECOMPILED=1 \
-        VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
-        run_uv_install -U --prerelease=allow \
-        -e "${source_dir}[audio]" \
-        "flashinfer-cubin @ ${cubin_url}" \
-        "av==18.1.0" \
-        "flashinfer-python==0.6.18.post1" \
-        "humming-kernels==0.1.16" \
-        "mistral-common==1.12.0" \
-        "nvidia-cudnn-cu13==9.20.0.48" \
-        "scipy==1.18.1" \
-        "setuptools==80.10.2" \
-        "soundfile==0.14.0" \
-        "soxr==1.1.0" \
-        "tokenizers==0.23.2" \
-        "torch==2.13.0+cu130" \
-        "torchaudio==2.11.0+cu130" \
-        "torchvision==0.28.0+cu130" \
-        "transformers==5.17.0" \
-        --torch-backend=cu130 || return 1
-}
-
-install_xiaomimimo_sglang_v0520() {
-    ensure_active_environment_matches "xiaomimimo-sglang-v0520" || return 1
-    print_info "Installing official SGLang 0.5.20 for XiaomiMiMo Distill..."
-    run_uv_install "sglang[all]==0.5.20" "mistral-common==1.11.7" --prerelease=allow || return 1
-}
-
-install_xiaomimimo_vllm_v0300() {
-    ensure_active_environment_matches "xiaomimimo-vllm-v0300" || return 1
-    print_info "Installing official vLLM 0.30.0 for XiaomiMiMo Distill..."
-    run_uv_install "vllm==0.30.0" --torch-backend=cu130 || return 1
-}
-
-install_zlab_sglang() {
-    print_info "Installing the pinned SGLang main commit for z-lab DFlash recipes..."
-    run_uv_install -U --reinstall --prerelease=allow \
-        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
-    run_uv_install \
-        "git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897" || return 1
-}
-install_zlab_sglang_pr_35209() {
-    install_pinned_sglang_commit \
-        "z-lab-sglang-pr-35209" \
-        "z-lab (SGLang) PR 35209 commit 6283bde44381262b893d0141a529e58041a5d54d" \
-        "https://github.com/SubSir/sglang.git" \
-        "6283bde44381262b893d0141a529e58041a5d54d"
-    run_uv_install "transformers==5.12.1" || return 1
-}
-
-
-install_zyphra_vllm() {
-    local source_commit="b1b99a08b20f858035894f7f2a8080c556423844"
-
-    print_info "Installing the proven Zyphra vLLM commit $source_commit..."
-    ensure_active_environment_matches zyphra-vllm || return 1
-    run_pip_install "vllm @ git+https://github.com/Zyphra/vllm.git@$source_commit" || return 1
-}
-
-install_zyphra_legacy_vllm() {
-    local source_commit="8df704c5258830b18ca19722bcfd40357b410f66"
-
-    print_info "Installing the proven Zyphra Legacy vLLM commit $source_commit..."
-    ensure_active_environment_matches zyphra-legacy-vllm || return 1
-    run_pip_install "vllm @ git+https://github.com/Zyphra/vllm.git@$source_commit" || return 1
 }
 
 install_dflash_vllm_for_environment() {
@@ -2517,12 +1225,1615 @@ DFLASH_VLLM_PATCH
     install_flashinfer_python311_compatible || return 1
 }
 
+install_flashinfer_python311_compatible() {
+    local incompatible_package
+
+    if ! python -c 'import sys; raise SystemExit(0 if sys.version_info < (3, 12) else 1)'; then
+        return 0
+    fi
+
+    print_info "Installing FlashInfer 0.6.17 for Python 3.10/3.11 annotation compatibility..."
+    run_uv_install --upgrade --no-deps "flashinfer-python==0.6.17" || return 1
+
+    for incompatible_package in flashinfer-cubin flashinfer-jit-cache; do
+        if python -c 'import importlib.metadata as m, sys; m.version(sys.argv[1])' \
+            "$incompatible_package" >/dev/null 2>&1; then
+            print_info "Removing incompatible $incompatible_package companion package..."
+            run_command uv pip uninstall "$incompatible_package" || return 1
+        fi
+    done
+}
+
+install_kt_kernel() {
+    local ktransformers_dir="$1"
+    local kt_kernel_dir="$ktransformers_dir/kt-kernel"
+
+    if [ ! -d "$kt_kernel_dir" ]; then
+        print_warning "kt-kernel directory not found at $kt_kernel_dir"
+        return 1
+    fi
+
+    check_kt_kernel_build_dependencies || return 1
+    run_command bash -c "cd \"$kt_kernel_dir\" && ./install.sh build"
+}
+
+install_pinned_sglang_commit() {
+    local expected_env="$1"
+    local description="$2"
+    local repository="$3"
+    local commit="$4"
+
+    ensure_active_environment_matches "$expected_env" || return 1
+    print_info "Installing $description..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+$repository@$commit#subdirectory=python" || return 1
+}
+
+install_sglang_cuda_129_wheels() {
+    print_info "CUDA 12.9 detected; installing CUDA 12.9 PyTorch and SGLang kernel wheels..."
+
+    run_uv_install --force-reinstall \
+        torch==2.11.0 \
+        torchaudio==2.11.0 \
+        torchvision \
+        --index-url https://download.pytorch.org/whl/cu129 || return 1
+
+    run_uv_install --force-reinstall \
+        sglang-kernel \
+        --index-url https://docs.sglang.ai/whl/cu129/ || return 1
+
+    run_uv_install --force-reinstall \
+        sgl-deep-gemm \
+        --index-url https://docs.sglang.ai/whl/cu129/ \
+        --no-deps || return 1
+}
+
+install_vllm_pinned_commit_python311_compatible() {
+    local source_commit="52be12cfac0c5a18ba906814b2d2bcadb40a9c4b"
+    local source_dir=""
+
+    if [ -z "${VIRTUAL_ENV:-}" ]; then
+        print_error "No active virtual environment detected for the vLLM source checkout."
+        return 1
+    fi
+    source_dir="$VIRTUAL_ENV/vllm"
+
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "vLLM target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command git clone https://github.com/vllm-project/vllm.git \
+            "$source_dir" || return 1
+    fi
+
+    run_command git -C "$source_dir" fetch origin --tags || return 1
+    run_command git -C "$source_dir" checkout --force "$source_commit" || return 1
+
+    print_info "Installing pinned GitHub commit $source_commit from $source_dir..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_COMMIT="$source_commit" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        -e "$source_dir" --torch-backend=auto || return 1
+
+    install_flashinfer_python311_compatible || return 1
+}
+
+install_vllm_pr_54479() {
+    ensure_active_environment_matches "$1" || return 1
+    # Upstream PR https://github.com/vllm-project/vllm/pull/54479 separates compilation from KV-memory profiling.
+    local source_commit="22f931fe2177912ddf33e5a033948473fe9720f2"
+    # This Python-only PR uses unmodified binaries from its exact upstream merge base.
+    local wheel_url="https://wheels.vllm.ai/144e79c8106da23141ac010394b782f730cc7fe8/vllm-0.28.1rc1.dev452%2Bg144e79c81-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing upstream vLLM PR 54479 at ${source_commit}..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        --torch-backend=cu130 || return 1
+}
+
+install_allenai_sglang() {
+    install_pinned_sglang_commit \
+        "allenai-sglang" \
+        "AllenAI (SGLang) commit cef8a32b9de616c85b515c099fecfd1a81bbf8d0" \
+        "https://github.com/sgl-project/sglang.git" \
+        "cef8a32b9de616c85b515c099fecfd1a81bbf8d0"
+}
+
+install_allenai_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for AllenAI..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_arcee_nvfp4_vllm() {
+    print_info "Installing vLLM 0.18.0 for Arcee NVFP4..."
+    run_uv_install -U "vllm==0.18.0" || return 1
+    install_arcee_deepgemm "v0.18.0" || return 1
+}
+
+install_arcee_sglang() {
+    install_pinned_sglang_commit \
+        "arcee-sglang" \
+        "Arcee (SGLang) commit cef8a32b9de616c85b515c099fecfd1a81bbf8d0" \
+        "https://github.com/sgl-project/sglang.git" \
+        "cef8a32b9de616c85b515c099fecfd1a81bbf8d0"
+}
+
+install_arcee_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for Arcee..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+    install_arcee_deepgemm "52be12cfac0c5a18ba906814b2d2bcadb40a9c4b" || return 1
+}
+
+install_cohere_sglang() {
+    install_pinned_sglang_commit \
+        "cohere-sglang" \
+        "Cohere (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_cohere_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit and Cohere Melody for Cohere..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+    run_uv_install "transformers>=5,<6" || return 1
+    run_uv_install "cohere_melody>=0.9.0" || return 1
+}
+
+install_cohere_vllm_pr_54479() {
+    install_vllm_pr_54479 "cohere-vllm-pr-54479" || return 1
+    run_uv_install "transformers==5.17.0" || return 1
+    run_uv_install "cohere_melody==0.13.4" || return 1
+}
+
+install_datalab_sglang() {
+    install_pinned_sglang_commit \
+        "datalab-sglang" \
+        "DataLab (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_datalab_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for DataLab..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_deepseek_ktransformers() {
+    print_info "Installing KTransformers for DeepSeek..."
+    ensure_active_environment_matches deepseek-ktransformers || return 1
+
+    local ktransformers_dir=""
+    if [ -n "${KTRANSFORMERS_DIR:-}" ]; then
+        ktransformers_dir="$KTRANSFORMERS_DIR"
+    elif [ -n "${VIRTUAL_ENV:-}" ]; then
+        ktransformers_dir="$VIRTUAL_ENV/ktransformers"
+    else
+        ktransformers_dir="$HOME/ktransformers"
+    fi
+
+    if [ ! -d "$ktransformers_dir/.git" ]; then
+        local parent_dir
+        parent_dir=$(dirname "$ktransformers_dir")
+        if [ ! -d "$parent_dir" ]; then
+            run_command mkdir -p "$parent_dir" || return 1
+        fi
+        run_command git clone https://github.com/kvcache-ai/ktransformers.git "$ktransformers_dir" || return 1
+    fi
+
+    run_command git -C "$ktransformers_dir" submodule update --init --recursive || return 1
+
+    install_kt_kernel "$ktransformers_dir" || return 1
+
+    print_info "Installing SGLang for DeepSeek from ktransformers checkout..."
+
+    if [ ! -x "$ktransformers_dir/install.sh" ]; then
+        print_error "ktransformers installer not found or not executable at $ktransformers_dir/install.sh"
+        return 1
+    fi
+
+    run_command bash -c "cd \"$ktransformers_dir\" && ./install.sh sglang --editable" || return 1
+    run_pip_install "tilelang==0.1.8" || return 1
+    run_pip_install "apache-tvm-ffi==0.1.9" || return 1
+    run_pip_install --upgrade flashinfer-python flashinfer-cubin || return 1
+    run_pip_install "transformers==4.57.1" || return 1
+
+    print_info "Installing FlashMLA for DeepSeek V4 compressed attention..."
+    local flash_mla_env=(
+        env
+        "NVCC_THREADS=${NVCC_THREADS:-8}"
+    )
+
+    local cuda_home="${CUDA_HOME:-${CUDA_PATH:-}}"
+    if [ -z "$cuda_home" ] && command -v nvcc >/dev/null 2>&1; then
+        cuda_home=$(cd -- "$(dirname -- "$(command -v nvcc)")/.." && pwd)
+    fi
+
+    if [ -z "$cuda_home" ] || [ ! -x "$cuda_home/bin/nvcc" ]; then
+        print_error "No active CUDA toolkit with nvcc detected for FlashMLA."
+        print_info "Activate an environment configured by installers/05_setup_env.sh or launch_env.sh with a CUDA toolkit selected."
+        return 1
+    fi
+
+    flash_mla_env+=(
+        "CUDA_HOME=$cuda_home"
+        "CUDA_PATH=$cuda_home"
+        "PATH=$cuda_home/bin:$PATH"
+        "LD_LIBRARY_PATH=$cuda_home/lib:$cuda_home/lib64:${LD_LIBRARY_PATH:-}"
+        "LIBRARY_PATH=$cuda_home/lib:$cuda_home/lib64:${LIBRARY_PATH:-}"
+    )
+
+    if [ -d "$cuda_home/include/cccl" ]; then
+        flash_mla_env+=("CPATH=$cuda_home/include/cccl:${CPATH:-}")
+    fi
+
+    local gpu_name=""
+    if command -v nvidia-smi >/dev/null 2>&1; then
+        gpu_name=$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -1 | tr '[:lower:]' '[:upper:]')
+    fi
+    if [[ "$gpu_name" != *"B200"* && "$gpu_name" != *"BLACKWELL"* ]]; then
+        flash_mla_env+=("FLASH_MLA_DISABLE_SM100=1")
+    fi
+
+    run_command "${flash_mla_env[@]}" python -m pip install --no-build-isolation \
+        'flash-mla @ git+https://github.com/deepseek-ai/FlashMLA.git@9241ae3ef9bac614dd25e45e507e089f888280e0' || return 1
+
+    run_command python -c "import flash_mla; from flash_mla.flash_mla_interface import FlashMLASchedMeta; print('flash_mla import OK')" || return 1
+
+    run_pip_install nvidia-cudnn-cu12==9.16.0.29 || return 1
+}
+
+install_deepseek_lmdeploy() {
+    print_info "Installing LMDeploy for DeepSeek..."
+    local target_dir=""
+    if [ -n "${LMDEPLOY_DIR:-}" ]; then
+        target_dir="$LMDEPLOY_DIR"
+    elif [ -n "${VIRTUAL_ENV:-}" ]; then
+        target_dir="$VIRTUAL_ENV/lmdeploy"
+    else
+        target_dir="$HOME/lmdeploy"
+    fi
+
+    if [ -d "$target_dir/.git" ]; then
+        print_info "Updating existing repository at $target_dir"
+        run_command git -C "$target_dir" fetch origin || return 1
+        run_command git -C "$target_dir" checkout support-dsv3 || return 1
+        run_command git -C "$target_dir" pull --ff-only || return 1
+    else
+        local parent_dir
+        parent_dir=$(dirname "$target_dir")
+        if [ ! -d "$parent_dir" ]; then
+            run_command mkdir -p "$parent_dir" || return 1
+        fi
+        run_command git clone -b support-dsv3 https://github.com/InternLM/lmdeploy.git "$target_dir" || return 1
+    fi
+
+    run_uv_install -e "$target_dir"
+}
+
+install_deepseek_sglang() {
+    print_info "Installing SGLang 0.5.16 for DeepSeek..."
+    run_uv_install -U --prerelease=allow "sglang[all]==0.5.16" || return 1
+}
+
+install_deepseek_v41_vllm_e77daef89() {
+    ensure_active_environment_matches "deepseek-v41-vllm-e77daef89" || return 1
+    # Native DeepSeek V4.1 support: https://github.com/vllm-project/vllm/pull/56214
+    local source_commit="e77daef89e18e08321ae7b8b24827eedd5fe8673"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.1.1.dev5%2Bge77daef89-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official DeepSeek V4.1 vLLM e77daef89 wheel..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ ${wheel_url}" "uvicorn==0.53.0" --torch-backend=cu130 || return 1
+    # Required by the pinned CUDA manifest; this cubin release is not published on PyPI.
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab" || return 1
+}
+
+install_deepseek_v41_vllm_pr_56509() {
+    ensure_active_environment_matches "deepseek-v41-vllm-pr-56509" || return 1
+    # Complete official SM120 sparse-attention integration: https://github.com/vllm-project/vllm/pull/56509
+    # This Python-only PR uses its direct parent's unchanged CUDA 13.0 binaries.
+    local source_commit="02ee13be210777a86fe61180d33135ebaa728a08"
+    local binary_commit="378504a5442b8a9240b359dae3e6f75f35c38f19"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev146%2Bg378504a54-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing native DeepSeek V4.1 vLLM PR 56509 at ${source_commit}..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" \
+        "filelock==4.0.3" \
+        --torch-backend=cu130 || return 1
+    # Native SM120 NVFP4 TP padding and narrow-gated prefill recovery.
+    # Keep engine CUTLASS 4.7.1; B12X 1.2.6 declares 4.6.2 (recorded exception).
+    run_uv_install --no-deps --reinstall-package b12x \
+        "b12x @ git+https://github.com/local-inference-lab/b12x.git@11e27c04977875aed3c0cbf03c9c211b71fcdc68" || return 1
+}
+
+install_deepseek_vision_sglang_pr_37253() {
+    ensure_active_environment_matches "deepseek-vision-sglang-pr-37253" || return 1
+    # Native Vision and bundled DSpark: https://github.com/sgl-project/sglang/pull/37253
+    local source_commit="d5a3b7725374070669f4d23c1e99e186f4dfc309"
+    print_info "Installing upstream DeepSeek Vision SGLang PR 37253 at ${source_commit}..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
+        --torch-backend=cu130 || return 1
+}
+
+install_deepseek_vision_vllm_pr_54566() {
+    ensure_active_environment_matches "deepseek-vision-vllm-pr-54566" || return 1
+    # Native Vision CUDA support: https://github.com/vllm-project/vllm/pull/54566
+    # Official merge: 1356635d837c4ef002ec98c1a0296e7ff60be3c1; PR head: 047c353c99a6ab5f2ad09a70c3ccc6aa67deddfc.
+    local wheel_url="https://wheels.vllm.ai/1356635d837c4ef002ec98c1a0296e7ff60be3c1/vllm-0.28.1rc1.dev317%2Bg1356635d8-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official DeepSeek Vision vLLM PR 54566 merge wheel..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
+    # Required by the pinned CUDA manifest; this cubin release is not published on PyPI.
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" || return 1
+}
+
+install_deepseek_vllm() {
+    print_info "Installing vLLM 0.25.0 for DeepSeek..."
+    run_uv_install "vllm==0.25.0" || return 1
+}
+
+install_diffusiongemma_sglang() {
+    print_info "Installing the DiffusionGemma SGLang commit..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@11ffa55479124f85aabeb6db264c3b337395a55d#subdirectory=python" || return 1
+    run_uv_install --force-reinstall --no-deps "transformers==5.12.1" || return 1
+}
+
+install_gemma_sglang() {
+    print_info "Installing the tested Gemma SGLang commit..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@f7d4e44d82ac35b9b10ce80348e4a5421f89435a#subdirectory=python" || return 1
+    run_uv_install "git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897" || return 1
+}
+
+install_gemma_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for Gemma..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_gemma3n_vllm() {
+    print_info "Installing the model-card validated vLLM stack for Gemma 3n..."
+    ensure_active_environment_matches gemma3n-vllm || return 1
+    run_uv_install --upgrade --reinstall \
+        "vllm==0.10.0" \
+        "transformers==4.53.2" \
+        "numpy==2.2.6" \
+        "timm" \
+        --torch-backend=auto || return 1
+}
+
+install_glm_sglang() {
+    print_info "Installing packages for GLM (SGLang)..."
+    
+    install_bleeding_edge_sglang glm-sglang || return 1
+    run_uv_install "kernels==0.14.1"
+}
+
+install_glm_transformers() {
+    print_info "Installing packages for GLM (Transformers)..."
+
+    run_uv_install git+https://github.com/huggingface/transformers.git@76732b4e7120808ff989edbd16401f61fa6a0afa
+}
+
+install_glm_vllm() {
+    print_info "Installing packages for GLM (vLLM)..."
+    local packages=(
+        "git+https://github.com/huggingface/transformers.git"
+        "pre-commit>=4.2.0"
+        "accelerate>=1.10.1"
+    )
+
+    run_uv_install -U vllm --index-url https://pypi.org/simple || return 1
+    run_uv_install "${packages[@]}"
+}
+
+install_glm53_vllm_v0290() {
+    ensure_active_environment_matches "glm53-vllm-v0290" || return 1
+    # Official GLM-5.3 recipe requires vLLM 0.28.0+ and Transformers 5.15.0+.
+    print_info "Installing official vLLM 0.29.0 for GLM 5.3..."
+    run_uv_install -U --reinstall \
+        "vllm==0.29.0" "transformers==5.15.0" "tokenizers==0.22.2" \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
+        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_glm53flash_dflash2_sglang_pr_37818() {
+    ensure_active_environment_matches "glm53flash-dflash2-sglang-pr-37818" || return 1
+    # Native DFlash Mamba checkpoint tracking: https://github.com/sgl-project/sglang/pull/37818
+    # Official test merge retains GLM5Next support; PR head: df464a48213f5e40e29c7453a7db07880435f777.
+    local source_commit="787299797931749c8f9bb15453f375bd1f9bed5c"
+    print_info "Installing upstream SGLang PR 37818 test merge at ${source_commit}..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
+        --torch-backend=cu130 || return 1
+    # Native GLM5Next image/video processors need the newer HF stack.
+    # SGLang's declared pins lag this integration: https://github.com/sgl-project/sglang/pull/38522
+    run_uv_install --force-reinstall --no-deps \
+        "transformers==5.17.0" "tokenizers==0.23.2" || return 1
+    # Keep native BF16 vision convolutions on a matching cuDNN sublibrary set.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_glm53flash_dflash2_vllm_pr_55423() {
+    ensure_active_environment_matches "glm53flash-dflash2-vllm-pr-55423" || return 1
+    # Native DFlash2/mHC and hybrid draft-cache integration: https://github.com/vllm-project/vllm/pull/55423
+    local source_commit="374e367e2b87ee65332b03468b76dc4c40e69519"
+    # This Python-only PR uses unmodified binaries from its exact upstream parent.
+    local wheel_url="https://wheels.vllm.ai/c81ace18596f75660bbc04efc2075a5f17a76791/vllm-0.28.1rc1.dev420%2Bgc81ace185-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing native vLLM Flash DFlash2 PR 55423 at ${source_commit}..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        --torch-backend=cu130 || return 1
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
+        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
+    # Torch's 9.20 wheel loads the host's 9.26 tensor-IR sublibrary during BF16 Conv2d.
+    # Keep the native cuDNN sublibraries aligned; this overrides Torch's exact 9.20 pin.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_glm53flash_vllm_2617fe938() {
+    ensure_active_environment_matches "glm53flash-vllm-2617fe938" || return 1
+    # Official main commit and merged KPool MTP fix: https://github.com/vllm-project/vllm/pull/58454
+    local source_commit="2617fe938355594c48d4512a2ef6b470962aac1a"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev162%2Bg2617fe938-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official vLLM GLM-5.3-Flash SM120 wheel at ${source_commit}..."
+    run_uv_install "vllm @ ${wheel_url}" \
+        "transformers==5.17.0" "tokenizers==0.23.2" "torchcodec==0.16.0+cu130" \
+        "blake3==1.0.9" "msgspec==0.21.1" \
+        --torch-backend=cu130 || return 1
+    # Official merged GLM NoPE eight-head scratch fix: https://github.com/flashinfer-ai/flashinfer/pull/5075
+    local flashinfer_commit="915e7c49aececa5ba4fdf60ac0f4038ca1455fc1"
+    BUILD_NVEP=0 FLASHINFER_BUILD_NO_PIP=1 FLASHINFER_LOCAL_VERSION=g915e7c49 \
+        run_uv_install --reinstall-package flashinfer-python --no-deps \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@${flashinfer_commit}" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
+install_glm53flash_vllm_pr_53906() {
+    ensure_active_environment_matches "glm53flash-vllm-pr-53906" || return 1
+    # Native GLM-5.3-Flash integration: https://github.com/vllm-project/vllm/pull/53906
+    # Official merge commit: 98ed0856f31fa3aaf5e27464e2b4ef5a8ee6b2f5.
+    local wheel_url="https://wheels.vllm.ai/98ed0856f31fa3aaf5e27464e2b4ef5a8ee6b2f5/vllm-0.28.1rc1.dev359%2Bg98ed0856f-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official vLLM GLM-5.3-Flash PR 53906 merge wheel..."
+    run_uv_install -U --reinstall --prerelease=allow         "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
+    run_uv_install         "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873"         "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
+    # Keep native BF16 vision convolutions on a matching cuDNN sublibrary set.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_gptoss_sglang() {
+    print_info "Installing the pinned SGLang main commit for GPT-OSS..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
+}
+
+install_gptoss_transformers() {
+    print_info "Installing Transformers stack for gpt-oss..."
+    run_uv_install -U transformers accelerate torch triton==3.4 kernels
+}
+
+install_gptoss_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for GPT-OSS..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_ibm_sglang() {
+    print_info "Installing SGLang 0.5.18 for IBM Granite..."
+    run_uv_install -U --prerelease=allow "sglang[all]==0.5.18" || return 1
+}
+
+install_ibm_vllm() {
+    print_info "Installing vLLM 0.25.0 for IBM Granite..."
+    run_uv_install "vllm==0.25.0" || return 1
+}
+
+install_inclusionai_ling3_vllm() {
+    print_info "Installing upstream vLLM 0.29.0 with native Ling 3 support..."
+    run_uv_install --upgrade --reinstall \
+        "vllm==0.29.0" --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+}
+
+install_inclusionai_sglang() {
+    print_info "Installing the validated Ling 3.0 SGLang commit..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@e1a24a189fe4164596c3a6472e96715717df9012#subdirectory=python" || return 1
+}
+
+install_inclusionai_transformers() {
+    print_info "No package install configured for InclusionAI (Transformers) yet."
+}
+
+install_inclusionai_vllm() {
+    local vllm_version="0.27.2rc1.dev113+g5cecfc013"
+    local vllm_wheel="https://wheels.vllm.ai/5cecfc01375052698823fc401e31518fb32a981e/vllm-0.27.2rc1.dev113%2Bg5cecfc013-cp38-abi3-manylinux_2_28_x86_64.whl#sha256=7858cbbd1fbf426a6eac5a9e2dc3779e04ee63705f65c90ab5baca4705a4a638"
+
+    print_info "Installing vLLM $vllm_version for InclusionAI from its immutable commit wheel..."
+    run_uv_install --upgrade --reinstall --prerelease=allow \
+        "$vllm_wheel" --torch-backend=auto || return 1
+    install_flashinfer_python311_compatible || return 1
+}
+
+install_incoai_sglang() {
+    install_pinned_sglang_commit \
+        "incoai-sglang" \
+        "IncoAI (SGLang) commit 05c584c44fb0450c894cf9d08a7827c10cd5b2c5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "05c584c44fb0450c894cf9d08a7827c10cd5b2c5" || return 1
+    run_uv_install "transformers==5.12.1" || return 1
+}
+
 install_incoai_vllm() {
     install_dflash_vllm_for_environment "incoai-vllm" "IncoAI" || return 1
 }
 
+install_intel_sglang() {
+    install_pinned_sglang_commit \
+        "intel-sglang" \
+        "Intel (SGLang) commit f7d4e44d82ac35b9b10ce80348e4a5421f89435a" \
+        "https://github.com/sgl-project/sglang.git" \
+        "f7d4e44d82ac35b9b10ce80348e4a5421f89435a" || return 1
+    run_uv_install \
+        "git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897" || return 1
+}
+
+
+install_intel_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for Intel..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_kimi_ktransformers() {
+    print_info "Installing KTransformers for Kimi..."
+
+    local ktransformers_dir=""
+    if [ -n "${KTRANSFORMERS_DIR:-}" ]; then
+        ktransformers_dir="$KTRANSFORMERS_DIR"
+    elif [ -n "${VIRTUAL_ENV:-}" ]; then
+        ktransformers_dir="$VIRTUAL_ENV/ktransformers"
+    else
+        ktransformers_dir="$HOME/ktransformers"
+    fi
+
+    if [ ! -d "$ktransformers_dir/.git" ]; then
+	local parent_dir
+        parent_dir=$(dirname "$ktransformers_dir")
+        if [ ! -d "$parent_dir" ]; then
+            run_command mkdir -p "$parent_dir" || return 1
+        fi
+        run_command git clone https://github.com/kvcache-ai/ktransformers.git "$ktransformers_dir" || return 1
+    fi
+
+    run_command git -C "$ktransformers_dir" submodule update --init --recursive || return 1
+
+    install_kt_kernel "$ktransformers_dir" || return 1
+
+    print_info "Installing SGLang for Kimi..."
+
+    local sglang_dir=""
+    if [ -n "${SGLANG_DIR:-}" ]; then
+        sglang_dir="$SGLANG_DIR"
+    elif [ -n "${VIRTUAL_ENV:-}" ]; then
+        sglang_dir="$VIRTUAL_ENV/sglang"
+    else
+        sglang_dir="$HOME/sglang"
+    fi
+
+    if [ ! -d "$sglang_dir/.git" ]; then
+        local parent_dir
+        parent_dir=$(dirname "$sglang_dir")
+        if [ ! -d "$parent_dir" ]; then
+            run_command mkdir -p "$parent_dir" || return 1
+        fi
+        run_command git clone https://github.com/kvcache-ai/sglang.git "$sglang_dir" || return 1
+    fi
+
+    run_pip_install -e "$sglang_dir/python[all]" || return 1
+    run_pip_install nvidia-cudnn-cu12==9.16.0.29 || return 1
+}
+install_kimi_sglang() {
+    print_info "Installing SGLang for Kimi..."
+    install_bleeding_edge_sglang kimi-sglang || return 1
+    run_uv_install remote_pdb
+    run_uv_install imageio
+    run_uv_install diffusers
+    run_uv_install addict
+    run_uv_install cache_dit
+    run_uv_install nvidia-cudnn-cu12==9.16.0.29
+}
+
+install_kimi_vllm() {
+    print_info "Installing vLLM for Kimi..."
+    run_uv_install -U vllm --index-url https://pypi.org/simple || return 1
+}
+
+install_liquidai_sglang() {
+    print_info "Installing the pinned SGLang main commit for LiquidAI..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@05c584c44fb0450c894cf9d08a7827c10cd5b2c5#subdirectory=python" || return 1
+}
+
+install_liquidai_sglang_pr_31041() {
+    install_pinned_sglang_commit \
+        "liquidai-sglang-pr-31041" \
+        "LiquidAI (SGLang) PR 31041 commit c26ae043924fffe413df8a90329f8734869d7fd1" \
+        "https://github.com/tugot17/sglang.git" \
+        "c26ae043924fffe413df8a90329f8734869d7fd1"
+}
+
+install_liquidai_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for LiquidAI..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_meta_sglang() {
+    print_info "Installing the pinned SGLang main commit for Meta..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@05c584c44fb0450c894cf9d08a7827c10cd5b2c5#subdirectory=python" || return 1
+}
+
+install_meta_vllm() {
+    local vllm_version="0.27.2rc1.dev113+g5cecfc013"
+    local vllm_wheel="https://wheels.vllm.ai/5cecfc01375052698823fc401e31518fb32a981e/vllm-0.27.2rc1.dev113%2Bg5cecfc013-cp38-abi3-manylinux_2_28_x86_64.whl#sha256=7858cbbd1fbf426a6eac5a9e2dc3779e04ee63705f65c90ab5baca4705a4a638"
+
+    print_info "Installing vLLM $vllm_version for Meta from its immutable commit wheel..."
+    ensure_active_environment_matches meta-vllm || return 1
+    run_uv_install --upgrade --reinstall --prerelease=allow \
+        "$vllm_wheel" --torch-backend=auto || return 1
+    install_flashinfer_python311_compatible || return 1
+    run_uv_install timm || return 1
+}
+
+install_microsoft_sglang() {
+    install_pinned_sglang_commit \
+        "microsoft-sglang" \
+        "Microsoft (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_microsoft_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for Microsoft..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_minimax_m2_sglang_v0510_post1() {
+    ensure_active_environment_matches "minimax-m2-sglang-v0510-post1" || return 1
+    # Official v0.5.10.post1: 7c35342c10e201899e22fe2972d40e60da19ff3e.
+    # Includes the native MiniMax partial-RoPE fix for Transformers 5.
+    # This required TorchAO release is on PyPI, not the selected PyTorch CUDA index.
+    local torchao_wheel="https://files.pythonhosted.org/packages/7d/fe/a24225d30775192a4c5d9cea3ecb95e6adc69d0a8b5ed98eb8e58d362344/torchao-0.9.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl#sha256=bc708910301a9f98344d43f3fe2aa6d5e1fab706d772b6df47ff05087d664145"
+    print_info "Installing official SGLang 0.5.10.post1 for MiniMax M2..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang==0.5.10.post1" "torchao @ ${torchao_wheel}" --torch-backend=cu128 || return 1
+}
+
+install_minimax_m2_vllm_0f3ce4c74() {
+    ensure_active_environment_matches "minimax-m2-vllm-0f3ce4c74" || return 1
+    # Accuracy-verified official MiniMax recipe commit: 0f3ce4c74b1875791d6604e006b6e905fde9f698.
+    # https://docs.vllm.ai/projects/recipes/en/latest/MiniMax/MiniMax-M2.html
+    local wheel_url="https://wheels.vllm.ai/0f3ce4c74b1875791d6604e006b6e905fde9f698/vllm-0.19.1rc1.dev203%2Bg0f3ce4c74-cp38-abi3-manylinux_2_31_x86_64.whl"
+    print_info "Installing the official MiniMax vLLM 0f3ce4c74 wheel..."
+    # CUDA bindings 13.4 removed IPC handle fields used by the native Lamport workspace.
+    # https://github.com/smg-project/smg/pull/2494 validates the compatible 13.3.1 pin.
+    run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ ${wheel_url}" wheel "cuda-python==13.3.1" "cuda-bindings==13.3.1" \
+        --torch-backend=cu130 || return 1
+    # Exact upstream ref from this vLLM commit's tools/install_deepgemm.sh.
+    # The wheel's vendored extension is CPython 3.12-only; build for the active interpreter.
+    local source_dir
+    source_dir=$(mktemp -d -t minimax-m2-deepgemm.XXXXXX) || return 1
+    (
+        trap 'rm -rf "$source_dir"' EXIT
+        run_command git clone --filter=blob:none --no-checkout \
+            https://github.com/deepseek-ai/DeepGEMM.git "$source_dir" || exit 1
+        run_command git -C "$source_dir" checkout --detach \
+            477618cd51baffca09c4b0b87e97c03fe827ef03 || exit 1
+        run_command git -C "$source_dir" submodule update --init --recursive --depth 1 || exit 1
+        run_uv_install --no-build-isolation --no-deps "$source_dir"
+    ) || return 1
+}
+
+install_minimax_m25_vllm_v0280() {
+    ensure_active_environment_matches "minimax-m25-vllm-v0280" || return 1
+    # Official H200 recipe: https://recipes.vllm.ai/MiniMaxAI/MiniMax-M2.5/hw/h200.json
+    # v0.28.0: 2cf0a6915ce544dc493a0990f2ea38d81601128a.
+    # CUDA bindings 13.4 removed IPC handle fields used by native MiniMax Lamport QK norm.
+    # https://github.com/smg-project/smg/pull/2494 validates the compatible 13.3.1 pin.
+    print_info "Installing official vLLM 0.28.0 for MiniMax M2.5..."
+    run_uv_install -U --reinstall \
+        "vllm==0.28.0" "cuda-python==13.3.1" "cuda-bindings==13.3.1" \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    # FlashInfer 0.6.17 fixes Python 3.10/3.11 imports; vLLM's exact 0.6.16.post3 pin is affected.
+    # https://github.com/flashinfer-ai/flashinfer/pull/4354; runtime dependencies are unchanged.
+    run_uv_install --upgrade --no-deps "flashinfer-python==0.6.17" || return 1
+}
+
+install_minimax_sglang() {
+    print_info "Installing SGLang for MiniMax..."
+
+    install_bleeding_edge_sglang minimax-sglang || return 1
+}
+
+install_minimax_transformers() {
+    print_info "Installing Transformers for MiniMax..."
+    run_uv_install "transformers==4.57.1" "torch" "accelerate" "--torch-backend=auto"
+}
+
+install_minimax_vllm() {
+    print_info "Installing vLLM for MiniMax..."
+    run_uv_install -U vllm --index-url https://pypi.org/simple || return 1
+}
+
+install_mistralai_sglang() {
+    install_pinned_sglang_commit \
+        "mistralai-sglang" \
+        "MistralAI (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_mistralai_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for MistralAI..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+
+
+install_nanbeige_sglang() {
+    local source_commit="3e59d89e53490d3b6957cb72754abf6a98c2b8a8"
+    print_info "Installing the pinned Nanbeige SGLang fork commit $source_commit..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/Nanbeige/sglang.git@${source_commit}#subdirectory=python" || return 1
+}
+
+install_nanbeige_vllm() {
+    local source_commit="62f6de733d7ae63b759329993bc209e67afdf431"
+
+    print_info "Installing the proven Nanbeige vLLM commit $source_commit..."
+    ensure_active_environment_matches nanbeige-vllm || return 1
+
+    local target_dir="$VIRTUAL_ENV/vllm"
+
+    if [ -e "$target_dir" ] && [ ! -d "$target_dir/.git" ]; then
+        print_error "vLLM target exists but is not a git checkout: $target_dir"
+        return 1
+    fi
+
+    if [ ! -d "$target_dir/.git" ]; then
+        run_command git clone -b nanbeige42 \
+            https://github.com/Nanbeige/vllm.git "$target_dir" || return 1
+    fi
+
+    run_command git -C "$target_dir" fetch origin nanbeige42 --tags || return 1
+    run_command git -C "$target_dir" checkout --force "$source_commit" || return 1
+
+    run_pip_install -e "$target_dir" || return 1
+}
+
+
+
+install_nemotron_trtllm() {
+    print_info "Installing TRT-LLM dependencies for Nemotron..."
+    run_uv_install torch==2.9.1 openai==2.6.1 requests
+}
+
+install_nemotron_ultra_vllm_9c2d21046() {
+    ensure_active_environment_matches "nemotron-ultra-vllm-9c2d21046" || return 1
+    # Complete upstream PR54788 merge: native V2 draft MoE backend isolation.
+    # https://github.com/vllm-project/vllm/pull/54788
+    local source_commit="9c2d21046bb39f56ee93a5fab4f899714a5579ef"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.28.1rc1.dev562%2Bg9c2d21046-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing native Nemotron Ultra vLLM PR54788 merge..."
+    run_uv_install -U --prerelease=allow \
+        "vllm @ ${wheel_url}" "transformers==5.12.1" "tokenizers==0.22.2" \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    # Released CUDA requirements keep FlashInfer cubin outside PyPI install_requires.
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" || return 1
+}
+
+install_nex_n2_sglang_v0519() {
+    ensure_active_environment_matches "nex-n2-sglang-v0519" || return 1
+    # Native Qwen3.5 MoE backend for Nex-N2: https://github.com/nex-agi/Nex-N2.
+    # SGLang v0.5.19: 0bcd822377da7b5718e674eaf9c870d349424dd1; CPython 3.11 wheels.
+    # NVIDIA publishes the required cuda-tile RC wheel outside its PyPI sdist listing.
+    print_info "Installing official SGLang 0.5.19 for Nex N2..."
+    run_uv_install -U --reinstall \
+        'sglang @ https://files.pythonhosted.org/packages/97/f3/53f3a6c074be264bb389bb7e620fb99c26950a0f452a5d1415e5c5f58af9/sglang-0.5.19-cp311-cp311-manylinux_2_34_x86_64.whl#sha256=425e87377e725d03db8262382008f3fd9561a6cf5d82f485f8b9929f02ffe12b' \
+        'cuda-tile @ https://pypi.nvidia.com/cuda-tile/cuda_tile-1.6.0rc5-cp311-cp311-manylinux2014_x86_64.whl#sha256=a14ff257522a017430e98f16aabdfd514bbcf38ecb64a0fba1d3f86cd02a21bb' \
+        'torchvision==0.28.0' \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    # Keep native BF16 vision convolutions on the host-matched cuDNN 9.26 family.
+    # This source-backed repair overrides Torch's 9.20 pin: pytorch/pytorch#188892.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_nex_n2_vllm_v0290() {
+    ensure_active_environment_matches "nex-n2-vllm-v0290" || return 1
+    # Native Nex-N2/Qwen3.5 MoE and incremental tools: vLLM v0.29.0.
+    # Upstream commit: 98dff2a81d747d1dba01a47f939f48c3526d4206.
+    print_info "Installing official vLLM 0.29.0 for Nex N2..."
+    run_uv_install -U --reinstall \
+        "vllm==0.29.0" "transformers==5.12.1" "tokenizers==0.22.2" \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
+        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
+    # Preserve native Conv3d with version-aligned cuDNN sublibraries.
+    # This source-backed repair overrides Torch's 9.20 pin: pytorch/pytorch#188892.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_nvidia_deepseek_sglang() {
+    print_info "Installing SGLang 0.5.16 for NVIDIA DeepSeek..."
+    run_uv_install -U --prerelease=allow "sglang[all]==0.5.16" || return 1
+}
+
+install_nvidia_glm53_sglang_26fd7fd() {
+    ensure_active_environment_matches "nvidia-glm53-sglang-26fd7fd" || return 1
+    print_info "Installing the validated SGLang commit for NVIDIA GLM-5.3 NVFP4..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@26fd7fdaa2732abbad6d63b21cf0944aa88e977e#subdirectory=python" \
+        "compressed-tensors==0.19.1a20260923" || return 1
+}
+
+install_nvidia_glm53flash_sglang_pr_38430() {
+    ensure_active_environment_matches "nvidia-glm53flash-sglang-pr-38430" || return 1
+    # The unmodified official source build requires the existing Rust toolchain.
+    if ! command -v rustc >/dev/null 2>&1 || ! command -v cargo >/dev/null 2>&1; then
+        print_error "Rust and Cargo are required; install them with installers/01_install_dependencies.sh --rust first."
+        return 1
+    fi
+    # Native GLM5Next NoPE sparse MLA: https://github.com/sgl-project/sglang/pull/38430
+    print_info "Installing NVIDIA GLM-5.3 Flash SGLang PR 38430..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@28379a7c55687b9694a886550e39120853c9d000#subdirectory=python" \
+        --torch-backend=cu130 || return 1
+    # Official FlashInfer includes compact NoPE rows and the complete SM120 sparse path.
+    # https://github.com/flashinfer-ai/flashinfer/pull/5075
+    run_uv_install --force-reinstall --no-deps \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" || return 1
+    # Exact tested multimodal tokenizer stack and matching cuDNN sublibraries.
+    run_uv_install --force-reinstall --no-deps \
+        "transformers==5.17.0" "tokenizers==0.23.2" "nvidia-cudnn-cu13==9.26.0.51" || return 1
+    run_uv_install "nccl-extensions==0.1.0" || return 1
+}
+
+install_nvidia_glm53flash_vllm_pr_55277() {
+    ensure_active_environment_matches "nvidia-glm53flash-vllm-pr-55277" || return 1
+    # Native GLM5Next NoPE cache writer: https://github.com/vllm-project/vllm/pull/55277
+    # Complete official merge wheel, including its CUDA 13.0 binaries.
+    local source_commit="c843f0cab78b413f2b0a5c2282cb71e3a3937b11"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev11%2Bgc843f0cab-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing native NVIDIA GLM-5.3 Flash vLLM PR 55277 merge..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
+    # Official FlashInfer includes compact NoPE rows and the complete SM120 sparse path.
+    # https://github.com/flashinfer-ai/flashinfer/pull/5075
+    run_uv_install --force-reinstall --no-deps \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" || return 1
+    # Exact tested multimodal tokenizer stack and matching cuDNN sublibraries.
+    run_uv_install --force-reinstall --no-deps \
+        "transformers==5.17.0" "tokenizers==0.23.2" "nvidia-cudnn-cu13==9.26.0.51" || return 1
+    run_uv_install "nccl-extensions==0.1.0" || return 1
+}
+
+install_nvidia_muse_sglang_v0520() {
+    ensure_active_environment_matches "nvidia-muse-sglang-v0520" || return 1
+    print_info "Installing official SGLang 0.5.20 for NVIDIA Muse Glimmer..."
+    run_uv_install "sglang[all]==0.5.20" "mistral-common==1.11.7" --prerelease=allow || return 1
+}
+
+install_nvidia_muse_vllm_v0290() {
+    ensure_active_environment_matches "nvidia-muse-vllm-v0290" || return 1
+    print_info "Installing official vLLM 0.29.0 for NVIDIA Muse Glimmer..."
+    run_uv_install "vllm==0.29.0" "mistral-common==1.11.7" --torch-backend=cu130 || return 1
+}
+
+install_nvidia_nemotron() {
+    print_info "Installing the pinned GitHub vLLM commit for NVIDIA Nemotron..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+
+    if [ -z "${VIRTUAL_ENV:-}" ]; then
+        print_error "No active virtual environment detected for DeepGEMM install."
+        return 1
+    fi
+
+    local deepgemm_installer="$VIRTUAL_ENV/install_deepgemm.sh"
+    local deepgemm_installer_url="https://raw.githubusercontent.com/vllm-project/vllm/v0.20.0/tools/install_deepgemm.sh"
+
+    print_info "Installing the proven vLLM 0.20.0 DeepGEMM companion build for NVIDIA Nemotron..."
+    run_command curl -fsSL "$deepgemm_installer_url" -o "$deepgemm_installer" || return 1
+    run_command env VIRTUAL_ENV="$VIRTUAL_ENV" PATH="$VIRTUAL_ENV/bin:$PATH" \
+        bash "$deepgemm_installer" || return 1
+}
+
+install_nvidia_sglang() {
+    install_pinned_sglang_commit \
+        "nvidia-sglang" \
+        "NVIDIA (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" || return 1
+    run_uv_install librosa || return 1
+}
+
+install_nvidia_sglang_pr_33554() {
+    install_pinned_sglang_commit \
+        "nvidia-sglang-pr-33554" \
+        "NVIDIA (SGLang) PR 33554 commit ccfcdd93a8c21b21d37b6036f3071ff2d9171f9b" \
+        "https://github.com/rystewart-nvidia/sglang.git" \
+        "ccfcdd93a8c21b21d37b6036f3071ff2d9171f9b" || return 1
+    run_uv_install librosa || return 1
+}
+
+install_nvidia_sglang_pr_34966() {
+    install_pinned_sglang_commit \
+        "nvidia-sglang-pr-34966" \
+        "NVIDIA (SGLang) PR 34966 commit ef5d293e52375c75224ee9a5a373fe1daed56f84" \
+        "https://github.com/mochgolf/sglang.git" \
+        "ef5d293e52375c75224ee9a5a373fe1daed56f84"
+}
+
+install_nvidia_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for NVIDIA..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_nvidia_vllm_pr_55222() {
+    ensure_active_environment_matches "nvidia-vllm-pr-55222" || return 1
+    # Hopper sparse-MLA FP8 KV planning repair: https://github.com/vllm-project/vllm/pull/55222
+    # Exact tested PR head: 24b07cd3b099400b10a4a4bd58626216ebbd5b9f.
+    # This Python-only PR uses unmodified binaries from its exact upstream parent.
+    local source_commit="24b07cd3b099400b10a4a4bd58626216ebbd5b9f"
+    local wheel_url="https://wheels.vllm.ai/21a22110404d98dcab5f51cd90e9acb0acc15e47/vllm-0.28.1rc1.dev364%2Bg21a221104-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing upstream vLLM PR 55222 at ${source_commit}..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        --torch-backend=cu130 || return 1
+    # Pin the exact native GLM-5.3 multimodal stack used by the validated candidate.
+    run_uv_install --force-reinstall --no-deps \
+        "transformers==5.17.0" "tokenizers==0.23.2" || return 1
+    run_uv_install \
+        "flashinfer-python==0.6.18" \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" \
+        "flashinfer-jit-cache @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_jit_cache-0.6.18+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=428a47a554ade93c30a818e142b781df58582bf056bab94611fb4c906cc366bf" || return 1
+    # Keep native BF16 vision convolutions on a matching cuDNN sublibrary set.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_openai_sglang_pr_38626() {
+    ensure_active_environment_matches "openai-sglang-pr-38626" || return 1
+    # Complete upstream encoder-decoder atomic-prefill repair, not a local overlay.
+    # https://github.com/sgl-project/sglang/pull/38626
+    local source_commit="409c5280782dacef59fb7c878f3321ffd59cca46"
+    print_info "Installing native Whisper SGLang PR38626..."
+    run_uv_install -U --prerelease=allow \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
+        "cuda-tile @ https://pypi.nvidia.com/cuda-tile/cuda_tile-1.6.0rc5-cp311-cp311-manylinux2014_x86_64.whl#sha256=a14ff257522a017430e98f16aabdfd514bbcf38ecb64a0fba1d3f86cd02a21bb" \
+        "torchvision==0.28.0" \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    # Keep Whisper Conv1d on the host-matched cuDNN 9.26 family.
+    # Source-backed repair for the sublibrary mismatch: pytorch/pytorch#188892.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_openai_vllm_pr_53207() {
+    ensure_active_environment_matches "openai-vllm-pr-53207" || return 1
+    # Complete upstream Whisper conditioning-token repair, including native audio extras.
+    # https://github.com/vllm-project/vllm/pull/53207
+    local source_commit="070f6e70937e60379d2e85414753513425b1d6f4"
+    print_info "Installing native Whisper vLLM PR53207..."
+    run_uv_install -U --prerelease=allow \
+        "vllm[audio] @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        "transformers==5.12.1" "tokenizers==0.22.2" \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    # This source requires FlashInfer 0.6.17; cubin is outside wheel install_requires.
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.17/flashinfer_cubin-0.6.17-py3-none-any.whl#sha256=771f037a828cdf3f15db1c3784574197546d1b09735fb9058f384bdd12010afa" || return 1
+    # Whisper uses the same native Torch Conv1d path as the validated SGLang candidate.
+    # Source-backed sublibrary alignment: pytorch/pytorch#188892.
+    run_uv_install --no-deps "nvidia-cudnn-cu13==9.26.0.51" || return 1
+}
+
+install_paradigma_inc_vllm_v0260() {
+    ensure_active_environment_matches "paradigma-inc-vllm-v0260" || return 1
+    # Official plugin: https://github.com/paradigma-inc/limite-violetto/tree/cd68d27f100ebb7c84f05603d5af0e8f934b28b5
+    print_info "Installing the official Limite plugin with vLLM 0.26.0..."
+    run_uv_install "vllm==0.26.0" "torch==2.11.0" "transformers==5.6.2" \
+        "$(dirname -- "${BASH_SOURCE[0]}")/../recipes/paradigma-inc/plugin/limite_vllm-0.1.0-py3-none-any.whl" \
+        --torch-backend=cu130 || return 1
+}
+
+install_poolside_laguna_xs_vllm() {
+    print_info "Installing vLLM 0.26.0 for Poolside Laguna XS..."
+    run_uv_install "vllm==0.26.0" || return 1
+}
+
+install_poolside_sglang() {
+    print_info "Installing the pinned SGLang main commit for Poolside..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
+}
+
+install_poolside_sglang_pr_22513() {
+    install_pinned_sglang_commit \
+        "poolside-sglang-pr-22513" \
+        "Poolside (SGLang) PR 22513 commit 693b32b73d5031bc82ec851659ae94bd02a2b5f6" \
+        "https://github.com/Godmook/sglang.git" \
+        "693b32b73d5031bc82ec851659ae94bd02a2b5f6"
+}
+
+install_poolside_vllm() {
+    print_info "Installing vLLM 0.27.1 for Poolside..."
+    run_uv_install -U "vllm==0.27.1" || return 1
+    install_flashinfer_python311_compatible || return 1
+}
+
+install_primeintellect_sglang() {
+    install_pinned_sglang_commit \
+        "primeintellect-sglang" \
+        "PrimeIntellect (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_primeintellect_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for PrimeIntellect..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_qwen_flash_next_sglang() {
+    install_pinned_sglang_commit \
+        "qwen-flash-next-sglang" \
+        "Qwen Flash Next (SGLang) PR 36497 commit 73a255206f916366c8d26d4022f82ddfb0ab558d" \
+        "https://github.com/sgl-project/sglang.git" \
+        "73a255206f916366c8d26d4022f82ddfb0ab558d"
+}
+
+install_qwen_flash_next_vllm() {
+    local source_commit="e77daef89e18e08321ae7b8b24827eedd5fe8673"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.1.1.dev5%2Bge77daef89-cp38-abi3-manylinux_2_28_x86_64.whl"
+
+    ensure_active_environment_matches qwen-flash-next-vllm || return 1
+    print_info "Installing the official vLLM e77daef89 wheel for Qwen Flash Next..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
+    # Required by the pinned CUDA manifest; this cubin release is not published on PyPI.
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab" || return 1
+}
+
+install_qwen_flash_next_vllm_pr_54129() {
+    local source_commit="50a061f792f36364f5f95a93eee21f1e9d77f65e"
+    local binary_commit="3b45d053b4bbc61ce437f00891b52ce5ddde7c5a"
+    local source_dir=""
+
+    ensure_active_environment_matches qwen-flash-next-vllm-pr-54129 || return 1
+    source_dir="$VIRTUAL_ENV/vllm-pr-54129"
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "vLLM PR 54129 target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command git init "$source_dir" || return 1
+        run_command git -C "$source_dir" remote add origin \
+            https://github.com/vllm-project/vllm.git || return 1
+    fi
+    run_command git -C "$source_dir" fetch --depth 1 \
+        origin refs/pull/54129/head || return 1
+    run_command git -C "$source_dir" checkout --force "$source_commit" || return 1
+
+    print_info "Installing upstream vLLM PR 54129 at ${source_commit}..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_COMMIT="$binary_commit" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        -e "$source_dir" --torch-backend=cu130 || return 1
+    install_flashinfer_python311_compatible || return 1
+}
+
+install_qwen_ktransformers() {
+    print_info "Installing KTransformers stack for Qwen..."
+    ensure_active_environment_matches qwen-ktransformers || return 1
+
+    run_pip_install --upgrade --force-reinstall \
+        'torch==2.9.1' \
+        'torchvision==0.24.1' \
+        'torchaudio==2.9.1' \
+        'sglang-kt==0.5.2.post2' \
+        'tilelang' \
+        'kt-kernel==0.5.2' || return 1
+
+    run_pip_install --force-reinstall --no-deps 'nvidia-cudnn-cu12==9.16.0.29'
+}
+
+install_qwen_sglang() {
+    print_info "Installing the validated Qwen DFlash2 SGLang commit..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@1cf2b8c54d81802abc15dcf23a29b9cc687bc01e#subdirectory=python" || return 1
+}
+
+install_qwen_sglang_pr_22121() {
+    install_pinned_sglang_commit \
+        "qwen-sglang-pr-22121" \
+        "Qwen (SGLang) PR 22121 commit ce79bc7e3964613c87f79181353f09838d1c7459" \
+        "https://github.com/Chevron7Locked/sglang.git" \
+        "ce79bc7e3964613c87f79181353f09838d1c7459"
+}
+
+install_qwen_transformers() {
+    print_info "Installing Transformers stack for Qwen..."
+    run_uv_install "transformers>=4.51.0" "torch>=2.6"
+}
+
+install_qwen_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit for Qwen..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+}
+
+install_radixark_qwen_sglang() {
+    install_pinned_sglang_commit \
+        "radixark-qwen-sglang" \
+        "RadixArk Qwen Flash Next (SGLang) PR 36497 commit 73a255206f916366c8d26d4022f82ddfb0ab558d" \
+        "https://github.com/sgl-project/sglang.git" \
+        "73a255206f916366c8d26d4022f82ddfb0ab558d" || return 1
+    run_uv_install "transformers==5.12.1" "nvidia-modelopt[torch]==0.46.0" || return 1
+}
+
+install_radixark_sglang() {
+    install_pinned_sglang_commit \
+        "radixark-sglang" \
+        "RadixArk (SGLang) PR 35292 commit 0c088029ccba502c6aa4c408cd516a706af5b253" \
+        "https://github.com/alphabetc1/sglang.git" \
+        "0c088029ccba502c6aa4c408cd516a706af5b253" || return 1
+    run_uv_install "transformers==5.12.1" || return 1
+}
+
+install_redhat_sglang_pr_35809() {
+    install_pinned_sglang_commit \
+        "redhat-sglang-pr-35809" \
+        "RedHat (SGLang) PR 35809 commit d5bd07850f6200eff1cf0529e5ba31de1fc3abff" \
+        "https://github.com/fechaMe/sglang.git" \
+        "d5bd07850f6200eff1cf0529e5ba31de1fc3abff" || return 1
+    run_uv_install "transformers==5.12.1" || return 1
+}
+
+install_redhatai_sglang() {
+    install_pinned_sglang_commit \
+        "redhatai-sglang" \
+        "RedHatAI (SGLang) commit 05c584c44fb0450c894cf9d08a7827c10cd5b2c5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "05c584c44fb0450c894cf9d08a7827c10cd5b2c5" || return 1
+    run_uv_install "transformers==5.12.1" || return 1
+}
+
+install_redhatai_vllm() {
+    local vllm_version="0.27.2rc1.dev113+g5cecfc013"
+    local vllm_wheel="https://wheels.vllm.ai/5cecfc01375052698823fc401e31518fb32a981e/vllm-0.27.2rc1.dev113%2Bg5cecfc013-cp38-abi3-manylinux_2_28_x86_64.whl#sha256=7858cbbd1fbf426a6eac5a9e2dc3779e04ee63705f65c90ab5baca4705a4a638"
+
+    print_info "Installing vLLM $vllm_version for RedHatAI from its immutable commit wheel..."
+    ensure_active_environment_matches redhatai-vllm || return 1
+    run_uv_install --upgrade --reinstall --prerelease=allow \
+        "$vllm_wheel" --torch-backend=auto || return 1
+    install_flashinfer_python311_compatible || return 1
+    run_uv_install timm || return 1
+}
+
+install_rtxpro6k_deepseek_v41_vllm_pr_56509() {
+    ensure_active_environment_matches "rtxpro6k-deepseek-v41-vllm-pr-56509" || return 1
+    # Complete official SM120 sparse-attention integration: https://github.com/vllm-project/vllm/pull/56509
+    # This Python-only PR uses its direct parent's unchanged CUDA 13.0 binaries.
+    local source_commit="02ee13be210777a86fe61180d33135ebaa728a08"
+    local binary_commit="378504a5442b8a9240b359dae3e6f75f35c38f19"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev146%2Bg378504a54-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing native DeepSeek V4.1 vLLM PR 56509 at ${source_commit}..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" \
+        "filelock==4.0.3" \
+        --torch-backend=cu130 || return 1
+    # Native SM120 NVFP4 TP padding and narrow-gated prefill recovery.
+    # Keep engine CUTLASS 4.7.1; B12X 1.2.6 declares 4.6.2 (recorded exception).
+    run_uv_install --no-deps --reinstall-package b12x \
+        "b12x @ git+https://github.com/local-inference-lab/b12x.git@11e27c04977875aed3c0cbf03c9c211b71fcdc68" || return 1
+}
+
+install_rtxpro6k_glm53flash_vllm_2617fe938() {
+    ensure_active_environment_matches "rtxpro6k-glm53flash-vllm-2617fe938" || return 1
+    # Official main commit and merged KPool MTP fix: https://github.com/vllm-project/vllm/pull/58454
+    local source_commit="2617fe938355594c48d4512a2ef6b470962aac1a"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev162%2Bg2617fe938-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official vLLM GLM-5.3-Flash SM120 wheel at ${source_commit}..."
+    run_uv_install "vllm @ ${wheel_url}" \
+        "transformers==5.17.0" "tokenizers==0.23.2" "torchcodec==0.16.0+cu130" \
+        "blake3==1.0.9" "msgspec==0.21.1" \
+        --torch-backend=cu130 || return 1
+    # Official merged GLM NoPE eight-head scratch fix: https://github.com/flashinfer-ai/flashinfer/pull/5075
+    local flashinfer_commit="915e7c49aececa5ba4fdf60ac0f4038ca1455fc1"
+    BUILD_NVEP=0 FLASHINFER_BUILD_NO_PIP=1 FLASHINFER_LOCAL_VERSION=g915e7c49 \
+        run_uv_install --reinstall-package flashinfer-python --no-deps \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@${flashinfer_commit}" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
+install_rtxpro6k_intel_sglang() {
+    install_pinned_sglang_commit \
+        "rtxpro6k-intel-sglang" \
+        "Intel (SGLang) commit f7d4e44d82ac35b9b10ce80348e4a5421f89435a" \
+        "https://github.com/sgl-project/sglang.git" \
+        "f7d4e44d82ac35b9b10ce80348e4a5421f89435a" || return 1
+    run_uv_install \
+        "git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897" || return 1
+}
+
+install_rtxpro6k_liquidai_sglang() {
+    ensure_active_environment_matches "rtxpro6k-liquidai-sglang" || return 1
+    print_info "Installing the pinned SGLang main commit for LiquidAI..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@05c584c44fb0450c894cf9d08a7827c10cd5b2c5#subdirectory=python" || return 1
+}
+
+install_rtxpro6k_liquidai_sglang_pr_31041() {
+    install_pinned_sglang_commit \
+        "rtxpro6k-liquidai-sglang-pr-31041" \
+        "LiquidAI (SGLang) PR 31041 commit c26ae043924fffe413df8a90329f8734869d7fd1" \
+        "https://github.com/tugot17/sglang.git" \
+        "c26ae043924fffe413df8a90329f8734869d7fd1"
+}
+
+install_rtxpro6k_nanbeige_sglang() {
+    ensure_active_environment_matches "rtxpro6k-nanbeige-sglang" || return 1
+    local source_commit="3e59d89e53490d3b6957cb72754abf6a98c2b8a8"
+    print_info "Installing the pinned Nanbeige SGLang fork commit $source_commit..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/Nanbeige/sglang.git@${source_commit}#subdirectory=python" || return 1
+}
+
+install_rtxpro6k_nvidia_glm53_sglang_26fd7fd() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-glm53-sglang-26fd7fd" || return 1
+    print_info "Installing the validated SGLang commit for NVIDIA GLM-5.3 NVFP4 on RTX PRO 6000..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@26fd7fdaa2732abbad6d63b21cf0944aa88e977e#subdirectory=python" \
+        "transformers==5.12.1" \
+        "compressed-tensors==0.19.1a20260923" || return 1
+}
+
+install_rtxpro6k_nvidia_glm53flash_sglang_pr_38430() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-glm53flash-sglang-pr-38430" || return 1
+    # The unmodified official source build requires the existing Rust toolchain.
+    if ! command -v rustc >/dev/null 2>&1 || ! command -v cargo >/dev/null 2>&1; then
+        print_error "Rust and Cargo are required; install them with installers/01_install_dependencies.sh --rust first."
+        return 1
+    fi
+    # Native GLM5Next NoPE sparse MLA: https://github.com/sgl-project/sglang/pull/38430
+    print_info "Installing NVIDIA GLM-5.3 Flash SGLang PR 38430..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@28379a7c55687b9694a886550e39120853c9d000#subdirectory=python" \
+        --torch-backend=cu130 || return 1
+    # Official FlashInfer includes compact NoPE rows and the complete SM120 sparse path.
+    # https://github.com/flashinfer-ai/flashinfer/pull/5075
+    run_uv_install --force-reinstall --no-deps \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" || return 1
+    # Exact tested multimodal tokenizer stack and matching cuDNN sublibraries.
+    run_uv_install --force-reinstall --no-deps \
+        "transformers==5.17.0" "tokenizers==0.23.2" "nvidia-cudnn-cu13==9.26.0.51" || return 1
+    run_uv_install "nccl-extensions==0.1.0" || return 1
+}
+
+install_rtxpro6k_nvidia_glm53flash_vllm_pr_55277() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-glm53flash-vllm-pr-55277" || return 1
+    # Native GLM5Next NoPE cache writer: https://github.com/vllm-project/vllm/pull/55277
+    # Complete official merge wheel, including its CUDA 13.0 binaries.
+    local source_commit="c843f0cab78b413f2b0a5c2282cb71e3a3937b11"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev11%2Bgc843f0cab-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing native NVIDIA GLM-5.3 Flash vLLM PR 55277 merge..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
+    # Official FlashInfer includes compact NoPE rows and the complete SM120 sparse path.
+    # https://github.com/flashinfer-ai/flashinfer/pull/5075
+    run_uv_install --force-reinstall --no-deps \
+        "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@dc04f50c9aa3eabcdaa5feb0934edb3d85e9529a" || return 1
+    # Exact tested multimodal tokenizer stack and matching cuDNN sublibraries.
+    run_uv_install --force-reinstall --no-deps \
+        "transformers==5.17.0" "tokenizers==0.23.2" "nvidia-cudnn-cu13==9.26.0.51" || return 1
+    run_uv_install "nccl-extensions==0.1.0" || return 1
+}
+
+install_rtxpro6k_nvidia_qwen38_vllm_9c2d21046() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-qwen38-vllm-9c2d21046" || return 1
+    # Complete upstream PR54788 merge: native V2 draft MoE backend isolation.
+    # https://github.com/vllm-project/vllm/pull/54788
+    local source_commit="9c2d21046bb39f56ee93a5fab4f899714a5579ef"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.28.1rc1.dev562%2Bg9c2d21046-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing NVIDIA Qwen3.8 Flash Next NVFP4 vLLM 9c2d21046 for RTX PRO 6000..."
+    run_uv_install -U --prerelease=allow \
+        "vllm @ ${wheel_url}" "transformers==5.12.1" "tokenizers==0.22.2" \
+        --index-url https://pypi.org/simple --torch-backend=cu130 || return 1
+    # Released CUDA requirements keep FlashInfer cubin outside PyPI install_requires.
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" || return 1
+}
+
+install_rtxpro6k_primeintellect_sglang() {
+    install_pinned_sglang_commit \
+        "rtxpro6k-primeintellect-sglang" \
+        "PrimeIntellect (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_rtxpro6k_qwen_flash_next_vllm() {
+    local source_commit="e77daef89e18e08321ae7b8b24827eedd5fe8673"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.1.1.dev5%2Bge77daef89-cp38-abi3-manylinux_2_28_x86_64.whl"
+
+    ensure_active_environment_matches rtxpro6k-qwen-flash-next-vllm || return 1
+    print_info "Installing the official vLLM e77daef89 wheel for Qwen Flash Next..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ ${wheel_url}" --torch-backend=cu130 || return 1
+    # Required by the pinned CUDA manifest; this cubin release is not published on PyPI.
+    run_uv_install \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab" || return 1
+}
+
+install_rtxpro6k_qwen_flash_next_vllm_pr_54129() {
+    local source_commit="50a061f792f36364f5f95a93eee21f1e9d77f65e"
+    local binary_commit="3b45d053b4bbc61ce437f00891b52ce5ddde7c5a"
+    local source_dir=""
+
+    ensure_active_environment_matches rtxpro6k-qwen-flash-next-vllm-pr-54129 || return 1
+    source_dir="$VIRTUAL_ENV/vllm-pr-54129"
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "vLLM PR 54129 target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command git init "$source_dir" || return 1
+        run_command git -C "$source_dir" remote add origin \
+            https://github.com/vllm-project/vllm.git || return 1
+    fi
+    run_command git -C "$source_dir" fetch --depth 1 \
+        origin refs/pull/54129/head || return 1
+    run_command git -C "$source_dir" checkout --force "$source_commit" || return 1
+
+    print_info "Installing upstream vLLM PR 54129 at ${source_commit}..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_COMMIT="$binary_commit" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        -e "$source_dir" --torch-backend=cu130 || return 1
+    install_flashinfer_python311_compatible || return 1
+}
+
+install_rtxpro6k_qwen_sglang() {
+    ensure_active_environment_matches "rtxpro6k-qwen-sglang" || return 1
+    print_info "Installing the validated Qwen DFlash2 SGLang commit..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@1cf2b8c54d81802abc15dcf23a29b9cc687bc01e#subdirectory=python" || return 1
+}
+
+install_rtxpro6k_xiaomimimo_flash_vllm_pr_58177() {
+    local source_commit="ed073f5eb93c1f407ffabc7411449f027910caf0"
+    local binary_commit="0549e8d0ab88d3edf152147e14171f964c6e6f07"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev22%2Bg0549e8d0a-cp38-abi3-manylinux_2_28_x86_64.whl"
+    local cubin_url="https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab"
+    local source_dir=""
+
+    ensure_active_environment_matches rtxpro6k-xiaomimimo-flash-vllm-pr-58177 || return 1
+    "$VIRTUAL_ENV/bin/python" -c 'import sys; raise SystemExit(sys.version_info[:2] != (3, 12))' || {
+        print_error "XiaomiMiMo vLLM PR 58177 requires the validated Python 3.12 environment."
+        return 1
+    }
+    source_dir="$VIRTUAL_ENV/vllm-pr-58177"
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "vLLM PR 58177 target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command git init "$source_dir" || return 1
+        run_command git -C "$source_dir" remote add origin \
+            https://github.com/vllm-project/vllm.git || return 1
+        run_command git -C "$source_dir" fetch --depth 1 --no-tags \
+            origin "$source_commit" || return 1
+        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "https://github.com/vllm-project/vllm.git" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ "$(git -C "$source_dir" rev-list --count HEAD)" != "1" ] ||
+       [ -n "$(git -C "$source_dir" tag --list)" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "vLLM PR 58177 checkout must match the clean, shallow, tag-free validated source."
+        return 1
+    fi
+
+    print_info "Installing upstream vLLM PR 58177 at ${source_commit} with its official base wheel..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
+        run_uv_install -U --prerelease=allow \
+        -e "${source_dir}[audio]" \
+        "flashinfer-cubin @ ${cubin_url}" \
+        "av==18.1.0" \
+        "flashinfer-python==0.6.18.post1" \
+        "humming-kernels==0.1.16" \
+        "mistral-common==1.12.0" \
+        "nvidia-cudnn-cu13==9.20.0.48" \
+        "scipy==1.18.1" \
+        "setuptools==80.10.2" \
+        "soundfile==0.14.0" \
+        "soxr==1.1.0" \
+        "tokenizers==0.23.2" \
+        "torch==2.13.0+cu130" \
+        "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" \
+        "transformers==5.17.0" \
+        --torch-backend=cu130 || return 1
+}
+
+install_stepfun_sglang() {
+    print_info "Installing the pinned SGLang main commit for StepFun..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
+}
+
+install_stepfun_vllm() {
+    print_info "Installing the pinned GitHub vLLM commit and required Transformers 5 for StepFun..."
+    install_vllm_pinned_commit_python311_compatible || return 1
+    run_uv_install "transformers>=5,<6" || return 1
+}
+
+
+install_xiaomimimo_flash_vllm_1ea7c63() {
+    ensure_active_environment_matches "xiaomimimo-flash-vllm-1ea7c63" || return 1
+    # Official MiMo V2.6 support: https://github.com/vllm-project/vllm/pull/57784
+    local source_commit="1ea7c63f4af7bb4fd6f025c8db44434ab274cb51"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.29.1rc1.dev533%2Bg1ea7c63f4-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official Flash vLLM wheel with audio support..."
+    run_uv_install -U --prerelease=allow "vllm[audio] @ ${wheel_url}" --torch-backend=cu130 || return 1
+}
+
+install_xiaomimimo_flash_vllm_pr_58177() {
+    local source_commit="ed073f5eb93c1f407ffabc7411449f027910caf0"
+    local binary_commit="0549e8d0ab88d3edf152147e14171f964c6e6f07"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev22%2Bg0549e8d0a-cp38-abi3-manylinux_2_28_x86_64.whl"
+    local cubin_url="https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18.post1/flashinfer_cubin-0.6.18.post1-py3-none-any.whl#sha256=bbacb5b8bbf429e43bf2740bb45551d981f41d0462842e36ee6fb3e3452763ab"
+    local source_dir=""
+
+    ensure_active_environment_matches xiaomimimo-flash-vllm-pr-58177 || return 1
+    "$VIRTUAL_ENV/bin/python" -c 'import sys; raise SystemExit(sys.version_info[:2] != (3, 12))' || {
+        print_error "XiaomiMiMo vLLM PR 58177 requires the validated Python 3.12 environment."
+        return 1
+    }
+    source_dir="$VIRTUAL_ENV/vllm-pr-58177"
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "vLLM PR 58177 target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command git init "$source_dir" || return 1
+        run_command git -C "$source_dir" remote add origin \
+            https://github.com/vllm-project/vllm.git || return 1
+        run_command git -C "$source_dir" fetch --depth 1 --no-tags \
+            origin "$source_commit" || return 1
+        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "https://github.com/vllm-project/vllm.git" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ "$(git -C "$source_dir" rev-list --count HEAD)" != "1" ] ||
+       [ -n "$(git -C "$source_dir" tag --list)" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "vLLM PR 58177 checkout must match the clean, shallow, tag-free validated source."
+        return 1
+    fi
+
+    print_info "Installing upstream vLLM PR 58177 at ${source_commit} with its official base wheel..."
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
+        run_uv_install -U --prerelease=allow \
+        -e "${source_dir}[audio]" \
+        "flashinfer-cubin @ ${cubin_url}" \
+        "av==18.1.0" \
+        "flashinfer-python==0.6.18.post1" \
+        "humming-kernels==0.1.16" \
+        "mistral-common==1.12.0" \
+        "nvidia-cudnn-cu13==9.20.0.48" \
+        "scipy==1.18.1" \
+        "setuptools==80.10.2" \
+        "soundfile==0.14.0" \
+        "soxr==1.1.0" \
+        "tokenizers==0.23.2" \
+        "torch==2.13.0+cu130" \
+        "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" \
+        "transformers==5.17.0" \
+        --torch-backend=cu130 || return 1
+}
+
+install_xiaomimimo_sglang_v0520() {
+    ensure_active_environment_matches "xiaomimimo-sglang-v0520" || return 1
+    print_info "Installing official SGLang 0.5.20 for XiaomiMiMo Distill..."
+    run_uv_install "sglang[all]==0.5.20" "mistral-common==1.11.7" --prerelease=allow || return 1
+}
+
+install_xiaomimimo_vllm_v0300() {
+    ensure_active_environment_matches "xiaomimimo-vllm-v0300" || return 1
+    print_info "Installing official vLLM 0.30.0 for XiaomiMiMo Distill..."
+    run_uv_install "vllm==0.30.0" --torch-backend=cu130 || return 1
+}
+
+install_zlab_sglang() {
+    print_info "Installing the pinned SGLang main commit for z-lab DFlash recipes..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@834400705f2de2378a327121340f57e324ca5a36#subdirectory=python" || return 1
+    run_uv_install \
+        "git+https://github.com/huggingface/transformers.git@1423d22f7a3b62e8c70ad67b58ec25cd9b675897" || return 1
+}
+install_zlab_sglang_pr_35209() {
+    install_pinned_sglang_commit \
+        "z-lab-sglang-pr-35209" \
+        "z-lab (SGLang) PR 35209 commit 6283bde44381262b893d0141a529e58041a5d54d" \
+        "https://github.com/SubSir/sglang.git" \
+        "6283bde44381262b893d0141a529e58041a5d54d"
+    run_uv_install "transformers==5.12.1" || return 1
+}
+
+
 install_zlab_vllm() {
     install_dflash_vllm_for_environment "z-lab-vllm" "z-lab" || return 1
+}
+
+install_zyphra_legacy_sglang() {
+    install_pinned_sglang_commit \
+        "zyphra-legacy-sglang" \
+        "Zyphra Legacy (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
+        "https://github.com/sgl-project/sglang.git" \
+        "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_zyphra_legacy_vllm() {
+    local source_commit="8df704c5258830b18ca19722bcfd40357b410f66"
+
+    print_info "Installing the proven Zyphra Legacy vLLM commit $source_commit..."
+    ensure_active_environment_matches zyphra-legacy-vllm || return 1
+    run_pip_install "vllm @ git+https://github.com/Zyphra/vllm.git@$source_commit" || return 1
+}
+
+install_zyphra_sglang() {
+    install_pinned_sglang_commit \
+        "zyphra-sglang" \
+        "Zyphra (SGLang) commit 1cf2b8c54d81802abc15dcf23a29b9cc687bc01e" \
+        "https://github.com/sgl-project/sglang.git" \
+        "1cf2b8c54d81802abc15dcf23a29b9cc687bc01e"
+}
+
+install_zyphra_sglang_pr_32517() {
+    install_pinned_sglang_commit \
+        "zyphra-sglang-pr-32517" \
+        "Zyphra (SGLang) PR 32517 commit a43c7793f95609db15cd1c4060de4e3424af171d" \
+        "https://github.com/zaddle55/sglang.git" \
+        "a43c7793f95609db15cd1c4060de4e3424af171d"
+}
+
+install_zyphra_vllm() {
+    local source_commit="b1b99a08b20f858035894f7f2a8080c556423844"
+
+    print_info "Installing the proven Zyphra vLLM commit $source_commit..."
+    ensure_active_environment_matches zyphra-vllm || return 1
+    run_pip_install "vllm @ git+https://github.com/Zyphra/vllm.git@$source_commit" || return 1
 }
 
 perform_environment_action() {
@@ -2599,6 +2910,9 @@ perform_environment_action() {
         gemma-vllm)
             install_gemma_vllm || return 1
             ;;
+        gemma3n-vllm)
+            install_gemma3n_vllm || return 1
+            ;;
         glm-sglang)
             install_glm_sglang || return 1
             ;;
@@ -2607,6 +2921,9 @@ perform_environment_action() {
             ;;
         glm-vllm)
             install_glm_vllm || return 1
+            ;;
+        glm53-vllm-v0290)
+            install_glm53_vllm_v0290 || return 1
             ;;
         glm53flash-dflash2-sglang-pr-37818)
             install_glm53flash_dflash2_sglang_pr_37818 || return 1
@@ -2619,9 +2936,6 @@ perform_environment_action() {
             ;;
         glm53flash-vllm-pr-53906)
             install_glm53flash_vllm_pr_53906 || return 1
-            ;;
-        glm53-vllm-v0290)
-            install_glm53_vllm_v0290 || return 1
             ;;
         gpt-oss-sglang)
             install_gptoss_sglang || return 1
@@ -2638,6 +2952,9 @@ perform_environment_action() {
         ibm-vllm)
             install_ibm_vllm || return 1
             ;;
+        inclusionai-ling3-vllm)
+            install_inclusionai_ling3_vllm || return 1
+            ;;
         inclusionai-sglang)
             install_inclusionai_sglang || return 1
             ;;
@@ -2646,9 +2963,6 @@ perform_environment_action() {
             ;;
         inclusionai-vllm)
             install_inclusionai_vllm || return 1
-            ;;
-        inclusionai-ling3-vllm)
-            install_inclusionai_ling3_vllm || return 1
             ;;
         incoai-sglang)
             install_incoai_sglang || return 1
@@ -2827,20 +3141,59 @@ perform_environment_action() {
         radixark-sglang)
             install_radixark_sglang || return 1
             ;;
-        redhatai-sglang)
-            install_redhatai_sglang || return 1
-            ;;
         redhat-sglang-pr-35809)
             install_redhat_sglang_pr_35809 || return 1
+            ;;
+        redhatai-sglang)
+            install_redhatai_sglang || return 1
             ;;
         redhatai-vllm)
             install_redhatai_vllm || return 1
             ;;
-        gemma3n-vllm)
-            install_gemma3n_vllm || return 1
+        rtxpro6k-deepseek-v41-vllm-pr-56509)
+            install_rtxpro6k_deepseek_v41_vllm_pr_56509 || return 1
+            ;;
+        rtxpro6k-glm53flash-vllm-2617fe938)
+            install_rtxpro6k_glm53flash_vllm_2617fe938 || return 1
+            ;;
+        rtxpro6k-intel-sglang)
+            install_rtxpro6k_intel_sglang || return 1
+            ;;
+        rtxpro6k-liquidai-sglang)
+            install_rtxpro6k_liquidai_sglang || return 1
+            ;;
+        rtxpro6k-liquidai-sglang-pr-31041)
+            install_rtxpro6k_liquidai_sglang_pr_31041 || return 1
+            ;;
+        rtxpro6k-nanbeige-sglang)
+            install_rtxpro6k_nanbeige_sglang || return 1
             ;;
         rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             install_rtxpro6k_nvidia_glm53_sglang_26fd7fd || return 1
+            ;;
+        rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+            install_rtxpro6k_nvidia_glm53flash_sglang_pr_38430 || return 1
+            ;;
+        rtxpro6k-nvidia-glm53flash-vllm-pr-55277)
+            install_rtxpro6k_nvidia_glm53flash_vllm_pr_55277 || return 1
+            ;;
+        rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+            install_rtxpro6k_nvidia_qwen38_vllm_9c2d21046 || return 1
+            ;;
+        rtxpro6k-primeintellect-sglang)
+            install_rtxpro6k_primeintellect_sglang || return 1
+            ;;
+        rtxpro6k-qwen-flash-next-vllm)
+            install_rtxpro6k_qwen_flash_next_vllm || return 1
+            ;;
+        rtxpro6k-qwen-flash-next-vllm-pr-54129)
+            install_rtxpro6k_qwen_flash_next_vllm_pr_54129 || return 1
+            ;;
+        rtxpro6k-qwen-sglang)
+            install_rtxpro6k_qwen_sglang || return 1
+            ;;
+        rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+            install_rtxpro6k_xiaomimimo_flash_vllm_pr_58177 || return 1
             ;;
         stepfun-sglang)
             install_stepfun_sglang || return 1

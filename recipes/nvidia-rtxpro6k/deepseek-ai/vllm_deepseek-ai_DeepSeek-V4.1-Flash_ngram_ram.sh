@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_deepseek-v41-vllm-pr-56509"
+PYTHON_ENV="env_rtxpro6k-deepseek-v41-vllm-pr-56509"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="deepseek-ai/DeepSeek-V4.1-Flash"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-glm53flash-sglang-pr-38430"
+PYTHON_ENV="env_rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="nvidia/GLM-5.3-Flash-NVFP4"

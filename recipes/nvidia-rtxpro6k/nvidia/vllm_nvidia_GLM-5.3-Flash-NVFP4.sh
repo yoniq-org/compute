@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-glm53flash-vllm-pr-55277"
+PYTHON_ENV="env_rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_USE_V2_MODEL_RUNNER=1 VLLM_ENGINE_READY_TIMEOUT_S=3600 VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS=fp4_gemm,trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 MODEL_REPO="nvidia/GLM-5.3-Flash-NVFP4"

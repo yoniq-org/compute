@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_qwen-flash-next-vllm"
+PYTHON_ENV="env_rtxpro6k-qwen-flash-next-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_PLE_CPU_OFFLOAD=1"
 MODEL_REPO="Qwen/Qwen3.8-Flash-Next-FP8"

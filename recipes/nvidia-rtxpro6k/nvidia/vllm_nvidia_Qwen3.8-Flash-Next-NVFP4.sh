@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nemotron-ultra-vllm-9c2d21046"
+PYTHON_ENV="env_rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="nvidia/Qwen3.8-Flash-Next-NVFP4"
