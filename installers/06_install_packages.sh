@@ -135,6 +135,7 @@ ENV_TYPES=(
   "redhat-sglang-pr-35809"
   "redhatai-sglang"
   "redhatai-vllm"
+  "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
   "stepfun-sglang"
   "stepfun-transformers"
   "stepfun-vllm"
@@ -270,6 +271,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["redhat-sglang-pr-35809"]="RedHat (SGLang) PR 35809"
   ["redhatai-sglang"]="RedHatAI (SGLang)"
   ["redhatai-vllm"]="RedHatAI (vLLM)"
+  ["rtxpro6k-nvidia-glm53-sglang-26fd7fd"]="RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
   ["stepfun-sglang"]="StepFun (SGLang)"
   ["stepfun-transformers"]="StepFun (Transformers)"
   ["stepfun-vllm"]="StepFun (vLLM)"
@@ -634,61 +636,64 @@ resolve_env_type() {
         113|redhatai_vllm|redhatai-vllm)
             echo "redhatai-vllm"
             ;;
-        114|stepfun_sglang|stepfun-sglang)
+        114|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+            echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
+            ;;
+        115|stepfun_sglang|stepfun-sglang)
             echo "stepfun-sglang"
             ;;
-        115|stepfun_transformers|stepfun-transformers)
+        116|stepfun_transformers|stepfun-transformers)
             echo "stepfun-transformers"
             ;;
-        116|stepfun_vllm|stepfun-vllm)
+        117|stepfun_vllm|stepfun-vllm)
             echo "stepfun-vllm"
             ;;
-        117|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
+        118|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
             echo "xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        118|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
+        119|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
             echo "xiaomimimo-flash-vllm-pr-58177"
             ;;
-        119|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+        120|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
             echo "xiaomimimo-sglang-v0520"
             ;;
-        120|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+        121|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
             echo "xiaomimimo-vllm-v0300"
             ;;
-        121|z_lab_sglang|z-lab-sglang)
+        122|z_lab_sglang|z-lab-sglang)
             echo "z-lab-sglang"
             ;;
-        122|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+        123|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
             echo "z-lab-sglang-pr-35209"
             ;;
-        123|z_lab_vllm|z-lab-vllm)
+        124|z_lab_vllm|z-lab-vllm)
             echo "z-lab-vllm"
             ;;
-        124|zyphra_legacy_sglang|zyphra-legacy-sglang)
+        125|zyphra_legacy_sglang|zyphra-legacy-sglang)
             echo "zyphra-legacy-sglang"
             ;;
-        125|zyphra_legacy_transformers|zyphra-legacy-transformers)
+        126|zyphra_legacy_transformers|zyphra-legacy-transformers)
             echo "zyphra-legacy-transformers"
             ;;
-        126|zyphra_legacy_vllm|zyphra-legacy-vllm)
+        127|zyphra_legacy_vllm|zyphra-legacy-vllm)
             echo "zyphra-legacy-vllm"
             ;;
-        127|zyphra_sglang|zyphra-sglang)
+        128|zyphra_sglang|zyphra-sglang)
             echo "zyphra-sglang"
             ;;
-        128|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+        129|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
             echo "zyphra-sglang-pr-32517"
             ;;
-        129|zyphra_transformers|zyphra-transformers)
+        130|zyphra_transformers|zyphra-transformers)
             echo "zyphra-transformers"
             ;;
-        130|zyphra_vllm|zyphra-vllm)
+        131|zyphra_vllm|zyphra-vllm)
             echo "zyphra-vllm"
             ;;
-        131|custom|custom_uv|custom-uv|env_custom_uv)
+        132|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        132|custom_pip|custom-pip|env_custom_pip)
+        133|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -1079,7 +1084,6 @@ install_nvidia_glm53_sglang_26fd7fd() {
     print_info "Installing the validated SGLang commit for NVIDIA GLM-5.3 NVFP4..."
     run_uv_install -U --reinstall --prerelease=allow \
         "sglang[all] @ git+https://github.com/sgl-project/sglang.git@26fd7fdaa2732abbad6d63b21cf0944aa88e977e#subdirectory=python" \
-        "transformers==5.12.1" \
         "compressed-tensors==0.19.1a20260923" || return 1
 }
 
@@ -2223,6 +2227,15 @@ install_gemma3n_vllm() {
         --torch-backend=auto || return 1
 }
 
+install_rtxpro6k_nvidia_glm53_sglang_26fd7fd() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-glm53-sglang-26fd7fd" || return 1
+    print_info "Installing the validated SGLang commit for NVIDIA GLM-5.3 NVFP4 on RTX PRO 6000..."
+    run_uv_install -U --reinstall --prerelease=allow \
+        "sglang[all] @ git+https://github.com/sgl-project/sglang.git@26fd7fdaa2732abbad6d63b21cf0944aa88e977e#subdirectory=python" \
+        "transformers==5.12.1" \
+        "compressed-tensors==0.19.1a20260923" || return 1
+}
+
 install_stepfun_sglang() {
     print_info "Installing the pinned SGLang main commit for StepFun..."
     run_uv_install -U --reinstall --prerelease=allow \
@@ -2825,6 +2838,9 @@ perform_environment_action() {
             ;;
         gemma3n-vllm)
             install_gemma3n_vllm || return 1
+            ;;
+        rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+            install_rtxpro6k_nvidia_glm53_sglang_26fd7fd || return 1
             ;;
         stepfun-sglang)
             install_stepfun_sglang || return 1

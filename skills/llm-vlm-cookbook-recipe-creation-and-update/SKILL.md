@@ -5,17 +5,23 @@ description: "Creates or updates and behaviorally validates portable SGLang and 
 
 # SGLang & vLLM Recipe Creation and Update
 
-Use this skill when creating, updating, porting, repairing, or validating an SGLang or vLLM recipe for an LLM or VLM in `recipes/<repo>` (where `<repo>` is the lowercase publisher/organization directory, e.g. `recipes/deepseek-ai/`, `recipes/qwen/`, `recipes/redhatai/`).
+Use this skill when creating, updating, porting, repairing, or validating an SGLang or vLLM recipe for an LLM or VLM in `recipes/<gpu-vendor>-<gpu-type>/<provider>/`.
 
 The `llm-vlm-cookbook-recipe-source` skill defines cookbook lookup, model-card/config inspection, engine source verification, version comparison, and reporting. This skill adds repository-specific implementation and runtime constraints. For repository field configuration, apply the explicit defaults and validated-configuration rules below rather than conflicting generic field guidance; continue authoritative source verification for new or changed model/engine settings.
 
 Read that source skill before either operation. Use it to fill model-wide fields and verify architecture-specific choices, subject to the explicit existing-recipe context-reuse and sweep-only shortcuts below.
 
-## Recipe directory naming
+## Recipe directory naming and target routing
 
-Every new publisher directory directly under `recipes/` MUST be lowercase. Derive `<repo>` by lowercasing the publisher parsed from the validated recipe's filename (for example, `${publisher,,}` in Bash), not from `MODEL_REPO`, which may name a different organization. Thus `vllm_Qwen_Qwen3.8-27B-FP8.sh` belongs in `recipes/qwen/`, and a `MiniMaxAI` launcher belongs in `recipes/minimaxai/`.
+Use the layout `recipes/<gpu-vendor>-<gpu-type>/<provider>/<script>.sh`. Resolve the lowercase GPU vendor from the explicit target or detected target hardware, and use the same `<gpu-type>` label as the benchmark filename suffix. GPU type identifies the requested hardware model/group, not just its architecture suffix: GPUs sharing an architecture can have different directories. For example, NVIDIA targets can produce `nvidia-b200` or `nvidia-b300`. These are examples, not a whitelist; derive the group generically rather than hard-coding existing folder names.
 
-Reuse the existing lowercase directory when present; NEVER create a mixed-case duplicate. Create a new directory only at promotion, after the required validation succeeds. Lowercase only this one directory component, not the entire path: preserve recipe filenames, benchmark filenames, nested directory names, and exact Hugging Face model/draft repository IDs.
+For creation, derive `<provider>` by lowercasing the publisher parsed from the validated recipe's filename (for example, `${publisher,,}` in Bash), not from `MODEL_REPO`, which may name a different organization. Thus `vllm_Qwen_Qwen3.8-27B-FP8.sh` uses the `qwen` provider directory within its target GPU group. Reuse the existing lowercase provider directory there; never create a mixed-case duplicate. Create a new group/provider directory only at promotion, after required validation succeeds. Preserve recipe and benchmark basenames, other nested directory names, and exact Hugging Face model/draft repository IDs.
+
+For an update, retain the supplied recipe's actual provider directory and select only the copy inside the requested target GPU group's directory. Resolve the complete path before reading update settings or launching: a basename match in another hardware group is not the target recipe. If the supplied path and requested target group disagree, resolve the intended target copy or port without modifying the other hardware group's recipe. Do not update every copy sharing a basename or infer the provider from `MODEL_REPO`.
+
+Publish completed benchmark results beside that recipe at `recipes/<gpu-vendor>-<gpu-type>/<provider>/llm-inference-bench/<stem>_<gpu-type>x<gpu-qty>.json`, following the benchmark skill's filename rules and any explicit requested filename. The group and suffix must refer to the same GPU type; `<gpu-qty>` comes from the successful target configuration. Repository launch logs belong under `recipes/<gpu-vendor>-<gpu-type>/logs/<provider>/`. The shared helper resolves the repository from its own location and parses the recipe's relative group/provider path; it does not use a GPU-directory whitelist. For external `/tmp` candidates, timestamped logs stay under `$RECIPE_DIR/logs`. Retain the intended final group/provider mapping in task evidence for promotion and benchmark publication; do not guess it from the model ID or temporary basename.
+
+An explicitly requested directory-layout migration may update recipe/template helper paths and the helper's generic group/provider routing. Check those mechanical changes with shell syntax and static path/log-destination checks. Moving otherwise unchanged recipes or correcting only this plumbing preserves their existing runtime evidence and does not require another GPU sweep or benchmark. This exception does not authorize changing serving settings, engine sources, or dependencies.
 
 ## Architecture configuration contract
 
@@ -39,7 +45,7 @@ Edit only the selected architecture block. For a new recipe, every architecture 
 
 Preserve the current `template.sh` exactly in structure: its environment fields, field order, spacing, blank lines, architecture blocks, and shared-helper call; no extra comments or script lines. Backend fields contain complete quoted flag/value strings, while context, memory utilization, and tensor-parallel fields contain scalar values in the template's style. Put CLI backend selectors represented by the template in their matching architecture fields, not `EXTRA_ARGS`. Validated environment-based GEMM selectors belong in `INFERENCE_ENV` and take precedence over competing CLI selectors for the same GEMM path.
 
-The template is not entirely blank: it also contains fixed launcher plumbing. Preserve the template's `RECIPE_DIR` assignment verbatim in both temporary and promoted recipes; do not clear it or replace it with a literal directory. The helper `source` line MUST match the template in repository recipes. Its path may be adjusted only in the `/tmp` candidate so temporary validation can reach the existing repository helper; restore the exact template source line before promotion. The blank-initialization rule applies to architecture values, not these constants, and never authorizes changing the bundled template itself.
+The template is not entirely blank: it also contains fixed launcher plumbing. Preserve the template's `RECIPE_DIR` assignment verbatim in both temporary and promoted recipes; do not clear it or replace it with a literal directory. The helper `source` line MUST match the template in repository recipes: `source "$RECIPE_DIR/../../../tools/recipes/inference_recipe.sh"` resolves the extra GPU-group directory layer without embedding a GPU name. Its path may be adjusted in the `/tmp` candidate so temporary validation can reach the existing repository helper; restore the exact template source line before promotion. The blank-initialization rule applies to architecture values, not these constants, and never authorizes changing the bundled template itself. An explicitly requested layout migration follows the mechanical-change exception above.
 
 ### Target architecture selection
 
@@ -130,7 +136,7 @@ Populate the numeric switches `ENABLE_CACHE_FLAG`, `ENABLE_SPECULATIVE`, and `EN
 
 Accept a recipe filename plus an optional GPU name or architecture, for example “Update the vllm_Qwen_Qwen3.8-27B-FP8.sh cookbook recipe for H200s” or “for SM90”. Resolve the target as above. The normal update scope is the entire target architecture block defined by the live template, not the other architecture blocks or unrelated model-wide settings.
 
-Read the supplied script, check that its structure follows the current bundled `template.sh`, and record `PYTHON_ENV`, all target fields, helper path, launch arguments, and the original target memory-utilization value for the final report. Reuse context from another architecture in the same file according to the context policy below. Preserve existing values outside the update scope; do not replace a populated update candidate with the blank template.
+First resolve the supplied script within the requested `recipes/<gpu-vendor>-<gpu-type>/<provider>/` group using the routing rules above. Read that script, check that its structure follows the current bundled `template.sh`, and record its full path, `PYTHON_ENV`, all target fields, helper path, launch arguments, and the original target memory-utilization value for the final report. Reuse context from another architecture in the same file according to the context policy below. Preserve existing values outside the update scope; do not replace a populated update candidate with the blank template.
 
 Choose the update path:
 
@@ -155,7 +161,7 @@ This path takes precedence over conflicting full-creation requirements. Preserve
 5. Preserve unrelated existing model/draft revision selectors in sweep-only mode; never add a new selector. A non-VRAM error during an otherwise working sweep is not permission to redesign the recipe. Report it unless the user requests repair or the explicit SM120/SM121 backend-recovery rule applies.
 6. At the smallest passing GPU count and maximum passing two-decimal utilization, rerun the `/tmp` copy, wait for final API readiness, verify the 16,384 MiB reserve on every selected GPU, and check a coherent baseline response. Do not rerun reasoning, tool-call, modality, speculative, model-card, or parser-specific suites for an unchanged sweep-only setup unless requested.
 7. Only after that run passes, replace the original with the validated copy, restoring the standard helper source line. Preserve all unrelated content; if both target values are unchanged, do not rewrite the original needlessly.
-8. Run the final repository recipe once to API readiness on the same target GPUs, recheck the reserve and baseline response, then run Bash syntax and ShellCheck. Retain a pre-update copy until this succeeds; restore it if final-path validation fails.
+8. Run Bash syntax and ShellCheck on the saved script and verify the restored helper path statically. Reuse the successful temporary-run evidence; do not launch the repository copy or repeat reserve/baseline checks after copying. Apply the completion boundary in "Promotion after success" below.
 9. Do not add a new recipe, environment, installer, or catalog entry for a normal sweep-only update. If no available target GPU count can satisfy maximum context plus reserve, leave the original byte-for-byte unchanged and mark the sweep failed.
 
 ### Architecture setup and failed-baseline recovery
@@ -177,7 +183,7 @@ A successful task produces or updates a repository-format recipe that:
 5. records the selected architecture's configuration as defined by the current template, including the maximum passing two-decimal `GPU_MEM_UTIL_VALUE_<ARCH>`;
 6. exercises the model's actual API behavior, including its modality and model-card-advertised parsers/features, as required by the selected mode;
 7. follows the selected operation's workflow, including the initial in-place run for configured-target updates and temporary-only setup/recovery for missing or failed target configurations;
-8. is copied into its respective repository directory `recipes/<repo>` or updated there in place only after the required behavioral validation succeeds; and
+8. is copied into its target directory `recipes/<gpu-vendor>-<gpu-type>/<provider>/` or updated there in place only after the required behavioral validation succeeds; and
 9. has a reproducible package installer and consistently ordered environment entries.
 
 If those conditions cannot be met with the available GPUs and a reproducible SGLang/vLLM source allowed by the engine-source policy below, the result is a **failure**, not a narrowed recipe.
@@ -413,7 +419,7 @@ NEVER create or modify a repository serving helper, reasoning/tool parser plugin
 
 During `/tmp` validation, install source-required additional packages with exact, recorded package-manager commands or the permitted upstream source's normal build/install commands. Do not edit `installers/05_setup_env.sh`, `installers/06_install_packages.sh`, or `launch_env.sh` yet.
 
-Only after the temporary environment and `/tmp` recipe reach API readiness and pass behavioral validation, promote the exact tested installation by adding its environment mapping and installer definition to those repository scripts. Then recreate or reinstall the promoted environment from that definition and revalidate it. A failed candidate MUST leave all three repository environment scripts unchanged.
+Only after the temporary environment and `/tmp` recipe reach API readiness and pass behavioral validation, promote the exact tested installation by adding its environment mapping and installer definition to those repository scripts. Record the tested installation without recreating or reinstalling another environment solely to verify promotion. A failed candidate MUST leave all three repository environment scripts unchanged.
 
 ## Temporary-first workflow
 
@@ -485,7 +491,7 @@ The temporary script MUST invoke the existing helper at:
 tools/recipes/inference_recipe.sh
 ```
 
-Do not create a helper copy, helper symlink, plugin, engine patch, or compatibility shim under `/tmp`. Install only the permitted engine source in the temporary environment. Keep the template's `RECIPE_DIR` assignment unchanged. For temporary validation, adjust only the helper source path to the existing helper's absolute path, resolved from the actual target cookbook repository, not the skill installation. This exception applies only to the `/tmp` copy: restore the exact relative source line from the current template before promotion and rerun the final repository script.
+Do not create a helper copy, helper symlink, plugin, engine patch, or compatibility shim under `/tmp`. Install only the permitted engine source in the temporary environment. Keep the template's `RECIPE_DIR` assignment unchanged. For temporary validation, adjust only the helper source path to the existing helper's absolute path, resolved from the actual target cookbook repository, not the skill installation. This exception applies only to the `/tmp` copy: restore the exact relative source line from the current template before promotion and verify it statically without rerunning the repository script.
 
 ### Engine-stable launch logs
 
@@ -498,7 +504,7 @@ set -o pipefail
 <exact recipe command> 2>&1 | tee -a "$TEMP_LOG"
 ```
 
-The recipe's unchanged shared helper continues to write the normal timestamped file under `recipes/logs/`; the outer `tee` writes the same live output to the selected stable `/tmp` path. Preserve the recipe's exit status with `pipefail`, and supervise the complete wrapper process group. Truncate only the selected engine's stable log immediately before each launch. NEVER add either stable `/tmp` path, a second log destination, or this wrapper behavior to `inference_recipe.sh`, an individual recipe, or an environment launcher.
+For a repository recipe, the shared helper writes the normal timestamped file under `recipes/<gpu-vendor>-<gpu-type>/logs/<provider>/`. An external `/tmp` candidate that sources the helper by absolute path writes its timestamped log under its own `$RECIPE_DIR/logs`; keep its final target group/provider mapping separately for promotion and benchmark publication. The outer `tee` writes the same live output to the selected stable `/tmp` path. Preserve the recipe's exit status with `pipefail`, and supervise the complete wrapper process group. Truncate only the selected engine's stable log immediately before each launch. NEVER add either stable `/tmp` path, a second log destination, or this wrapper behavior to `inference_recipe.sh`, an individual recipe, or an environment launcher.
 Continuous log streaming by operators or external observers (such as `tail -F /tmp/vllm.log` or `tail -F /tmp/sglang.log`) MUST be protected across server restarts, sweeps, and cleanups. Operators should use `tail -F` (capital `-F`, `--follow=name --retry`) so log streams survive file truncations and recreations without interruption. During process management and server teardown, NEVER use broad command-substring pattern matches such as `pkill -f vllm` or `pkill -f sglang`, which terminate external watcher processes like `tail -F /tmp/vllm.log`. Always terminate the server cleanly via its specific launcher PID or process group (`kill -INT -- "-$SERVER_PID"`), or if forced process termination is required, use an exact binary regex (for example `pkill -9 -f 'vllm (serve|entrypoints)|VLLM::EngineCore'` or `pkill -9 -f 'sglang.launch_server'`) that specifically excludes monitoring tools and log watchers.
 
 ### 5. Static check before launch
@@ -585,7 +591,7 @@ Only after the sweep selects the smallest passing GPU count and final two-decima
 7. When both reasoning and tool calling are available, validate both paths. When native reasoning separation or a compatible reasoning parser is available, the tool-call test should also confirm that reasoning is parsed rather than leaked as raw markup.
 8. If the model is a VLM or multimodal model, send an actual supported image/video/audio input and verify a grounded, non-gibberish response. Text-only validation is insufficient.
 9. Verify `ENABLE_SPECULATIVE` independently: with `0`, confirm the stored speculative configuration is absent from the emitted command and runtime configuration; with `1`, confirm the requested method, draft path where applicable, and complete effective settings are active, then exercise generation. Separately, verify cache behavior against `ENABLE_CACHE_FLAG`, the populated `NO_PREFIX_CACHE`, and any exact model-card cache-disabling requirement; inspect the complete emitted command for duplicate or conflicting cache options.
-10. Verify the same launch output is present in both the helper's timestamped `recipes/logs/` file and the engine-specific stable mirror (`/tmp/vllm.log` or `/tmp/sglang.log`).
+10. Verify the same launch output is present in both the helper's timestamped log and the engine-specific stable mirror (`/tmp/vllm.log` or `/tmp/sglang.log`). The timestamped destination is `recipes/<gpu-vendor>-<gpu-type>/logs/<provider>/` for repository recipes, or `$RECIPE_DIR/logs` for external `/tmp` candidates.
 11. Stop with Ctrl+C and confirm clean process/GPU teardown.
 
 Do not claim a model/engine combination works unless this complete suite passes on the selected GPU count, final two-decimal utilization value, and maximum officially supported checkpoint context.
@@ -602,8 +608,8 @@ Mark the effort failed when any of these remain true after exhausting applicable
 
 On failure:
 
-- do not copy the recipe into `recipes/<repo>`;
-- leave an existing recipe byte-for-byte unchanged, restoring its pre-update copy if final-path validation failed; keep other architecture blocks intact;
+- do not copy the recipe into `recipes/<gpu-vendor>-<gpu-type>/<provider>/`;
+- leave an existing recipe byte-for-byte unchanged; keep other architecture blocks intact;
 - do not leave permanent environment catalog entries;
 - remove provisional installer/catalog wiring;
 - remove temporary scripts/environments created for the attempt unless the user asks to retain them;
@@ -611,11 +617,13 @@ On failure:
 
 ## Promotion after success
 
-Use this promotion process only after a full recipe creation or broad update candidate passes the complete behavioral contract. A normal configured-target sweep uses its narrower replacement/revalidation process and does not add catalog entries.
+Use this promotion process only after a full recipe creation or broad update candidate passes the complete behavioral contract. A normal configured-target sweep uses its narrower sweep/replacement workflow and does not add catalog entries.
 
-Before copying, set the target `TENSOR_PARALLEL_SIZE_<ARCH>` to the smallest ladder count that passed and `GPU_MEM_UTIL_VALUE_<ARCH>` to the proven maximum two-decimal value. Keep its maximum `CONTEXT_LEN_VALUE_<ARCH>` and four validated backend fields fixed. Rerun the temporary recipe with the exact final block and full behavioral contract. Confirm new recipes still have blank non-target blocks and updates have unchanged non-target blocks.
+Before copying, set the target `TENSOR_PARALLEL_SIZE_<ARCH>` to the smallest ladder count that passed and `GPU_MEM_UTIL_VALUE_<ARCH>` to the proven maximum two-decimal value. Keep its maximum `CONTEXT_LEN_VALUE_<ARCH>` and four validated backend fields fixed. Use the completed temporary-run evidence for that exact final block and its required behavioral checks; do not repeat a successful run solely because promotion is next. Confirm new recipes still have blank non-target blocks and updates have unchanged non-target blocks.
 
-1. copy the validated script into its respective repository directory `recipes/<repo>` (where `<repo>` is the lowercased publisher parsed from the script name); reuse or create only that lowercase directory, preserve the script's basename and unchanged template `RECIPE_DIR` assignment, and restore the exact helper source line from the current template. For an update, replace the supplied recipe at its existing path only now; retain its pre-update copy through final-path validation;
+**Completion boundary for all workflows:** once the exact configuration has passed its required temporary validation and any requested benchmark has completed successfully, copying/updating the recipe and publishing the completed benchmark JSON finishes the runtime work. Restore the template helper path and retain required catalog metadata and static checks. Do not add a final-path launch, another GPU sweep, repeated behavioral checks or benchmarks, a second environment installation, or package/source comparison audits solely because files were promoted. Renaming files, restoring the helper path, or writing already-tested settings does not invalidate the successful run. Leave the running server up when requested. Further runtime work requires an explicit user request or a substantive configuration/source change that invalidates the existing evidence.
+
+1. copy the validated script into `recipes/<gpu-vendor>-<gpu-type>/<provider>/`, using the resolved target GPU group and the lowercased publisher parsed from the script name for a new recipe; reuse or create only that group/provider directory, preserve the script's basename and unchanged template `RECIPE_DIR` assignment, and restore the exact helper source line from the current template. For an update, replace only the selected target-group recipe at its supplied path, preserving its actual provider directory;
 2. ensure executable mode;
 3. retain the exact validated upstream engine commit, its verified main/PR provenance, normal build/install commands, and dependency pins in the existing function in `installers/06_install_packages.sh`;
 4. if a new or changed environment is required, add or update the validated environment consistently in:
@@ -627,7 +635,7 @@ Before copying, set the target `TENSOR_PARALLEL_SIZE_<ARCH>` to the smallest lad
 7. update menu ranges and validation messages;
 8. keep `custom_uv` and `custom_pip` as the final two entries at the bottom;
 9. verify the three catalogs, `ENV_TYPES`, descriptions, dispatch, and installer function all agree;
-10. run the copied repository script again from its final path on the same selected target GPUs, check the per-GPU reserve at settled API readiness before traffic, then repeat the mode-required behavioral checks; later free-memory readings are telemetry, not reserve gates. Do not claim validation for other architecture blocks;
+10. publish any successfully completed requested benchmark JSON under `recipes/<gpu-vendor>-<gpu-type>/<provider>/llm-inference-bench/` beside the matching recipe, with `<stem>_<gpu-type>x<gpu-qty>.json` naming or the explicit requested filename, following the benchmark skill. Reuse the successful temporary-run evidence and do not claim validation for other architecture blocks;
 11. run final `bash -n` and ShellCheck for every changed shell file.
 
 Do not promote a partially validated script or leave a temporary-only dependency undocumented.

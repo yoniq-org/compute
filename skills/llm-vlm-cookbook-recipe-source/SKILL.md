@@ -7,6 +7,14 @@ description: "Authoritative source policy for researching, creating, validating,
 
 Use this source skill whenever a task involves an LLM or VLM serving recipe, launch command, engine configuration, model compatibility question, or translation between SGLang and vLLM.
 
+## Repository target routing
+
+Local recipes use `recipes/<gpu-vendor>-<gpu-type>/<provider>/<script>.sh`. Derive the lowercase vendor from the explicit target or detected target hardware; use the same GPU-type label as the benchmark suffix. Derive hardware groups generically, without a whitelist of existing directories. For creation, lowercase the publisher parsed from the recipe filename to obtain `<provider>`; for an update, preserve the actual supplied provider directory. `MODEL_REPO` may name a different publisher and does not determine either destination.
+
+When reviewing or updating an existing recipe, match its complete path to the requested hardware group. Do not substitute or modify another group's copy merely because its basename or architecture suffix matches. Results belong beside the selected recipe at `<provider>/llm-inference-bench/<stem>_<gpu-type>x<gpu-qty>.json` within that group, following the benchmark skill and any explicit requested filename. Repository timestamped logs belong at `recipes/<gpu-vendor>-<gpu-type>/logs/<provider>/`; external `/tmp` candidates keep logs under their own `$RECIPE_DIR/logs` and retain their intended final group/provider mapping in task evidence.
+
+An explicitly requested layout migration or mechanical helper-path correction preserves prior runtime evidence when serving settings and dependencies are unchanged. Verify the new paths statically; it does not require a new GPU sweep or benchmark. Use the creation/update skill and its current template for implementation details.
+
 ## Mandatory first sources
 
 Before consulting model cards, issues, pull requests, third-party examples, or general web results, inspect both official recipe collections:

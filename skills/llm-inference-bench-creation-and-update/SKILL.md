@@ -13,7 +13,7 @@ The caller MUST supply, for each model/run:
 
 - `launch_script`: the inference script used to start this instance, wherever it is located.
 - `model_context_limit`: the explicit context limit in tokens for this model/run. Never infer it from a model name, GPU memory, or a previous model's benchmark. Normalize supplied units before calculating: `k`/`K` = 1,024 tokens; `m`/`M` = 1,048,576 tokens. A bare integer is an exact token count, not a rounded marketing label.
-- `gpu_type`: the supplied filename label, such as `h200`. Do not guess this label from the machine's inventory.
+- `gpu_type`: the supplied filename label, such as `b200`, excluding the GPU vendor. It must match the GPU-type suffix of the launcher's `recipes/<gpu-vendor>-<gpu-type>/` directory. Do not guess this label from the machine's inventory.
 
 Read the launch script and any referenced configuration needed to obtain GPU quantity, server port, API key, host, and served model name. Resolve actual launch arguments/interactive selections from the known invocation or launch logs rather than assuming defaults were used. Request only required inputs that remain unavailable; do not start a guessed benchmark.
 
@@ -201,8 +201,8 @@ Read the launcher without executing or sourcing it merely to obtain variables: s
 
 For `recipes/` conventions:
 
-- GPU quantity normally comes from `DEFAULT_TENSOR_PARALLEL_SIZE`; the resolved launch may use `TENSOR_PARALLEL_SIZE_VALUE` after an argument/interactive override.
-- Port normally comes from `DEFAULT_PORT`; the resolved launch uses `INFERENCE_PORT`.
+- GPU quantity comes from the selected architecture's `TENSOR_PARALLEL_SIZE_<ARCH>` setting, which the shared helper resolves to `TENSOR_PARALLEL_SIZE_VALUE`. The current template does not provide an interactive tensor-parallel override.
+- Port comes from the configured `DEFAULT_PORT`, which the shared helper assigns to `INFERENCE_PORT`.
 - `API_KEY` can contain the entire fragment `--api-key YOUR_API_KEY`; pass only the key value to the benchmark, not the fragment.
 - `SERVED_MODEL_NAME` identifies the API model, which may differ from `MODEL_REPO`.
 
@@ -218,19 +218,19 @@ Write the benchmark output to `/tmp` first:
 /tmp/<launch-script-stem>_<gpu-type>x<gpu-qty>.json
 ```
 
-Remove only the launch script's final extension; preserve its other spelling, capitalization, punctuation, and variant suffixes. Validate `gpu_type` as a filename label without path separators (for example, `[A-Za-z0-9][A-Za-z0-9._-]*`) and GPU quantity as a positive integer.
+Remove only the recipe launch script's final extension; preserve its other spelling, capitalization, punctuation, and variant suffixes. Validate `gpu_type` as a lowercase filename label matching `[a-z0-9][a-z0-9._-]*` and GPU quantity as a positive integer. Keep the filename convention exactly `<launch-script-stem>_<gpu-type>x<gpu-qty>.json`; the vendor belongs in the directory, not in the GPU-type label.
 
 The **only publication destination** is the matching recipe's directory, expressed relative to the caller's checkout:
 
 ```text
-recipes/<repo-match>/llm-inference-bench/<launch-script-stem>_<gpu-type>x<gpu-qty>.json
+recipes/<gpu-vendor>-<gpu-type>/<provider>/llm-inference-bench/<launch-script-stem>_<gpu-type>x<gpu-qty>.json
 ```
 
-Resolve `<repo-match>` from the actual launcher's recipe directory, not from the served-model alias or `MODEL_REPO`. For example, a launcher under `recipes/incoai/` publishes under `recipes/incoai/llm-inference-bench/` even if its target checkpoint belongs to another organization. NEVER publish to the shared `recipes/llm-inference-bench/` directory.
+Resolve the checkout, hardware group, and provider from the actual launcher's path. Require the hardware-group directory to match `[a-z0-9]+-[a-z0-9][a-z0-9._-]*`. Split it at its first hyphen: the prefix is the vendor, and the entire remaining suffix is the GPU type. Require that suffix to equal the supplied lowercase `gpu_type` exactly before benchmarking or publishing. Accept any labels matching these rules; do not maintain a hardware-directory allowlist or special-case known GPUs. A launcher under `recipes/nvidia-b200/incoai/` publishes beside that recipe even if its checkpoint belongs to another organization. Neither `MODEL_REPO` nor a served-model alias determines the provider or hardware group.
 
-Publisher directories directly under `recipes/` are lowercase. Reuse the launcher's actual lowercase directory; NEVER create a mixed-case publisher directory from its filename or `MODEL_REPO`. Preserve launcher and benchmark filename capitalization and nested directory names; do not lowercase the entire path.
+Provider directories within each hardware group must match `[a-z0-9][a-z0-9._-]*`; `logs` and `llm-inference-bench` are reserved and cannot serve as provider directories. Reuse the launcher's actual provider directory; NEVER create a mixed-case provider directory from its filename or `MODEL_REPO`. Preserve launcher and benchmark filename capitalization; do not lowercase the entire path.
 
-Resolve and retain the launcher path relative to its actual invocation directory before working in `/tmp`. Derive the checkout and destination from that resolved path; do not embed a workstation-specific checkout root or resolve `recipes/` against an unrelated current directory. The helper below covers the standard `recipes/<repo-match>/<launcher>` layout. For an external/nonstandard launcher, locate its unique corresponding recipe directory first; report an unresolved or ambiguous mapping instead of guessing a destination.
+Capture the absolute invocation directory and resolve the launcher before working in `/tmp`. Derive the checkout and destination from the resolved recipe path, independent of the later working directory or spaces in paths. The helper below covers `recipes/<gpu-vendor>-<gpu-type>/<provider>/<launcher>`. For a temporary copy or external launcher, retain an explicit mapping to its unique original target recipe as `recipe_script`; use that recipe's stem and hardware/provider directory for both output paths. Verify this mapping against the recorded launch, and retain it with the benchmark invocation. Reject unresolved or ambiguous mappings instead of guessing from model names or publishing beside a temporary launcher.
 
 Reference path construction once these inputs are resolved:
 
@@ -239,34 +239,57 @@ import re
 from pathlib import Path
 
 
-def benchmark_output_path(launch_script: str, gpu_type: str, gpu_qty: int) -> Path:
-    if not isinstance(gpu_type, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", gpu_type):
-        raise ValueError("A supplied, filename-safe GPU type is required")
+def benchmark_paths(
+    launch_script: str,
+    gpu_type: str,
+    gpu_qty: int,
+    *,
+    invocation_dir: str,
+    recipe_script: str | None = None,
+) -> tuple[Path, Path]:
+    if not isinstance(gpu_type, str) or not re.fullmatch(r"[a-z0-9][a-z0-9._-]*", gpu_type):
+        raise ValueError("A supplied, lowercase filename-safe GPU type is required")
     if type(gpu_qty) is not int or gpu_qty < 1:
         raise ValueError("GPU quantity must be a positive integer resolved from the launch script")
-    script = Path(launch_script).expanduser().absolute()
-    return Path("/tmp") / f"{script.stem}_{gpu_type}x{gpu_qty}.json"
+    invocation = Path(invocation_dir).expanduser()
+    if not invocation.is_absolute() or not invocation.is_dir():
+        raise ValueError("Retain the absolute invocation directory before changing directories")
 
+    def resolve_script(value: str) -> Path:
+        candidate = Path(value).expanduser()
+        if not candidate.is_absolute():
+            candidate = invocation / candidate
+        candidate = candidate.resolve(strict=True)
+        if not candidate.is_file():
+            raise ValueError("The launcher and mapped recipe must be existing files")
+        return candidate
 
-def benchmark_result_path(launch_script: str, gpu_type: str, gpu_qty: int) -> Path:
-    script = Path(launch_script).expanduser().resolve()
-    recipe_directory = script.parent
+    launched_script = resolve_script(launch_script)
+    recipe = resolve_script(recipe_script) if recipe_script is not None else launched_script
+    recipe_directory = recipe.parent
+    hardware_group = recipe_directory.parent
     if (
-        recipe_directory.parent.name != "recipes"
-        or recipe_directory.name == "llm-inference-bench"
+        hardware_group.parent.name != "recipes"
+        or recipe_directory.name in {"logs", "llm-inference-bench"}
+        or not re.fullmatch(r"[a-z0-9][a-z0-9._-]*", recipe_directory.name)
     ):
-        raise ValueError("Resolve a unique recipes/<repo-match>/ directory before publishing")
-    filename = benchmark_output_path(launch_script, gpu_type, gpu_qty).name
-    return recipe_directory / "llm-inference-bench" / filename
+        raise ValueError("Resolve recipes/<gpu-vendor>-<gpu-type>/<provider>/<launcher>")
+    if not re.fullmatch(r"[a-z0-9]+-[a-z0-9][a-z0-9._-]*", hardware_group.name):
+        raise ValueError("The hardware group must contain valid lowercase vendor and GPU labels")
+    vendor, separator, directory_gpu_type = hardware_group.name.partition("-")
+    if directory_gpu_type != gpu_type:
+        raise ValueError("Supplied GPU type does not match the recipe's hardware group")
+    filename = f"{recipe.stem}_{gpu_type}x{gpu_qty}.json"
+    return Path("/tmp") / filename, recipe_directory / "llm-inference-bench" / filename
 ```
 
 For example:
 
 ```text
-recipes/qwen/vllm_Qwen_Qwen3.8-27B-FP8.sh
-  + gpu_type=h200, gpu_qty=1
-  -> /tmp/vllm_Qwen_Qwen3.8-27B-FP8_h200x1.json
-  -> publish only after success: recipes/qwen/llm-inference-bench/vllm_Qwen_Qwen3.8-27B-FP8_h200x1.json
+recipes/nvidia-b200/qwen/vllm_Qwen_Qwen3.8-27B-FP8.sh
+  + gpu_type=b200, gpu_qty=1
+  -> /tmp/vllm_Qwen_Qwen3.8-27B-FP8_b200x1.json
+  -> publish only after success: recipes/nvidia-b200/qwen/llm-inference-bench/vllm_Qwen_Qwen3.8-27B-FP8_b200x1.json
 ```
 
 If an output already exists in `/tmp`, preserve it before replacing it, using a clearly identified backup. Keep the requested filename unchanged, do not silently resume a previous benchmark, and never treat stale JSON as evidence for a new run. Record run start time, the scratch output path, and the resolved publisher-local destination before benchmarking.
@@ -329,9 +352,9 @@ Classify the run explicitly:
 
 If estimated full-limit prefill fails, report that failure rather than quietly omitting the endpoint. Keep genuine partial output for diagnosis; do not invent an empty success JSON, rewrite error measurements into successful ones, or delete a user's benchmark checkout/environment after a failed run.
 
-Only after the run is classified **SUCCESS (completed sweep)** and both endpoint gates pass, create the resolved `recipes/<repo-match>/llm-inference-bench/` directory if needed and copy the single final JSON from `/tmp` **only** to that directory, preserving its filename. Verify that the published copy is byte-for-byte identical to the completed source before reporting publication or replacement of an existing result.
+Only after the run is classified **SUCCESS (completed sweep)** and both endpoint gates pass, create the resolved `recipes/<gpu-vendor>-<gpu-type>/<provider>/llm-inference-bench/` directory if needed and copy the single final JSON from `/tmp` **only** to that directory, preserving its filename. Verify that the published copy is byte-for-byte identical to the completed source before reporting publication or replacement of an existing result.
 
-NEVER create or update a central `recipes/llm-inference-bench/` copy, fan out to multiple directories, or publish beside an unrelated external launcher. All checkout paths here are relative conventions to resolve from the actual recipe location, not fixed installation paths.
+NEVER create or update a central `recipes/llm-inference-bench/` or hardware-group-level `recipes/<gpu-vendor>-<gpu-type>/llm-inference-bench/` copy, fan out to multiple directories, or publish beside an unrelated external launcher. All checkout paths here are relative conventions to resolve from the actual recipe location, not fixed installation paths.
 
 Benchmarks MUST run exclusively in `/tmp`. NEVER copy, transfer, or synchronize any `.resume.json`, checkpoint, intermediate, partial, interrupted, or aborted output into a recipe results directory. Only the single final completed `.json` is copied once the entire requested sweep is 100% finished.
 

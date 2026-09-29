@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+PYTHON_ENV="env_nemotron-ultra-vllm-9c2d21046"
+INFERENCE_PROVIDER="vLLM"
+INFERENCE_ENV=""
+MODEL_REPO="nvidia/Qwen3.5-397B-A17B-NVFP4-V2"
+MODEL_NAME="qwen3"
+SERVED_MODEL_NAME="qwen"
+TRUST_REMOTE_CODE="--trust-remote-code"
+REASONING_PARSER="--reasoning-parser $MODEL_NAME"
+ENABLE_AUTO_TOOL_CHOICE="--enable-auto-tool-choice"
+TOOL_CALL_PARSER="--tool-call-parser qwen3_coder"
+METRICS_FLAG=""
+HOST="0.0.0.0"
+DEFAULT_PORT=8000
+API_KEY="--api-key YOUR_API_KEY"
+
+ENABLE_CACHE_FLAG=0
+ENABLE_SPECULATIVE=1
+ENABLE_REASONING_PARSER=0
+SPECULATIVE="--speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\":3,\"moe_backend\":\"triton\",\"kv_cache_dtype\":\"bfloat16\",\"attention_backend\":\"TRITON_ATTN\"}"
+QUANTIZATION="--quantization modelopt_mixed"
+NO_PREFIX_CACHE=""
+REASONING_PARSER_PLUGIN=""
+EXTRA_ARGS="--dtype bfloat16 --kv-cache-dtype fp8_e4m3 --attention-config {\"disable_flashinfer_q_quantization\":true} --mamba-cache-dtype auto --mamba-ssm-cache-dtype float32 --enable-prefix-caching --mamba-cache-mode align"
+
+RECIPE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+source "$RECIPE_DIR/../../../tools/recipes/inference_recipe.sh"
+
+BACKEND_ATTENTION_SM90="--attention-backend FLASHINFER"
+BACKEND_FP8_GEMM_SM90="--linear-backend cutlass"
+BACKEND_FP4_GEMM_SM90="--linear-backend cutlass"
+BACKEND_MOE_RUNNER_SM90="--moe-backend emulation"
+CONTEXT_LEN_VALUE_SM90=262144
+GPU_MEM_UTIL_VALUE_SM90=0.863147
+TENSOR_PARALLEL_SIZE_SM90=4
+
+BACKEND_ATTENTION_SM100=""
+BACKEND_FP8_GEMM_SM100=""
+BACKEND_FP4_GEMM_SM100=""
+BACKEND_MOE_RUNNER_SM100=""
+CONTEXT_LEN_VALUE_SM100=""
+GPU_MEM_UTIL_VALUE_SM100=""
+TENSOR_PARALLEL_SIZE_SM100=""
+
+BACKEND_ATTENTION_SM103=""
+BACKEND_FP8_GEMM_SM103=""
+BACKEND_FP4_GEMM_SM103=""
+BACKEND_MOE_RUNNER_SM103=""
+CONTEXT_LEN_VALUE_SM103=""
+GPU_MEM_UTIL_VALUE_SM103=""
+TENSOR_PARALLEL_SIZE_SM103=""
+
+BACKEND_ATTENTION_SM120=""
+BACKEND_FP8_GEMM_SM120=""
+BACKEND_FP4_GEMM_SM120=""
+BACKEND_MOE_RUNNER_SM120=""
+CONTEXT_LEN_VALUE_SM120=262144
+GPU_MEM_UTIL_VALUE_SM120="0"
+TENSOR_PARALLEL_SIZE_SM120=4
+
+BACKEND_ATTENTION_SM121=""
+BACKEND_FP8_GEMM_SM121=""
+BACKEND_FP4_GEMM_SM121=""
+BACKEND_MOE_RUNNER_SM121=""
+CONTEXT_LEN_VALUE_SM121=""
+GPU_MEM_UTIL_VALUE_SM121=""
+TENSOR_PARALLEL_SIZE_SM121=""
+
+run_inference_recipe "$@"

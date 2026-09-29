@@ -2,6 +2,44 @@
 
 # Shared inference recipe runtime; configure the recipe and SM profile before calling run_inference_recipe.
 
+resolve_recipe_paths() {
+    : "${RECIPE_DIR:?RECIPE_DIR must be set by the calling recipe}"
+    HELPER_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+    SCRIPTS_DIR="$(cd -- "$HELPER_DIR/../.." && pwd -P)"
+    SETUP_ENV_SCRIPT="$SCRIPTS_DIR/installers/05_setup_env.sh"
+    PACKAGE_INSTALLER_SCRIPT="$SCRIPTS_DIR/installers/06_install_packages.sh"
+
+    local recipes_root="$SCRIPTS_DIR/recipes"
+    local recipe_relative_dir
+    local resolved_recipe_dir
+    resolved_recipe_dir="$(cd -- "$RECIPE_DIR" && pwd -P)" || return 1
+    RECIPE_HARDWARE_GROUP=""
+    RECIPE_GPU_VENDOR=""
+    RECIPE_GPU_TYPE=""
+    CALLING_REPO=""
+
+    if [[ "$resolved_recipe_dir" == "$recipes_root/"* ]]; then
+        recipe_relative_dir="${resolved_recipe_dir#"$recipes_root/"}"
+        if [[ "$recipe_relative_dir" != */* || "$recipe_relative_dir" == */*/* ]]; then
+            echo "Error: expected recipe directory recipes/<gpu-vendor>-<gpu-type>/<provider>." >&2
+            return 1
+        fi
+        RECIPE_HARDWARE_GROUP="${recipe_relative_dir%%/*}"
+        CALLING_REPO="${recipe_relative_dir#*/}"
+        if ! [[ "$RECIPE_HARDWARE_GROUP" =~ ^[a-z0-9]+-[a-z0-9][a-z0-9._-]*$ &&
+                "$CALLING_REPO" =~ ^[a-z0-9][a-z0-9._-]*$ ]] ||
+            [[ "$CALLING_REPO" == "logs" || "$CALLING_REPO" == "llm-inference-bench" ]]; then
+            echo "Error: recipe hardware and provider directories must use lowercase filename labels." >&2
+            return 1
+        fi
+        RECIPE_GPU_VENDOR="${RECIPE_HARDWARE_GROUP%%-*}"
+        RECIPE_GPU_TYPE="${RECIPE_HARDWARE_GROUP#*-}"
+        LOG_DIR="$recipes_root/$RECIPE_GPU_VENDOR-$RECIPE_GPU_TYPE/logs/$CALLING_REPO"
+    else
+        LOG_DIR="$resolved_recipe_dir/logs"
+    fi
+}
+
 detect_gpu_configuration() {
     if ! command -v nvidia-smi >/dev/null 2>&1; then
         echo "Error: nvidia-smi is required for GPU detection." >&2
@@ -509,13 +547,11 @@ print_speculative_config() {
 }
 
 run_inference_recipe() {
-    : "${RECIPE_DIR:?RECIPE_DIR must be set by the calling recipe}"
+    if ! resolve_recipe_paths; then
+        return 1
+    fi
     PYTHON_ENV="${PYTHON_ENV:-}"
     INFERENCE_PROVIDER_NORMALIZED="${INFERENCE_PROVIDER,,}"
-    HELPER_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-    SCRIPTS_DIR="$(cd -- "$HELPER_DIR/../.." && pwd -P)"
-    SETUP_ENV_SCRIPT="$SCRIPTS_DIR/installers/05_setup_env.sh"
-    PACKAGE_INSTALLER_SCRIPT="$SCRIPTS_DIR/installers/06_install_packages.sh"
     INFERENCE_COMMAND=""
     INFERENCE_EXECUTABLE=""
 
@@ -558,25 +594,8 @@ run_inference_recipe() {
             exit 1
             ;;
     esac
-    CALLING_SCRIPT="${BASH_SOURCE[1]:-$0}"
-    CALLING_BASENAME="$(basename -- "$CALLING_SCRIPT")"
-    CALLING_REPO=""
-    if [[ "$CALLING_BASENAME" =~ ^(vllm|sglang)_([^_]+)_ ]]; then
-        CALLING_REPO="${BASH_REMATCH[2]}"
-    elif [ -n "$RECIPE_DIR" ] && [ "$(basename "$(dirname "$RECIPE_DIR")")" = "recipes" ]; then
-        CALLING_REPO="$(basename "$RECIPE_DIR")"
-    fi
-
-    if [ -n "$CALLING_REPO" ] && [ "$CALLING_REPO" != "recipes" ]; then
-        LOG_DIR="$SCRIPTS_DIR/recipes/logs/${CALLING_REPO,,}"
-    elif [ -n "$RECIPE_DIR" ] && [ -d "$RECIPE_DIR" ]; then
-        LOG_DIR="$RECIPE_DIR/logs"
-    else
-        LOG_DIR="$SCRIPTS_DIR/recipes/logs"
-    fi
     LOG_TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
     LAUNCH_LOG="$LOG_DIR/${LOG_TIMESTAMP}_${LOG_SUFFIX}.log"
-    LAUNCH_LOG_REL="./logs/${LOG_TIMESTAMP}_${LOG_SUFFIX}.log"
     if ! mkdir -p "$LOG_DIR"; then
         echo "Error: unable to create log directory: $LOG_DIR" >&2
         exit 1
@@ -593,7 +612,7 @@ run_inference_recipe() {
         export VLLM_LAUNCH_LOG
     fi
     exec > >(trap '' INT TERM HUP QUIT; exec tee -a "$LAUNCH_LOG") 2>&1
-    echo "$INFERENCE_PROVIDER log: $LAUNCH_LOG_REL"
+    echo "$INFERENCE_PROVIDER log: $LAUNCH_LOG"
     echo "Full log path: $LAUNCH_LOG"
 
     echo ""

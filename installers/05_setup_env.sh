@@ -2,7 +2,7 @@
 
 # Script: 05_setup_env.sh
 # Purpose: Create ML virtual environment and set up environment variables
-# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-132]
+# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-133]
 # --refresh-activation updates only generated architecture settings in an existing environment.
 
 WORKSPACE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)"
@@ -506,61 +506,64 @@ resolve_env_type() {
         113|redhatai_vllm|redhatai-vllm)
             echo "redhatai-vllm"
             ;;
-        114|stepfun_sglang|stepfun-sglang)
+        114|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+            echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
+            ;;
+        115|stepfun_sglang|stepfun-sglang)
             echo "stepfun-sglang"
             ;;
-        115|stepfun_transformers|stepfun-transformers)
+        116|stepfun_transformers|stepfun-transformers)
             echo "stepfun-transformers"
             ;;
-        116|stepfun_vllm|stepfun-vllm)
+        117|stepfun_vllm|stepfun-vllm)
             echo "stepfun-vllm"
             ;;
-        117|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
+        118|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
             echo "xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        118|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
+        119|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
             echo "xiaomimimo-flash-vllm-pr-58177"
             ;;
-        119|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+        120|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
             echo "xiaomimimo-sglang-v0520"
             ;;
-        120|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+        121|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
             echo "xiaomimimo-vllm-v0300"
             ;;
-        121|z_lab_sglang|z-lab-sglang)
+        122|z_lab_sglang|z-lab-sglang)
             echo "z-lab-sglang"
             ;;
-        122|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+        123|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
             echo "z-lab-sglang-pr-35209"
             ;;
-        123|z_lab_vllm|z-lab-vllm)
+        124|z_lab_vllm|z-lab-vllm)
             echo "z-lab-vllm"
             ;;
-        124|zyphra_legacy_sglang|zyphra-legacy-sglang)
+        125|zyphra_legacy_sglang|zyphra-legacy-sglang)
             echo "zyphra-legacy-sglang"
             ;;
-        125|zyphra_legacy_transformers|zyphra-legacy-transformers)
+        126|zyphra_legacy_transformers|zyphra-legacy-transformers)
             echo "zyphra-legacy-transformers"
             ;;
-        126|zyphra_legacy_vllm|zyphra-legacy-vllm)
+        127|zyphra_legacy_vllm|zyphra-legacy-vllm)
             echo "zyphra-legacy-vllm"
             ;;
-        127|zyphra_sglang|zyphra-sglang)
+        128|zyphra_sglang|zyphra-sglang)
             echo "zyphra-sglang"
             ;;
-        128|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+        129|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
             echo "zyphra-sglang-pr-32517"
             ;;
-        129|zyphra_transformers|zyphra-transformers)
+        130|zyphra_transformers|zyphra-transformers)
             echo "zyphra-transformers"
             ;;
-        130|zyphra_vllm|zyphra-vllm)
+        131|zyphra_vllm|zyphra-vllm)
             echo "zyphra-vllm"
             ;;
-        131|custom|custom_uv|custom-uv|env_custom_uv)
+        132|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        132|custom_pip|custom-pip|env_custom_pip)
+        133|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -921,32 +924,33 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "111) RedHat (SGLang) PR 35809"
     echo "112) RedHatAI (SGLang)"
     echo "113) RedHatAI (vLLM)"
-    echo "114) StepFun (SGLang)"
-    echo "115) StepFun (Transformers)"
-    echo "116) StepFun (vLLM)"
-    echo "117) XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
-    echo "118) XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "119) XiaomiMiMo Distill (SGLang 0.5.20)"
-    echo "120) XiaomiMiMo Distill (vLLM 0.30.0)"
-    echo "121) z-lab (SGLang)"
-    echo "122) z-lab (SGLang) PR 35209"
-    echo "123) z-lab (vLLM)"
-    echo "124) Zyphra Legacy (SGLang)"
-    echo "125) Zyphra Legacy (Transformers)"
-    echo "126) Zyphra Legacy (vLLM)"
-    echo "127) Zyphra (SGLang)"
-    echo "128) Zyphra (SGLang) PR 32517"
-    echo "129) Zyphra (Transformers)"
-    echo "130) Zyphra (vLLM)"
-    echo "131) Custom (uv)"
-    echo "132) Custom (pip)"
+    echo "114) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+    echo "115) StepFun (SGLang)"
+    echo "116) StepFun (Transformers)"
+    echo "117) StepFun (vLLM)"
+    echo "118) XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
+    echo "119) XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "120) XiaomiMiMo Distill (SGLang 0.5.20)"
+    echo "121) XiaomiMiMo Distill (vLLM 0.30.0)"
+    echo "122) z-lab (SGLang)"
+    echo "123) z-lab (SGLang) PR 35209"
+    echo "124) z-lab (vLLM)"
+    echo "125) Zyphra Legacy (SGLang)"
+    echo "126) Zyphra Legacy (Transformers)"
+    echo "127) Zyphra Legacy (vLLM)"
+    echo "128) Zyphra (SGLang)"
+    echo "129) Zyphra (SGLang) PR 32517"
+    echo "130) Zyphra (Transformers)"
+    echo "131) Zyphra (vLLM)"
+    echo "132) Custom (uv)"
+    echo "133) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-132): " choice
+        read -r -p "Enter your choice (1-133): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 132."
+            print_error "Invalid choice. Please enter a number between 1 and 133."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -957,7 +961,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 132."
+        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 133."
         if [ "$BEING_SOURCED" = true ]; then
             return 1
         fi

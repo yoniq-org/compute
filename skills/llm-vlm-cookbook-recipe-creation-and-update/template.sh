@@ -25,7 +25,7 @@ REASONING_PARSER_PLUGIN=""
 EXTRA_ARGS=""
 
 RECIPE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-source "$RECIPE_DIR/../../tools/recipes/inference_recipe.sh"
+source "$RECIPE_DIR/../../../tools/recipes/inference_recipe.sh"
 
 BACKEND_ATTENTION_SM90=""
 BACKEND_FP8_GEMM_SM90=""
