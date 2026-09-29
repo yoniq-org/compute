@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_rtxpro6k-glm53flash-vllm-2617fe938"
+PYTHON_ENV="env_rtxpro6k-glm53-vllm-2617fe938"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_USE_V2_MODEL_RUNNER=1 VLLM_ENGINE_READY_TIMEOUT_S=3600"
 MODEL_REPO="zai-org/GLM-5.3-Flash"

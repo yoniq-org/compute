@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
+PYTHON_ENV="env_rtxpro6k-glm53-vllm-2617fe938"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_USE_V2_MODEL_RUNNER=1 VLLM_ENGINE_READY_TIMEOUT_S=3600 VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS=fp4_gemm,trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 MODEL_REPO="nvidia/GLM-5.3-Flash-NVFP4"
@@ -56,7 +56,7 @@ BACKEND_FP8_GEMM_SM120=""
 BACKEND_FP4_GEMM_SM120="--linear-backend flashinfer_cutlass"
 BACKEND_MOE_RUNNER_SM120="--moe-backend flashinfer_cutlass"
 CONTEXT_LEN_VALUE_SM120=1048576
-GPU_MEM_UTIL_VALUE_SM120="0.82"
+GPU_MEM_UTIL_VALUE_SM120="0.83"
 TENSOR_PARALLEL_SIZE_SM120=4
 
 BACKEND_ATTENTION_SM121=""
