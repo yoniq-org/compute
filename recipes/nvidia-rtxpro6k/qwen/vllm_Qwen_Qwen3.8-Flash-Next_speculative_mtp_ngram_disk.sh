@@ -22,7 +22,7 @@ SPECULATIVE="--speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\"
 QUANTIZATION=""
 NO_PREFIX_CACHE=""
 REASONING_PARSER_PLUGIN=""
-EXTRA_ARGS="--dtype bfloat16 --enable-expert-parallel"
+EXTRA_ARGS="--enable-expert-parallel"
 
 RECIPE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 source "$RECIPE_DIR/../../../tools/recipes/inference_recipe.sh"
