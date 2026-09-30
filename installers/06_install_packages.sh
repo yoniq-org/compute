@@ -137,6 +137,7 @@ ENV_TYPES=(
   "redhatai-vllm"
   "rtxpro6k-deepseek-v41-vllm-pr-56509"
   "rtxpro6k-glm53-vllm-2617fe938"
+  "rtxpro6k-incoai-sglang-964c45cf3"
   "rtxpro6k-incoai-vllm-pr-417b0b6aa"
   "rtxpro6k-intel-sglang"
   "rtxpro6k-liquidai-sglang"
@@ -288,6 +289,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["redhatai-vllm"]="RedHatAI (vLLM)"
   ["rtxpro6k-deepseek-v41-vllm-pr-56509"]="RTX PRO 6000 DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
   ["rtxpro6k-glm53-vllm-2617fe938"]="RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
+  ["rtxpro6k-incoai-sglang-964c45cf3"]="RTX PRO 6000 incoai GLM-5.3 DFlash2 (SGLang 964c45cf3)"
   ["rtxpro6k-incoai-vllm-pr-417b0b6aa"]="RTX PRO 6000 incoai GLM-5.3 DFlash2 (vLLM PR 58773, 417b0b6aa)"
   ["rtxpro6k-intel-sglang"]="RTX PRO 6000 Intel (SGLang)"
   ["rtxpro6k-liquidai-sglang"]="RTX PRO 6000 LiquidAI (SGLang)"
@@ -672,103 +674,106 @@ resolve_env_type() {
         115|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
             echo "rtxpro6k-glm53-vllm-2617fe938"
             ;;
-        116|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+        116|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
+            echo "rtxpro6k-incoai-sglang-964c45cf3"
+            ;;
+        117|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
             echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
             ;;
-        117|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        118|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        118|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        119|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        119|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        120|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        120|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        121|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        121|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        122|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        122|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        123|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        123|rtxpro6k_nvidia_glm53flash_vllm_pr_55277|rtxpro6k-nvidia-glm53flash-vllm-pr-55277)
+        124|rtxpro6k_nvidia_glm53flash_vllm_pr_55277|rtxpro6k-nvidia-glm53flash-vllm-pr-55277)
             echo "rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
             ;;
-        124|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        125|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        125|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        126|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        126|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        127|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        127|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        128|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        128|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        129|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        129|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        130|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        130|stepfun_sglang|stepfun-sglang)
+        131|stepfun_sglang|stepfun-sglang)
             echo "stepfun-sglang"
             ;;
-        131|stepfun_transformers|stepfun-transformers)
+        132|stepfun_transformers|stepfun-transformers)
             echo "stepfun-transformers"
             ;;
-        132|stepfun_vllm|stepfun-vllm)
+        133|stepfun_vllm|stepfun-vllm)
             echo "stepfun-vllm"
             ;;
-        133|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
+        134|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
             echo "xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        134|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
+        135|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
             echo "xiaomimimo-flash-vllm-pr-58177"
             ;;
-        135|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+        136|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
             echo "xiaomimimo-sglang-v0520"
             ;;
-        136|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+        137|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
             echo "xiaomimimo-vllm-v0300"
             ;;
-        137|z_lab_sglang|z-lab-sglang)
+        138|z_lab_sglang|z-lab-sglang)
             echo "z-lab-sglang"
             ;;
-        138|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+        139|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
             echo "z-lab-sglang-pr-35209"
             ;;
-        139|z_lab_vllm|z-lab-vllm)
+        140|z_lab_vllm|z-lab-vllm)
             echo "z-lab-vllm"
             ;;
-        140|zyphra_legacy_sglang|zyphra-legacy-sglang)
+        141|zyphra_legacy_sglang|zyphra-legacy-sglang)
             echo "zyphra-legacy-sglang"
             ;;
-        141|zyphra_legacy_transformers|zyphra-legacy-transformers)
+        142|zyphra_legacy_transformers|zyphra-legacy-transformers)
             echo "zyphra-legacy-transformers"
             ;;
-        142|zyphra_legacy_vllm|zyphra-legacy-vllm)
+        143|zyphra_legacy_vllm|zyphra-legacy-vllm)
             echo "zyphra-legacy-vllm"
             ;;
-        143|zyphra_sglang|zyphra-sglang)
+        144|zyphra_sglang|zyphra-sglang)
             echo "zyphra-sglang"
             ;;
-        144|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+        145|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
             echo "zyphra-sglang-pr-32517"
             ;;
-        145|zyphra_transformers|zyphra-transformers)
+        146|zyphra_transformers|zyphra-transformers)
             echo "zyphra-transformers"
             ;;
-        146|zyphra_vllm|zyphra-vllm)
+        147|zyphra_vllm|zyphra-vllm)
             echo "zyphra-vllm"
             ;;
-        147|custom|custom_uv|custom-uv|env_custom_uv)
+        148|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        148|custom_pip|custom-pip|env_custom_pip)
+        149|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2478,6 +2483,17 @@ install_rtxpro6k_glm53_vllm_2617fe938() {
     run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
 }
 
+install_rtxpro6k_incoai_sglang_964c45cf3() {
+    ensure_active_environment_matches "rtxpro6k-incoai-sglang-964c45cf3" || return 1
+    # Official SGLang main commit.
+    local source_commit="964c45cf31e838d85c048fe8c03fa51a588881a1"
+    # Validated with Python 3.12, CUDA 13.2, Rust 1.92 and protoc available on PATH.
+    print_info "Installing upstream SGLang at ${source_commit}..."
+    RUSTUP_TOOLCHAIN=1.92 run_uv_install --prerelease=allow \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
+        --torch-backend=auto || return 1
+}
+
 install_rtxpro6k_incoai_vllm_pr_417b0b6aa() {
     ensure_active_environment_matches "rtxpro6k-incoai-vllm-pr-417b0b6aa" || return 1
     # Upstream PR https://github.com/vllm-project/vllm/pull/58773 isolates the DFlash2 draft KV dtype.
@@ -3173,6 +3189,9 @@ perform_environment_action() {
             ;;
         rtxpro6k-glm53-vllm-2617fe938)
             install_rtxpro6k_glm53_vllm_2617fe938 || return 1
+            ;;
+        rtxpro6k-incoai-sglang-964c45cf3)
+            install_rtxpro6k_incoai_sglang_964c45cf3 || return 1
             ;;
         rtxpro6k-incoai-vllm-pr-417b0b6aa)
             install_rtxpro6k_incoai_vllm_pr_417b0b6aa || return 1
