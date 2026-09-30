@@ -2,7 +2,7 @@
 
 # Script: launch_env.sh
 # Purpose: Activate ML environment with all optimizations
-# Usage: source launch_env.sh [--auto] [ENV_NAME|1-147]
+# Usage: source launch_env.sh [--auto] [ENV_NAME|1-148]
 
 WORKSPACE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
@@ -495,100 +495,103 @@ resolve_env_type() {
         115|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
             echo "rtxpro6k-glm53-vllm-2617fe938"
             ;;
-        116|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        116|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+            echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
+            ;;
+        117|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        117|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        118|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        118|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        119|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        119|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        120|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        120|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        121|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        121|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        122|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        122|rtxpro6k_nvidia_glm53flash_vllm_pr_55277|rtxpro6k-nvidia-glm53flash-vllm-pr-55277)
+        123|rtxpro6k_nvidia_glm53flash_vllm_pr_55277|rtxpro6k-nvidia-glm53flash-vllm-pr-55277)
             echo "rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
             ;;
-        123|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        124|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        124|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        125|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        125|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        126|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        126|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        127|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        127|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        128|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        128|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        129|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        129|stepfun_sglang|stepfun-sglang)
+        130|stepfun_sglang|stepfun-sglang)
             echo "stepfun-sglang"
             ;;
-        130|stepfun_transformers|stepfun-transformers)
+        131|stepfun_transformers|stepfun-transformers)
             echo "stepfun-transformers"
             ;;
-        131|stepfun_vllm|stepfun-vllm)
+        132|stepfun_vllm|stepfun-vllm)
             echo "stepfun-vllm"
             ;;
-        132|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
+        133|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
             echo "xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        133|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
+        134|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
             echo "xiaomimimo-flash-vllm-pr-58177"
             ;;
-        134|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+        135|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
             echo "xiaomimimo-sglang-v0520"
             ;;
-        135|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+        136|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
             echo "xiaomimimo-vllm-v0300"
             ;;
-        136|z_lab_sglang|z-lab-sglang)
+        137|z_lab_sglang|z-lab-sglang)
             echo "z-lab-sglang"
             ;;
-        137|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+        138|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
             echo "z-lab-sglang-pr-35209"
             ;;
-        138|z_lab_vllm|z-lab-vllm)
+        139|z_lab_vllm|z-lab-vllm)
             echo "z-lab-vllm"
             ;;
-        139|zyphra_legacy_sglang|zyphra-legacy-sglang)
+        140|zyphra_legacy_sglang|zyphra-legacy-sglang)
             echo "zyphra-legacy-sglang"
             ;;
-        140|zyphra_legacy_transformers|zyphra-legacy-transformers)
+        141|zyphra_legacy_transformers|zyphra-legacy-transformers)
             echo "zyphra-legacy-transformers"
             ;;
-        141|zyphra_legacy_vllm|zyphra-legacy-vllm)
+        142|zyphra_legacy_vllm|zyphra-legacy-vllm)
             echo "zyphra-legacy-vllm"
             ;;
-        142|zyphra_sglang|zyphra-sglang)
+        143|zyphra_sglang|zyphra-sglang)
             echo "zyphra-sglang"
             ;;
-        143|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+        144|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
             echo "zyphra-sglang-pr-32517"
             ;;
-        144|zyphra_transformers|zyphra-transformers)
+        145|zyphra_transformers|zyphra-transformers)
             echo "zyphra-transformers"
             ;;
-        145|zyphra_vllm|zyphra-vllm)
+        146|zyphra_vllm|zyphra-vllm)
             echo "zyphra-vllm"
             ;;
-        146|custom|custom_uv|custom-uv|env_custom_uv)
+        147|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        147|custom_pip|custom-pip|env_custom_pip)
+        148|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -611,7 +614,7 @@ resolve_env_name() {
 # This launcher mutates the caller's shell and therefore must be sourced.
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     print_error "This script must be sourced, not executed!"
-    print_error "Use: source $0 [--auto] [ENV_NAME|1-147]"
+    print_error "Use: source $0 [--auto] [ENV_NAME|1-148]"
     exit 1
 fi
 
@@ -751,45 +754,46 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "113) RedHatAI (vLLM)"
     echo "114) RTX PRO 6000 DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
     echo "115) RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
-    echo "116) RTX PRO 6000 Intel (SGLang)"
-    echo "117) RTX PRO 6000 LiquidAI (SGLang)"
-    echo "118) RTX PRO 6000 LiquidAI (SGLang) PR 31041"
-    echo "119) RTX PRO 6000 Nanbeige (SGLang)"
-    echo "120) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
-    echo "121) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
-    echo "122) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (vLLM) PR 55277 merge"
-    echo "123) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
-    echo "124) RTX PRO 6000 PrimeIntellect (SGLang)"
-    echo "125) RTX PRO 6000 Qwen Flash Next (vLLM)"
-    echo "126) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "127) RTX PRO 6000 Qwen (SGLang)"
-    echo "128) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "129) StepFun (SGLang)"
-    echo "130) StepFun (Transformers)"
-    echo "131) StepFun (vLLM)"
-    echo "132) XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
-    echo "133) XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "134) XiaomiMiMo Distill (SGLang 0.5.20)"
-    echo "135) XiaomiMiMo Distill (vLLM 0.30.0)"
-    echo "136) z-lab (SGLang)"
-    echo "137) z-lab (SGLang) PR 35209"
-    echo "138) z-lab (vLLM)"
-    echo "139) Zyphra Legacy (SGLang)"
-    echo "140) Zyphra Legacy (Transformers)"
-    echo "141) Zyphra Legacy (vLLM)"
-    echo "142) Zyphra (SGLang)"
-    echo "143) Zyphra (SGLang) PR 32517"
-    echo "144) Zyphra (Transformers)"
-    echo "145) Zyphra (vLLM)"
-    echo "146) Custom (uv)"
-    echo "147) Custom (pip)"
+    echo "116) RTX PRO 6000 incoai GLM-5.3 DFlash2 (vLLM PR 58773, 417b0b6aa)"
+    echo "117) RTX PRO 6000 Intel (SGLang)"
+    echo "118) RTX PRO 6000 LiquidAI (SGLang)"
+    echo "119) RTX PRO 6000 LiquidAI (SGLang) PR 31041"
+    echo "120) RTX PRO 6000 Nanbeige (SGLang)"
+    echo "121) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+    echo "122) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
+    echo "123) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (vLLM) PR 55277 merge"
+    echo "124) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
+    echo "125) RTX PRO 6000 PrimeIntellect (SGLang)"
+    echo "126) RTX PRO 6000 Qwen Flash Next (vLLM)"
+    echo "127) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "128) RTX PRO 6000 Qwen (SGLang)"
+    echo "129) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "130) StepFun (SGLang)"
+    echo "131) StepFun (Transformers)"
+    echo "132) StepFun (vLLM)"
+    echo "133) XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
+    echo "134) XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "135) XiaomiMiMo Distill (SGLang 0.5.20)"
+    echo "136) XiaomiMiMo Distill (vLLM 0.30.0)"
+    echo "137) z-lab (SGLang)"
+    echo "138) z-lab (SGLang) PR 35209"
+    echo "139) z-lab (vLLM)"
+    echo "140) Zyphra Legacy (SGLang)"
+    echo "141) Zyphra Legacy (Transformers)"
+    echo "142) Zyphra Legacy (vLLM)"
+    echo "143) Zyphra (SGLang)"
+    echo "144) Zyphra (SGLang) PR 32517"
+    echo "145) Zyphra (Transformers)"
+    echo "146) Zyphra (vLLM)"
+    echo "147) Custom (uv)"
+    echo "148) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-147): " choice
+        read -r -p "Enter your choice (1-148): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 147."
+            print_error "Invalid choice. Please enter a number between 1 and 148."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -800,7 +804,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 147."
+        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 148."
         return 1
     fi
     ENV_TYPE="$ENV_TYPE_MAPPED"
