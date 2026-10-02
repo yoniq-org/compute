@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_intel-vllm"
+PYTHON_ENV="env_h200-intel-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="Intel/Qwen3.6-35B-A3B-int4-mixed-AutoRound"

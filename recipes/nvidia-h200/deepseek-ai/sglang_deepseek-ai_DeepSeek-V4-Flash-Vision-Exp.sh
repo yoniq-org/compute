@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_deepseek-vision-sglang-pr-37253"
+PYTHON_ENV="env_h200-deepseek-vision-sglang-pr-37253"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="deepseek-ai/DeepSeek-V4-Flash-Vision-Exp"

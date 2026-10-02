@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_mistralai-vllm"
+PYTHON_ENV="env_h200-mistralai-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="mistralai/Mistral-Small-4-119B-2603"

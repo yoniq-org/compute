@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_gpt-oss-vllm"
+PYTHON_ENV="env_h200-gpt-oss-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="openai/gpt-oss-safeguard-120b"

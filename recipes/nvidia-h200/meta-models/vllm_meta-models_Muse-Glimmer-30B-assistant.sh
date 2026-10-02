@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_meta-vllm"
+PYTHON_ENV="env_h200-meta-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="meta-models/Muse-Glimmer-30B"

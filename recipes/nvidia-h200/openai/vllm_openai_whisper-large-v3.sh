@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_openai-vllm-pr-53207"
+PYTHON_ENV="env_h200-openai-vllm-pr-53207"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="openai/whisper-large-v3"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_mistralai-sglang"
+PYTHON_ENV="env_h200-mistralai-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV="env SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1"
 MODEL_REPO="mistralai/Mistral-Small-4-119B-2603"

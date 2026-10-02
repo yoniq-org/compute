@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_zyphra-legacy-vllm"
+PYTHON_ENV="env_h200-zyphra-legacy-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="Zyphra/ZAYA1-74B-preview-legacy"

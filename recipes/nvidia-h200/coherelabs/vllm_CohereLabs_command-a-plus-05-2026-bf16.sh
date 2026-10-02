@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_cohere-vllm-pr-54479"
+PYTHON_ENV="env_h200-cohere-vllm-pr-54479"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="CohereLabs/command-a-plus-05-2026-bf16"

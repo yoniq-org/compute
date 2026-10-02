@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_gemma3n-vllm"
+PYTHON_ENV="env_h200-gemma3n-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="RedHatAI/gemma-3n-E4B-it-FP8-dynamic"

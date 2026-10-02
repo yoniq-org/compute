@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_qwen-flash-next-vllm"
+PYTHON_ENV="env_h200-qwen-flash-next-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="Qwen/Qwen3.8-Flash-Next"

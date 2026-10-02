@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_openai-sglang-pr-38626"
+PYTHON_ENV="env_h200-openai-sglang-pr-38626"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="openai/whisper-large-v3"

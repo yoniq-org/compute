@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_deepseek-v41-vllm-e77daef89"
+PYTHON_ENV="env_h200-deepseek-v41-vllm-e77daef89"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_ENGINE_READY_TIMEOUT_S=3600"
 MODEL_REPO="nvidia/DeepSeek-V4.1-Flash-NVFP4"

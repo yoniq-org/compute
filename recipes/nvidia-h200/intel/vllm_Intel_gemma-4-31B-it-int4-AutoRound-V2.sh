@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_intel-vllm"
+PYTHON_ENV="env_h200-intel-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="Intel/gemma-4-31B-it-int4-AutoRound-V2"

@@ -2,7 +2,7 @@
 
 # Script: deepgemm_vllm_install.sh
 # Purpose: Install vLLM's pinned DeepGEMM build into the currently active ML virtual environment.
-# Usage: source ./launch_env.sh deepseek-vllm, then ./installers/deepgemm_vllm_install.sh [-y|--yes|--auto]
+# Usage: source ./launch_env.sh h200-deepseek-vllm, then ./installers/deepgemm_vllm_install.sh [-y|--yes|--auto]
 
 if [ -f ~/.bashrc ]; then
     source ~/.bashrc
@@ -73,7 +73,7 @@ PY
 check_environment() {
     if [ -z "$ENV_PATH" ]; then
         print_error "No active virtual environment detected."
-        print_error "Activate one first, for example: source ./launch_env.sh deepseek-vllm"
+        print_error "Activate one first, for example: source ./launch_env.sh h200-deepseek-vllm"
         return 1
     fi
 

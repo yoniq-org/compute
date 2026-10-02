@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-vllm"
+PYTHON_ENV="env_h200-nvidia-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_NVFP4_GEMM_BACKEND=marlin"
 MODEL_REPO="nvidia/Qwen3.6-35B-A3B-NVFP4"

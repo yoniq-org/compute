@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-glm53-sglang-26fd7fd"
+PYTHON_ENV="env_h200-nvidia-glm53-sglang-26fd7fd"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="nvidia/GLM-5.3-NVFP4"

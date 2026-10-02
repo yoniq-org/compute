@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_qwen-sglang-pr-22121"
+PYTHON_ENV="env_h200-qwen-sglang-pr-22121"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV="env SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1"
 MODEL_REPO="Qwen/Qwen3.5-122B-A10B-GPTQ-Int4"

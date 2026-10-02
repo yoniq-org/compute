@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_gemma-vllm"
+PYTHON_ENV="env_h200-gemma-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="google/diffusiongemma-26B-A4B-it"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_inclusionai-sglang"
+PYTHON_ENV="env_h200-inclusionai-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="inclusionAI/Ling-3.0-flash-fp4"

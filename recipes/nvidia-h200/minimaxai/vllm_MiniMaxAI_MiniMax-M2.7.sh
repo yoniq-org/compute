@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_minimax-m2-vllm-0f3ce4c74"
+PYTHON_ENV="env_h200-minimax-m2-vllm-0f3ce4c74"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="MiniMaxAI/MiniMax-M2.7"

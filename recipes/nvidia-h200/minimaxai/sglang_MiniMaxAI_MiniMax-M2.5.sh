@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_minimax-m2-sglang-v0510-post1"
+PYTHON_ENV="env_h200-minimax-m2-sglang-v0510-post1"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="MiniMaxAI/MiniMax-M2.5"

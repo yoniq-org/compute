@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_primeintellect-sglang"
+PYTHON_ENV="env_h200-primeintellect-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="PrimeIntellect/INTELLECT-1"

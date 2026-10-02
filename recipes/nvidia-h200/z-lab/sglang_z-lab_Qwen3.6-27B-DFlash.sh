@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_z-lab-sglang"
+PYTHON_ENV="env_h200-z-lab-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="Qwen/Qwen3.6-27B"

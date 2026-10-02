@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_redhatai-sglang"
+PYTHON_ENV="env_h200-redhatai-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV="env SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1"
 MODEL_REPO="RedHatAI/gemma-4-26B-A4B-it"

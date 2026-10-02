@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_liquidai-sglang-pr-31041"
+PYTHON_ENV="env_h200-liquidai-sglang-pr-31041"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV="env SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1"
 MODEL_REPO="LiquidAI/LFM2.5-2.6B"

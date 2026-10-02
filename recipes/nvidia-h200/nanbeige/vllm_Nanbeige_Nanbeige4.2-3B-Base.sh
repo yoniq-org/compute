@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nanbeige-vllm"
+PYTHON_ENV="env_h200-nanbeige-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="Nanbeige/Nanbeige4.2-3B-Base"

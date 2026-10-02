@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nemotron-ultra-vllm-9c2d21046"
+PYTHON_ENV="env_h200-nemotron-ultra-vllm-9c2d21046"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4"

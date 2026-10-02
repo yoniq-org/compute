@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_xiaomimimo-vllm-v0300"
+PYTHON_ENV="env_h200-xiaomimimo-vllm-v0300"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="XiaomiMiMo/MiMo-V2.6-Distill-Qwen-9B"

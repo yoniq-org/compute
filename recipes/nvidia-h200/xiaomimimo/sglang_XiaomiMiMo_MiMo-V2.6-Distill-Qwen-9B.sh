@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_xiaomimimo-sglang-v0520"
+PYTHON_ENV="env_h200-xiaomimimo-sglang-v0520"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="XiaomiMiMo/MiMo-V2.6-Distill-Qwen-9B"

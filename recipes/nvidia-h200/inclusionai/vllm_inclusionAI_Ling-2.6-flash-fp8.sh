@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_inclusionai-vllm"
+PYTHON_ENV="env_h200-inclusionai-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_DISABLED_KERNELS=FlashInferFp8DeepGEMMDynamicBlockScaledKernel"
 MODEL_REPO="inclusionAI/Ling-2.6-flash-fp8"

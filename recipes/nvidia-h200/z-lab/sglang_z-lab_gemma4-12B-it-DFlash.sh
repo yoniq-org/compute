@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_z-lab-sglang-pr-35209"
+PYTHON_ENV="env_h200-z-lab-sglang-pr-35209"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV="env SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1"
 MODEL_REPO="google/gemma-4-12B-it"

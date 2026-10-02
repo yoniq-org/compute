@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_allenai-vllm"
+PYTHON_ENV="env_h200-allenai-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="allenai/Olmo-3.1-32B-Instruct"

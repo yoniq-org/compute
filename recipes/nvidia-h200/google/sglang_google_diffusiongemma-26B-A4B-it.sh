@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_diffusiongemma-sglang"
+PYTHON_ENV="env_h200-diffusiongemma-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="google/diffusiongemma-26B-A4B-it"

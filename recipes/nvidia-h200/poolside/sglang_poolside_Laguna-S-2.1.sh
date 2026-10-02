@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nex-n2-sglang-v0519"
+PYTHON_ENV="env_h200-nex-n2-sglang-v0519"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="poolside/Laguna-S-2.1"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_intel-sglang"
+PYTHON_ENV="env_h200-intel-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="Intel/gemma-4-12B-it-int8-AutoRound"

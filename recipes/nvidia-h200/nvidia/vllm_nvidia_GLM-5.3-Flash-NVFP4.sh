@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-vllm-pr-55222"
+PYTHON_ENV="env_h200-nvidia-vllm-pr-55222"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_USE_V2_MODEL_RUNNER=1 VLLM_ENGINE_READY_TIMEOUT_S=3600 VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS=fp4_gemm,trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 MODEL_REPO="nvidia/GLM-5.3-Flash-NVFP4"

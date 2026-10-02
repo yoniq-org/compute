@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_deepseek-vllm"
+PYTHON_ENV="env_h200-deepseek-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="deepseek-ai/DeepSeek-V4-Flash-DSpark"

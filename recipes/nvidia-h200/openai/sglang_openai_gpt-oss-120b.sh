@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_gpt-oss-sglang"
+PYTHON_ENV="env_h200-gpt-oss-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="openai/gpt-oss-120b"

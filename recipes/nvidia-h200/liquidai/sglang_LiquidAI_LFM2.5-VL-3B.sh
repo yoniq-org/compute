@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_liquidai-sglang"
+PYTHON_ENV="env_h200-liquidai-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV="env SGLANG_USE_CUDA_IPC_TRANSPORT=1 SGLANG_USE_IPC_POOL_HANDLE_CACHE=1"
 MODEL_REPO="LiquidAI/LFM2.5-VL-3B"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_glm53-vllm-v0290"
+PYTHON_ENV="env_h200-glm53-vllm-v0290"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="Inferact/GLM-5.3-NVFP4"

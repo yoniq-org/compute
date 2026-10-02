@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-sglang"
+PYTHON_ENV="env_h200-nvidia-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV="env SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN=1"
 MODEL_REPO="nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Base-BF16"

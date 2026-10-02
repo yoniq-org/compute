@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_redhatai-vllm"
+PYTHON_ENV="env_h200-redhatai-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="RedHatAI/Muse-Glimmer-30B-NVFP4"

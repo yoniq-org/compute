@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_glm53flash-dflash2-vllm-pr-55423"
+PYTHON_ENV="env_h200-glm53flash-dflash2-vllm-pr-55423"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_USE_V2_MODEL_RUNNER=1 VLLM_ENGINE_READY_TIMEOUT_S=3600"
 MODEL_REPO="zai-org/GLM-5.3-Flash"

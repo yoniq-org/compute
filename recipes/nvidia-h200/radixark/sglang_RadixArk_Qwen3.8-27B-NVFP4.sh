@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_radixark-sglang"
+PYTHON_ENV="env_h200-radixark-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="RadixArk/Qwen3.8-27B-NVFP4"

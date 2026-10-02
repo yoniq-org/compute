@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_mistralai-sglang"
+PYTHON_ENV="env_h200-mistralai-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="mistralai/Ministral-3-3B-Reasoning-2512"

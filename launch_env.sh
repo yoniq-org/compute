@@ -2,7 +2,7 @@
 
 # Script: launch_env.sh
 # Purpose: Activate ML environment with all optimizations
-# Usage: source launch_env.sh [--auto] [ENV_NAME|1-154]
+# Usage: source launch_env.sh [--auto] [ENV_NAME|1-111]
 
 WORKSPACE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
@@ -150,466 +150,337 @@ resolve_env_type() {
     local input="${1#env_}"
 
     case "$input" in
-        1|allenai_sglang|allenai-sglang)
-            echo "allenai-sglang"
+        1|h200_allenai_vllm|h200-allenai-vllm)
+            echo "h200-allenai-vllm"
             ;;
-        2|allenai_transformers|allenai-transformers)
-            echo "allenai-transformers"
+        2|h200_arcee_nvfp4_vllm|h200-arcee-nvfp4-vllm)
+            echo "h200-arcee-nvfp4-vllm"
             ;;
-        3|allenai_vllm|allenai-vllm)
-            echo "allenai-vllm"
+        3|h200_arcee_vllm|h200-arcee-vllm)
+            echo "h200-arcee-vllm"
             ;;
-        4|arcee_nvfp4_vllm|arcee-nvfp4-vllm)
-            echo "arcee-nvfp4-vllm"
+        4|h200_arcee_vllm_pr_54479|h200-arcee-vllm-pr-54479)
+            echo "h200-arcee-vllm-pr-54479"
             ;;
-        5|arcee_sglang|arcee-sglang)
-            echo "arcee-sglang"
+        5|h200_arcee_vllm_pr_54479_fp8_block|h200-arcee-vllm-pr-54479-fp8-block)
+            echo "h200-arcee-vllm-pr-54479-fp8-block"
             ;;
-        6|arcee_transformers|arcee-transformers)
-            echo "arcee-transformers"
+        6|h200_arcee_vllm_pr_54479_thinking_fp8_block|h200-arcee-vllm-pr-54479-thinking-fp8-block)
+            echo "h200-arcee-vllm-pr-54479-thinking-fp8-block"
             ;;
-        7|arcee_vllm|arcee-vllm)
-            echo "arcee-vllm"
+        7|h200_cohere_vllm|h200-cohere-vllm)
+            echo "h200-cohere-vllm"
             ;;
-        8|arcee_vllm_pr_54479|arcee-vllm-pr-54479)
-            echo "arcee-vllm-pr-54479"
+        8|h200_cohere_vllm_pr_54479|h200-cohere-vllm-pr-54479)
+            echo "h200-cohere-vllm-pr-54479"
             ;;
-        9|arcee_vllm_pr_54479_fp8_block|arcee-vllm-pr-54479-fp8-block)
-            echo "arcee-vllm-pr-54479-fp8-block"
+        9|h200_datalab_vllm|h200-datalab-vllm)
+            echo "h200-datalab-vllm"
             ;;
-        10|arcee_vllm_pr_54479_thinking_fp8_block|arcee-vllm-pr-54479-thinking-fp8-block)
-            echo "arcee-vllm-pr-54479-thinking-fp8-block"
+        10|h200_deepseek_sglang|h200-deepseek-sglang)
+            echo "h200-deepseek-sglang"
             ;;
-        11|cohere_sglang|cohere-sglang)
-            echo "cohere-sglang"
+        11|h200_deepseek_v41_vllm_e77daef89|h200-deepseek-v41-vllm-e77daef89)
+            echo "h200-deepseek-v41-vllm-e77daef89"
             ;;
-        12|cohere_transformers|cohere-transformers)
-            echo "cohere-transformers"
+        12|h200_deepseek_vision_sglang_pr_37253|h200-deepseek-vision-sglang-pr-37253)
+            echo "h200-deepseek-vision-sglang-pr-37253"
             ;;
-        13|cohere_vllm|cohere-vllm)
-            echo "cohere-vllm"
+        13|h200_deepseek_vision_vllm_pr_54566|h200-deepseek-vision-vllm-pr-54566)
+            echo "h200-deepseek-vision-vllm-pr-54566"
             ;;
-        14|cohere_vllm_pr_54479|cohere-vllm-pr-54479)
-            echo "cohere-vllm-pr-54479"
+        14|h200_deepseek_vllm|h200-deepseek-vllm)
+            echo "h200-deepseek-vllm"
             ;;
-        15|datalab_sglang|datalab-sglang)
-            echo "datalab-sglang"
+        15|h200_diffusiongemma_sglang|h200-diffusiongemma-sglang)
+            echo "h200-diffusiongemma-sglang"
             ;;
-        16|datalab_vllm|datalab-vllm)
-            echo "datalab-vllm"
+        16|h200_gemma_sglang|h200-gemma-sglang)
+            echo "h200-gemma-sglang"
             ;;
-        17|deepseek_ktransformers|deepseek-ktransformers)
-            echo "deepseek-ktransformers"
+        17|h200_gemma_vllm|h200-gemma-vllm|h200_gemma4_vllm|h200-gemma4-vllm|h200_gemma_4_vllm|h200-gemma-4-vllm)
+            echo "h200-gemma-vllm"
             ;;
-        18|deepseek_lmdeploy|deepseek-lmdeploy)
-            echo "deepseek-lmdeploy"
+        18|h200_gemma3n_vllm|h200-gemma3n-vllm)
+            echo "h200-gemma3n-vllm"
             ;;
-        19|deepseek_sglang|deepseek-sglang)
-            echo "deepseek-sglang"
+        19|h200_glm53_vllm_v0290|h200-glm53-vllm-v0290)
+            echo "h200-glm53-vllm-v0290"
             ;;
-        20|deepseek_v41_vllm_e77daef89|deepseek-v41-vllm-e77daef89)
-            echo "deepseek-v41-vllm-e77daef89"
+        20|h200_glm53flash_dflash2_sglang_pr_37818|h200-glm53flash-dflash2-sglang-pr-37818)
+            echo "h200-glm53flash-dflash2-sglang-pr-37818"
             ;;
-        21|deepseek_v41_vllm_pr_56509|deepseek-v41-vllm-pr-56509)
-            echo "deepseek-v41-vllm-pr-56509"
+        21|h200_glm53flash_dflash2_vllm_pr_55423|h200-glm53flash-dflash2-vllm-pr-55423)
+            echo "h200-glm53flash-dflash2-vllm-pr-55423"
             ;;
-        22|deepseek_vision_sglang_pr_37253|deepseek-vision-sglang-pr-37253)
-            echo "deepseek-vision-sglang-pr-37253"
+        22|h200_glm53flash_vllm_pr_53906|h200-glm53flash-vllm-pr-53906)
+            echo "h200-glm53flash-vllm-pr-53906"
             ;;
-        23|deepseek_vision_vllm_pr_54566|deepseek-vision-vllm-pr-54566)
-            echo "deepseek-vision-vllm-pr-54566"
+        23|h200_gpt_oss_sglang|h200_gptoss_sglang|h200_gpt-oss_sglang|h200-gptoss-sglang|h200-gpt-oss-sglang)
+            echo "h200-gpt-oss-sglang"
             ;;
-        24|deepseek_vllm|deepseek-vllm)
-            echo "deepseek-vllm"
+        24|h200_gpt_oss_vllm|h200_gptoss_vllm|h200_gpt-oss_vllm|h200_vllm_gptoss|h200-gptoss-vllm|h200-gpt-oss-vllm)
+            echo "h200-gpt-oss-vllm"
             ;;
-        25|diffusiongemma_sglang|diffusiongemma-sglang)
-            echo "diffusiongemma-sglang"
+        25|h200_ibm_sglang|h200-ibm-sglang)
+            echo "h200-ibm-sglang"
             ;;
-        26|gemma_sglang|gemma-sglang)
-            echo "gemma-sglang"
+        26|h200_ibm_vllm|h200-ibm-vllm)
+            echo "h200-ibm-vllm"
             ;;
-        27|gemma_vllm|gemma-vllm|gemma4_vllm|gemma4-vllm|gemma_4_vllm|gemma-4-vllm)
-            echo "gemma-vllm"
+        27|h200_inclusionai_ling3_vllm|h200-inclusionai-ling3-vllm)
+            echo "h200-inclusionai-ling3-vllm"
             ;;
-        28|gemma3n_vllm|gemma3n-vllm)
-            echo "gemma3n-vllm"
+        28|h200_inclusionai_sglang|h200-inclusionai-sglang)
+            echo "h200-inclusionai-sglang"
             ;;
-        29|glm_ktransformers|glm-ktransformers)
-            echo "glm-ktransformers"
+        29|h200_inclusionai_vllm|h200-inclusionai-vllm)
+            echo "h200-inclusionai-vllm"
             ;;
-        30|glm_sglang|glm-sglang)
-            echo "glm-sglang"
+        30|h200_incoai_sglang|h200-incoai-sglang)
+            echo "h200-incoai-sglang"
             ;;
-        31|glm_transformers|glm-transformers)
-            echo "glm-transformers"
+        31|h200_incoai_vllm|h200-incoai-vllm)
+            echo "h200-incoai-vllm"
             ;;
-        32|glm_vllm|glm-vllm)
-            echo "glm-vllm"
+        32|h200_intel_sglang|h200-intel-sglang)
+            echo "h200-intel-sglang"
             ;;
-        33|glm53_vllm_v0290|glm53-vllm-v0290)
-            echo "glm53-vllm-v0290"
+        33|h200_intel_vllm|h200-intel-vllm)
+            echo "h200-intel-vllm"
             ;;
-        34|glm53flash_dflash2_sglang_pr_37818|glm53flash-dflash2-sglang-pr-37818)
-            echo "glm53flash-dflash2-sglang-pr-37818"
+        34|h200_liquidai_sglang|h200-liquidai-sglang)
+            echo "h200-liquidai-sglang"
             ;;
-        35|glm53flash_dflash2_vllm_pr_55423|glm53flash-dflash2-vllm-pr-55423)
-            echo "glm53flash-dflash2-vllm-pr-55423"
+        35|h200_liquidai_sglang_pr_31041|h200-liquidai-sglang-pr-31041)
+            echo "h200-liquidai-sglang-pr-31041"
             ;;
-        36|glm53flash_vllm_2617fe938|glm53flash-vllm-2617fe938)
-            echo "glm53flash-vllm-2617fe938"
+        36|h200_liquidai_vllm|h200-liquidai-vllm)
+            echo "h200-liquidai-vllm"
             ;;
-        37|glm53flash_vllm_pr_53906|glm53flash-vllm-pr-53906)
-            echo "glm53flash-vllm-pr-53906"
+        37|h200_meta_sglang|h200-meta-sglang)
+            echo "h200-meta-sglang"
             ;;
-        38|gptoss_sglang|gpt-oss_sglang|gptoss-sglang|gpt-oss-sglang)
-            echo "gpt-oss-sglang"
+        38|h200_meta_vllm|h200-meta-vllm)
+            echo "h200-meta-vllm"
             ;;
-        39|gptoss_transformers|gpt-oss_transformers|gptoss-transformers|gpt-oss-transformers)
-            echo "gpt-oss-transformers"
+        39|h200_microsoft_vllm|h200-microsoft-vllm)
+            echo "h200-microsoft-vllm"
             ;;
-        40|gptoss_vllm|gpt-oss_vllm|vllm_gptoss|gptoss-vllm|gpt-oss-vllm)
-            echo "gpt-oss-vllm"
+        40|h200_minimax_m2_sglang_v0510_post1|h200-minimax-m2-sglang-v0510-post1)
+            echo "h200-minimax-m2-sglang-v0510-post1"
             ;;
-        41|ibm_sglang|ibm-sglang)
-            echo "ibm-sglang"
+        41|h200_minimax_m2_vllm_0f3ce4c74|h200-minimax-m2-vllm-0f3ce4c74)
+            echo "h200-minimax-m2-vllm-0f3ce4c74"
             ;;
-        42|ibm_vllm|ibm-vllm)
-            echo "ibm-vllm"
+        42|h200_minimax_m25_vllm_v0280|h200-minimax-m25-vllm-v0280)
+            echo "h200-minimax-m25-vllm-v0280"
             ;;
-        43|inclusionai_ling3_vllm|inclusionai-ling3-vllm)
-            echo "inclusionai-ling3-vllm"
+        43|h200_mistralai_sglang|h200-mistralai-sglang)
+            echo "h200-mistralai-sglang"
             ;;
-        44|inclusionai_sglang|inclusionai-sglang)
-            echo "inclusionai-sglang"
+        44|h200_mistralai_vllm|h200-mistralai-vllm)
+            echo "h200-mistralai-vllm"
             ;;
-        45|inclusionai_transformers|inclusionai-transformers)
-            echo "inclusionai-transformers"
+        45|h200_nanbeige_sglang|h200-nanbeige-sglang)
+            echo "h200-nanbeige-sglang"
             ;;
-        46|inclusionai_vllm|inclusionai-vllm)
-            echo "inclusionai-vllm"
+        46|h200_nanbeige_vllm|h200-nanbeige-vllm)
+            echo "h200-nanbeige-vllm"
             ;;
-        47|incoai_sglang|incoai-sglang)
-            echo "incoai-sglang"
+        47|h200_nemotron_ultra_vllm_9c2d21046|h200-nemotron-ultra-vllm-9c2d21046)
+            echo "h200-nemotron-ultra-vllm-9c2d21046"
             ;;
-        48|incoai_vllm|incoai-vllm)
-            echo "incoai-vllm"
+        48|h200_nex_n2_sglang_v0519|h200-nex-n2-sglang-v0519)
+            echo "h200-nex-n2-sglang-v0519"
             ;;
-        49|intel_sglang|intel-sglang)
-            echo "intel-sglang"
+        49|h200_nex_n2_vllm_v0290|h200-nex-n2-vllm-v0290)
+            echo "h200-nex-n2-vllm-v0290"
             ;;
-        50|intel_vllm|intel-vllm)
-            echo "intel-vllm"
+        50|h200_nvidia_deepseek_sglang|h200-nvidia-deepseek-sglang)
+            echo "h200-nvidia-deepseek-sglang"
             ;;
-        51|kimi_ktransformers|kimi-ktransformers)
-            echo "kimi-ktransformers"
+        51|h200_nvidia_glm53_sglang_26fd7fd|h200-nvidia-glm53-sglang-26fd7fd)
+            echo "h200-nvidia-glm53-sglang-26fd7fd"
             ;;
-        52|kimi_sglang|kimi-sglang)
-            echo "kimi-sglang"
+        52|h200_nvidia_muse_sglang_v0520|h200-nvidia-muse-sglang-v0520)
+            echo "h200-nvidia-muse-sglang-v0520"
             ;;
-        53|kimi_vllm|kimi-vllm)
-            echo "kimi-vllm"
+        53|h200_nvidia_muse_vllm_v0290|h200-nvidia-muse-vllm-v0290)
+            echo "h200-nvidia-muse-vllm-v0290"
             ;;
-        54|liquidai_sglang|liquidai-sglang)
-            echo "liquidai-sglang"
+        54|h200_nvidia_nemotron|h200-nvidia-nemotron)
+            echo "h200-nvidia-nemotron"
             ;;
-        55|liquidai_sglang_pr_31041|liquidai-sglang-pr-31041)
-            echo "liquidai-sglang-pr-31041"
+        55|h200_nvidia_sglang|h200-nvidia-sglang)
+            echo "h200-nvidia-sglang"
             ;;
-        56|liquidai_transformers|liquidai-transformers)
-            echo "liquidai-transformers"
+        56|h200_nvidia_sglang_pr_33554|h200-nvidia-sglang-pr-33554)
+            echo "h200-nvidia-sglang-pr-33554"
             ;;
-        57|liquidai_vllm|liquidai-vllm)
-            echo "liquidai-vllm"
+        57|h200_nvidia_vllm|h200-nvidia-vllm)
+            echo "h200-nvidia-vllm"
             ;;
-        58|meta_sglang|meta-sglang)
-            echo "meta-sglang"
+        58|h200_nvidia_vllm_pr_55222|h200-nvidia-vllm-pr-55222)
+            echo "h200-nvidia-vllm-pr-55222"
             ;;
-        59|meta_vllm|meta-vllm)
-            echo "meta-vllm"
+        59|h200_openai_sglang_pr_38626|h200-openai-sglang-pr-38626)
+            echo "h200-openai-sglang-pr-38626"
             ;;
-        60|microsoft_sglang|microsoft-sglang)
-            echo "microsoft-sglang"
+        60|h200_openai_vllm_pr_53207|h200-openai-vllm-pr-53207)
+            echo "h200-openai-vllm-pr-53207"
             ;;
-        61|microsoft_vllm|microsoft-vllm)
-            echo "microsoft-vllm"
+        61|h200_paradigma_inc_vllm_v0260|h200-paradigma-inc-vllm-v0260)
+            echo "h200-paradigma-inc-vllm-v0260"
             ;;
-        62|minimax_ktransformers|minimax-ktransformers)
-            echo "minimax-ktransformers"
+        62|h200_poolside_laguna_xs_vllm|h200-poolside-laguna-xs-vllm)
+            echo "h200-poolside-laguna-xs-vllm"
             ;;
-        63|minimax_m2_sglang_v0510_post1|minimax-m2-sglang-v0510-post1)
-            echo "minimax-m2-sglang-v0510-post1"
+        63|h200_poolside_sglang|h200-poolside-sglang)
+            echo "h200-poolside-sglang"
             ;;
-        64|minimax_m2_vllm_0f3ce4c74|minimax-m2-vllm-0f3ce4c74)
-            echo "minimax-m2-vllm-0f3ce4c74"
+        64|h200_poolside_vllm|h200-poolside-vllm)
+            echo "h200-poolside-vllm"
             ;;
-        65|minimax_m25_vllm_v0280|minimax-m25-vllm-v0280)
-            echo "minimax-m25-vllm-v0280"
+        65|h200_primeintellect_sglang|h200-primeintellect-sglang)
+            echo "h200-primeintellect-sglang"
             ;;
-        66|minimax_sglang|minimax-sglang)
-            echo "minimax-sglang"
+        66|h200_primeintellect_vllm|h200-primeintellect-vllm)
+            echo "h200-primeintellect-vllm"
             ;;
-        67|minimax_transformers|minimax-transformers)
-            echo "minimax-transformers"
+        67|h200_qwen_flash_next_sglang|h200-qwen-flash-next-sglang)
+            echo "h200-qwen-flash-next-sglang"
             ;;
-        68|minimax_vllm|minimax-vllm)
-            echo "minimax-vllm"
+        68|h200_qwen_flash_next_vllm|h200-qwen-flash-next-vllm)
+            echo "h200-qwen-flash-next-vllm"
             ;;
-        69|mistralai_sglang|mistralai-sglang)
-            echo "mistralai-sglang"
+        69|h200_qwen_flash_next_vllm_pr_54129|h200-qwen-flash-next-vllm-pr-54129)
+            echo "h200-qwen-flash-next-vllm-pr-54129"
             ;;
-        70|mistralai_transformers|mistralai-transformers)
-            echo "mistralai-transformers"
+        70|h200_qwen_sglang|h200-qwen-sglang)
+            echo "h200-qwen-sglang"
             ;;
-        71|mistralai_vllm|mistralai-vllm)
-            echo "mistralai-vllm"
+        71|h200_qwen_sglang_pr_22121|h200-qwen-sglang-pr-22121)
+            echo "h200-qwen-sglang-pr-22121"
             ;;
-        72|nanbeige_sglang|nanbeige-sglang)
-            echo "nanbeige-sglang"
+        72|h200_qwen_vllm|h200-qwen-vllm)
+            echo "h200-qwen-vllm"
             ;;
-        73|nanbeige_transformers|nanbeige-transformers)
-            echo "nanbeige-transformers"
+        73|h200_radixark_qwen_sglang|h200-radixark-qwen-sglang)
+            echo "h200-radixark-qwen-sglang"
             ;;
-        74|nanbeige_vllm|nanbeige-vllm)
-            echo "nanbeige-vllm"
+        74|h200_radixark_sglang|h200-radixark-sglang)
+            echo "h200-radixark-sglang"
             ;;
-        75|nemotron_trtllm|nemotron-trtllm|nemotron_trt_llm|nemotron-trt-llm)
-            echo "nemotron-trtllm"
+        75|h200_redhat_sglang_pr_35809|h200-redhat-sglang-pr-35809)
+            echo "h200-redhat-sglang-pr-35809"
             ;;
-        76|nemotron_ultra_vllm_9c2d21046|nemotron-ultra-vllm-9c2d21046)
-            echo "nemotron-ultra-vllm-9c2d21046"
+        76|h200_redhatai_sglang|h200-redhatai-sglang)
+            echo "h200-redhatai-sglang"
             ;;
-        77|nex_n2_sglang_v0519|nex-n2-sglang-v0519)
-            echo "nex-n2-sglang-v0519"
+        77|h200_redhatai_vllm|h200-redhatai-vllm)
+            echo "h200-redhatai-vllm"
             ;;
-        78|nex_n2_vllm_v0290|nex-n2-vllm-v0290)
-            echo "nex-n2-vllm-v0290"
+        78|h200_stepfun_sglang|h200-stepfun-sglang)
+            echo "h200-stepfun-sglang"
             ;;
-        79|nvidia_deepseek_sglang|nvidia-deepseek-sglang)
-            echo "nvidia-deepseek-sglang"
+        79|h200_stepfun_vllm|h200-stepfun-vllm)
+            echo "h200-stepfun-vllm"
             ;;
-        80|nvidia_glm53_sglang_26fd7fd|nvidia-glm53-sglang-26fd7fd)
-            echo "nvidia-glm53-sglang-26fd7fd"
+        80|h200_xiaomimimo_flash_vllm_1ea7c63|h200-xiaomimimo-flash-vllm-1ea7c63)
+            echo "h200-xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        81|nvidia_glm53flash_sglang_pr_38430|nvidia-glm53flash-sglang-pr-38430)
-            echo "nvidia-glm53flash-sglang-pr-38430"
+        81|h200_xiaomimimo_sglang_v0520|h200-xiaomimimo-sglang-v0520)
+            echo "h200-xiaomimimo-sglang-v0520"
             ;;
-        82|nvidia_glm53flash_vllm_pr_55277|nvidia-glm53flash-vllm-pr-55277)
-            echo "nvidia-glm53flash-vllm-pr-55277"
+        82|h200_xiaomimimo_vllm_v0300|h200-xiaomimimo-vllm-v0300)
+            echo "h200-xiaomimimo-vllm-v0300"
             ;;
-        83|nvidia_muse_sglang_v0520|nvidia-muse-sglang-v0520)
-            echo "nvidia-muse-sglang-v0520"
+        83|h200_z_lab_sglang|h200-z-lab-sglang)
+            echo "h200-z-lab-sglang"
             ;;
-        84|nvidia_muse_vllm_v0290|nvidia-muse-vllm-v0290)
-            echo "nvidia-muse-vllm-v0290"
+        84|h200_z_lab_sglang_pr_35209|h200-z-lab-sglang-pr-35209)
+            echo "h200-z-lab-sglang-pr-35209"
             ;;
-        85|nvidia_nemotron|nvidia-nemotron)
-            echo "nvidia-nemotron"
+        85|h200_z_lab_vllm|h200-z-lab-vllm)
+            echo "h200-z-lab-vllm"
             ;;
-        86|nvidia_sglang|nvidia-sglang)
-            echo "nvidia-sglang"
+        86|h200_zyphra_legacy_vllm|h200-zyphra-legacy-vllm)
+            echo "h200-zyphra-legacy-vllm"
             ;;
-        87|nvidia_sglang_pr_33554|nvidia-sglang-pr-33554)
-            echo "nvidia-sglang-pr-33554"
+        87|h200_zyphra_sglang|h200-zyphra-sglang)
+            echo "h200-zyphra-sglang"
             ;;
-        88|nvidia_sglang_pr_34966|nvidia-sglang-pr-34966)
-            echo "nvidia-sglang-pr-34966"
+        88|h200_zyphra_sglang_pr_32517|h200-zyphra-sglang-pr-32517)
+            echo "h200-zyphra-sglang-pr-32517"
             ;;
-        89|nvidia_vllm|nvidia-vllm)
-            echo "nvidia-vllm"
+        89|h200_zyphra_vllm|h200-zyphra-vllm)
+            echo "h200-zyphra-vllm"
             ;;
-        90|nvidia_vllm_pr_55222|nvidia-vllm-pr-55222)
-            echo "nvidia-vllm-pr-55222"
-            ;;
-        91|openai_sglang_pr_38626|openai-sglang-pr-38626)
-            echo "openai-sglang-pr-38626"
-            ;;
-        92|openai_vllm_pr_53207|openai-vllm-pr-53207)
-            echo "openai-vllm-pr-53207"
-            ;;
-        93|paradigma_inc_vllm_v0260|paradigma-inc-vllm-v0260)
-            echo "paradigma-inc-vllm-v0260"
-            ;;
-        94|poolside_laguna_xs_vllm|poolside-laguna-xs-vllm)
-            echo "poolside-laguna-xs-vllm"
-            ;;
-        95|poolside_sglang|poolside-sglang)
-            echo "poolside-sglang"
-            ;;
-        96|poolside_sglang_pr_22513|poolside-sglang-pr-22513)
-            echo "poolside-sglang-pr-22513"
-            ;;
-        97|poolside_transformers|poolside-transformers)
-            echo "poolside-transformers"
-            ;;
-        98|poolside_vllm|poolside-vllm)
-            echo "poolside-vllm"
-            ;;
-        99|primeintellect_sglang|primeintellect-sglang)
-            echo "primeintellect-sglang"
-            ;;
-        100|primeintellect_vllm|primeintellect-vllm)
-            echo "primeintellect-vllm"
-            ;;
-        101|qwen_flash_next_sglang|qwen-flash-next-sglang)
-            echo "qwen-flash-next-sglang"
-            ;;
-        102|qwen_flash_next_vllm|qwen-flash-next-vllm)
-            echo "qwen-flash-next-vllm"
-            ;;
-        103|qwen_flash_next_vllm_pr_54129|qwen-flash-next-vllm-pr-54129)
-            echo "qwen-flash-next-vllm-pr-54129"
-            ;;
-        104|qwen_ktransformers|qwen-ktransformers)
-            echo "qwen-ktransformers"
-            ;;
-        105|qwen_sglang|qwen-sglang)
-            echo "qwen-sglang"
-            ;;
-        106|qwen_sglang_pr_22121|qwen-sglang-pr-22121)
-            echo "qwen-sglang-pr-22121"
-            ;;
-        107|qwen_transformers|qwen-transformers)
-            echo "qwen-transformers"
-            ;;
-        108|qwen_vllm|qwen-vllm)
-            echo "qwen-vllm"
-            ;;
-        109|radixark_qwen_sglang|radixark-qwen-sglang)
-            echo "radixark-qwen-sglang"
-            ;;
-        110|radixark_sglang|radixark-sglang)
-            echo "radixark-sglang"
-            ;;
-        111|redhat_sglang_pr_35809|redhat-sglang-pr-35809)
-            echo "redhat-sglang-pr-35809"
-            ;;
-        112|redhatai_sglang|redhatai-sglang)
-            echo "redhatai-sglang"
-            ;;
-        113|redhatai_vllm|redhatai-vllm)
-            echo "redhatai-vllm"
-            ;;
-        114|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
+        90|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
             echo "rtxpro6k-deepseek-v41-vllm-pr-56509"
             ;;
-        115|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
+        91|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
             echo "rtxpro6k-glm53-vllm-2617fe938"
             ;;
-        116|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
+        92|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
             echo "rtxpro6k-incoai-sglang-964c45cf3"
             ;;
-        117|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
+        93|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
             echo "rtxpro6k-incoai-sglang-pr-028ac64f7"
             ;;
-        118|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
+        94|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
             echo "rtxpro6k-incoai-vllm-73a583112"
             ;;
-        119|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+        95|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
             echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
             ;;
-        120|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        96|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        121|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        97|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        122|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        98|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        123|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        99|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        124|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        100|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        125|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        101|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        126|rtxpro6k_nvidia_glm53flash_vllm_pr_55277|rtxpro6k-nvidia-glm53flash-vllm-pr-55277)
-            echo "rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
-            ;;
-        127|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        102|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        128|rtxpro6k_nvidia_sglang_41cbe65de|rtxpro6k-nvidia-sglang-41cbe65de)
-            echo "rtxpro6k-nvidia-sglang-41cbe65de"
-            ;;
-        129|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        103|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        130|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        104|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        131|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        105|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        132|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        106|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        133|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        107|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        134|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        108|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        135|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        109|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        136|stepfun_sglang|stepfun-sglang)
-            echo "stepfun-sglang"
-            ;;
-        137|stepfun_transformers|stepfun-transformers)
-            echo "stepfun-transformers"
-            ;;
-        138|stepfun_vllm|stepfun-vllm)
-            echo "stepfun-vllm"
-            ;;
-        139|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
-            echo "xiaomimimo-flash-vllm-1ea7c63"
-            ;;
-        140|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
-            echo "xiaomimimo-flash-vllm-pr-58177"
-            ;;
-        141|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
-            echo "xiaomimimo-sglang-v0520"
-            ;;
-        142|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
-            echo "xiaomimimo-vllm-v0300"
-            ;;
-        143|z_lab_sglang|z-lab-sglang)
-            echo "z-lab-sglang"
-            ;;
-        144|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
-            echo "z-lab-sglang-pr-35209"
-            ;;
-        145|z_lab_vllm|z-lab-vllm)
-            echo "z-lab-vllm"
-            ;;
-        146|zyphra_legacy_sglang|zyphra-legacy-sglang)
-            echo "zyphra-legacy-sglang"
-            ;;
-        147|zyphra_legacy_transformers|zyphra-legacy-transformers)
-            echo "zyphra-legacy-transformers"
-            ;;
-        148|zyphra_legacy_vllm|zyphra-legacy-vllm)
-            echo "zyphra-legacy-vllm"
-            ;;
-        149|zyphra_sglang|zyphra-sglang)
-            echo "zyphra-sglang"
-            ;;
-        150|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
-            echo "zyphra-sglang-pr-32517"
-            ;;
-        151|zyphra_transformers|zyphra-transformers)
-            echo "zyphra-transformers"
-            ;;
-        152|zyphra_vllm|zyphra-vllm)
-            echo "zyphra-vllm"
-            ;;
-        153|custom|custom_uv|custom-uv|env_custom_uv)
+        110|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        154|custom_pip|custom-pip|env_custom_pip)
+        111|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -632,7 +503,7 @@ resolve_env_name() {
 # This launcher mutates the caller's shell and therefore must be sourced.
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     print_error "This script must be sourced, not executed!"
-    print_error "Use: source $0 [--auto] [ENV_NAME|1-154]"
+    print_error "Use: source $0 [--auto] [ENV_NAME|1-111]"
     exit 1
 fi
 
@@ -657,178 +528,135 @@ done
 if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo ""
     print_info "Select ML environment type:"
-    echo "1) AllenAI (SGLang)"
-    echo "2) AllenAI (Transformers)"
-    echo "3) AllenAI (vLLM)"
-    echo "4) Arcee NVFP4 (vLLM)"
-    echo "5) Arcee (SGLang)"
-    echo "6) Arcee (Transformers)"
-    echo "7) Arcee (vLLM)"
-    echo "8) Arcee (vLLM) PR 54479"
-    echo "9) Arcee FP8 Block (vLLM) PR 54479"
-    echo "10) Arcee Thinking FP8 Block (vLLM) PR 54479"
-    echo "11) Cohere (SGLang)"
-    echo "12) Cohere (Transformers)"
-    echo "13) Cohere (vLLM)"
-    echo "14) Cohere (vLLM) PR 54479"
-    echo "15) DataLab (SGLang)"
-    echo "16) DataLab (vLLM)"
-    echo "17) DeepSeek (KTransformers)"
-    echo "18) DeepSeek (LMDeploy)"
-    echo "19) DeepSeek (SGLang)"
-    echo "20) DeepSeek V4.1 Flash (vLLM) e77daef89"
-    echo "21) DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
-    echo "22) DeepSeek V4 Flash Vision Exp (SGLang) PR 37253"
-    echo "23) DeepSeek V4 Flash Vision Exp (vLLM) PR 54566"
-    echo "24) DeepSeek (vLLM)"
-    echo "25) DiffusionGemma (SGLang)"
-    echo "26) Gemma (SGLang)"
-    echo "27) Gemma (vLLM)"
-    echo "28) Gemma 3n (vLLM 0.10)"
-    echo "29) GLM (KTransformers)"
-    echo "30) GLM (SGLang)"
-    echo "31) GLM (Transformers)"
-    echo "32) GLM (vLLM)"
-    echo "33) GLM 5.3 (vLLM 0.29.0)"
-    echo "34) GLM 5.3 Flash DFlash2 (SGLang) PR 37818"
-    echo "35) GLM 5.3 Flash DFlash2 (vLLM) PR 55423"
-    echo "36) GLM 5.3 Flash (vLLM) 2617fe938 SM120"
-    echo "37) GLM 5.3 Flash (vLLM) PR 53906 merge"
-    echo "38) GPT-OSS (SGLang)"
-    echo "39) gpt-oss (Transformers)"
-    echo "40) gpt-oss (vLLM)"
-    echo "41) IBM (SGLang)"
-    echo "42) IBM (vLLM)"
-    echo "43) InclusionAI Ling 3 (vLLM)"
-    echo "44) InclusionAI (SGLang)"
-    echo "45) InclusionAI (Transformers)"
-    echo "46) InclusionAI (vLLM)"
-    echo "47) IncoAI (SGLang)"
-    echo "48) IncoAI (vLLM)"
-    echo "49) Intel (SGLang)"
-    echo "50) Intel (vLLM)"
-    echo "51) Kimi (KTransformers)"
-    echo "52) Kimi (SGLang)"
-    echo "53) Kimi (vLLM)"
-    echo "54) LiquidAI (SGLang)"
-    echo "55) LiquidAI (SGLang) PR 31041"
-    echo "56) LiquidAI (Transformers)"
-    echo "57) LiquidAI (vLLM)"
-    echo "58) Meta (SGLang)"
-    echo "59) Meta (vLLM)"
-    echo "60) Microsoft (SGLang)"
-    echo "61) Microsoft (vLLM)"
-    echo "62) MiniMax (KTransformers)"
-    echo "63) MiniMax M2 family (SGLang) 0.5.10.post1"
-    echo "64) MiniMax M2 family (vLLM) 0f3ce4c74"
-    echo "65) MiniMax M2.5 (vLLM) 0.28.0"
-    echo "66) MiniMax (SGLang)"
-    echo "67) MiniMax (Transformers)"
-    echo "68) MiniMax (vLLM)"
-    echo "69) MistralAI (SGLang)"
-    echo "70) MistralAI (Transformers)"
-    echo "71) MistralAI (vLLM)"
-    echo "72) Nanbeige (SGLang)"
-    echo "73) Nanbeige (Transformers)"
-    echo "74) Nanbeige (vLLM)"
-    echo "75) Nemotron (TRT-LLM)"
-    echo "76) NVIDIA Nemotron Ultra (vLLM) PR54788 merge"
-    echo "77) Nex N2 (SGLang) 0.5.19"
-    echo "78) Nex N2 (vLLM) 0.29.0"
-    echo "79) NVIDIA DeepSeek (SGLang)"
-    echo "80) NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
-    echo "81) NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
-    echo "82) NVIDIA GLM-5.3 Flash NVFP4 (vLLM) PR 55277 merge"
-    echo "83) NVIDIA Muse Glimmer (SGLang) 0.5.20"
-    echo "84) NVIDIA Muse Glimmer (vLLM) 0.29.0"
-    echo "85) NVIDIA Nemotron (vLLM)"
-    echo "86) NVIDIA (SGLang)"
-    echo "87) NVIDIA (SGLang) PR 33554"
-    echo "88) NVIDIA (SGLang) PR 34966"
-    echo "89) NVIDIA (vLLM)"
-    echo "90) NVIDIA GLM 5.3 Flash (vLLM) PR 55222"
-    echo "91) OpenAI Whisper (SGLang) PR 38626"
-    echo "92) OpenAI Whisper (vLLM) PR 53207"
-    echo "93) Paradigma Limite (vLLM 0.26.0, official plugin)"
-    echo "94) Poolside Laguna XS (vLLM)"
-    echo "95) Poolside (SGLang)"
-    echo "96) Poolside (SGLang) PR 22513"
-    echo "97) Poolside (Transformers)"
-    echo "98) Poolside (vLLM)"
-    echo "99) PrimeIntellect (SGLang)"
-    echo "100) PrimeIntellect (vLLM)"
-    echo "101) Qwen Flash Next (SGLang)"
-    echo "102) Qwen Flash Next (vLLM)"
-    echo "103) Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "104) Qwen (KTransformers)"
-    echo "105) Qwen (SGLang)"
-    echo "106) Qwen (SGLang) PR 22121"
-    echo "107) Qwen (Transformers)"
-    echo "108) Qwen (vLLM)"
-    echo "109) RadixArk Qwen Flash Next (SGLang)"
-    echo "110) RadixArk (SGLang)"
-    echo "111) RedHat (SGLang) PR 35809"
-    echo "112) RedHatAI (SGLang)"
-    echo "113) RedHatAI (vLLM)"
-    echo "114) RTX PRO 6000 DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
-    echo "115) RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
-    echo "116) RTX PRO 6000 incoai GLM-5.3 DFlash2 (SGLang 964c45cf3)"
-    echo "117) RTX PRO 6000 incoai GLM-5.3 Flash (SGLang PR 38430, 028ac64f7)"
-    echo "118) RTX PRO 6000 incoai GLM-5.3 Flash (vLLM 73a583112, b12x)"
-    echo "119) RTX PRO 6000 incoai GLM-5.3 DFlash2 (vLLM PR 58773, 417b0b6aa)"
-    echo "120) RTX PRO 6000 Intel (SGLang)"
-    echo "121) RTX PRO 6000 LiquidAI (SGLang)"
-    echo "122) RTX PRO 6000 LiquidAI (SGLang) PR 31041"
-    echo "123) RTX PRO 6000 Nanbeige (SGLang)"
-    echo "124) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
-    echo "125) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
-    echo "126) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (vLLM) PR 55277 merge"
-    echo "127) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
-    echo "128) RTX PRO 6000 NVIDIA Kimi (SGLang 41cbe65de)"
-    echo "129) RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
-    echo "130) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
-    echo "131) RTX PRO 6000 PrimeIntellect (SGLang)"
-    echo "132) RTX PRO 6000 Qwen Flash Next (vLLM)"
-    echo "133) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "134) RTX PRO 6000 Qwen (SGLang)"
-    echo "135) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "136) StepFun (SGLang)"
-    echo "137) StepFun (Transformers)"
-    echo "138) StepFun (vLLM)"
-    echo "139) XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
-    echo "140) XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "141) XiaomiMiMo Distill (SGLang 0.5.20)"
-    echo "142) XiaomiMiMo Distill (vLLM 0.30.0)"
-    echo "143) z-lab (SGLang)"
-    echo "144) z-lab (SGLang) PR 35209"
-    echo "145) z-lab (vLLM)"
-    echo "146) Zyphra Legacy (SGLang)"
-    echo "147) Zyphra Legacy (Transformers)"
-    echo "148) Zyphra Legacy (vLLM)"
-    echo "149) Zyphra (SGLang)"
-    echo "150) Zyphra (SGLang) PR 32517"
-    echo "151) Zyphra (Transformers)"
-    echo "152) Zyphra (vLLM)"
-    echo "153) Custom (uv)"
-    echo "154) Custom (pip)"
+    echo "1) H200 AllenAI (vLLM)"
+    echo "2) H200 Arcee NVFP4 (vLLM)"
+    echo "3) H200 Arcee (vLLM)"
+    echo "4) H200 Arcee (vLLM) PR 54479"
+    echo "5) H200 Arcee FP8 Block (vLLM) PR 54479"
+    echo "6) H200 Arcee Thinking FP8 Block (vLLM) PR 54479"
+    echo "7) H200 Cohere (vLLM)"
+    echo "8) H200 Cohere (vLLM) PR 54479"
+    echo "9) H200 DataLab (vLLM)"
+    echo "10) H200 DeepSeek (SGLang)"
+    echo "11) H200 DeepSeek V4.1 Flash (vLLM) e77daef89"
+    echo "12) H200 DeepSeek V4 Flash Vision Exp (SGLang) PR 37253"
+    echo "13) H200 DeepSeek V4 Flash Vision Exp (vLLM) PR 54566"
+    echo "14) H200 DeepSeek (vLLM)"
+    echo "15) H200 DiffusionGemma (SGLang)"
+    echo "16) H200 Gemma (SGLang)"
+    echo "17) H200 Gemma (vLLM)"
+    echo "18) H200 Gemma 3n (vLLM 0.10)"
+    echo "19) H200 GLM 5.3 (vLLM 0.29.0)"
+    echo "20) H200 GLM 5.3 Flash DFlash2 (SGLang) PR 37818"
+    echo "21) H200 GLM 5.3 Flash DFlash2 (vLLM) PR 55423"
+    echo "22) H200 GLM 5.3 Flash (vLLM) PR 53906 merge"
+    echo "23) H200 GPT-OSS (SGLang)"
+    echo "24) H200 gpt-oss (vLLM)"
+    echo "25) H200 IBM (SGLang)"
+    echo "26) H200 IBM (vLLM)"
+    echo "27) H200 InclusionAI Ling 3 (vLLM)"
+    echo "28) H200 InclusionAI (SGLang)"
+    echo "29) H200 InclusionAI (vLLM)"
+    echo "30) H200 IncoAI (SGLang)"
+    echo "31) H200 IncoAI (vLLM)"
+    echo "32) H200 Intel (SGLang)"
+    echo "33) H200 Intel (vLLM)"
+    echo "34) H200 LiquidAI (SGLang)"
+    echo "35) H200 LiquidAI (SGLang) PR 31041"
+    echo "36) H200 LiquidAI (vLLM)"
+    echo "37) H200 Meta (SGLang)"
+    echo "38) H200 Meta (vLLM)"
+    echo "39) H200 Microsoft (vLLM)"
+    echo "40) H200 MiniMax M2 family (SGLang) 0.5.10.post1"
+    echo "41) H200 MiniMax M2 family (vLLM) 0f3ce4c74"
+    echo "42) H200 MiniMax M2.5 (vLLM) 0.28.0"
+    echo "43) H200 MistralAI (SGLang)"
+    echo "44) H200 MistralAI (vLLM)"
+    echo "45) H200 Nanbeige (SGLang)"
+    echo "46) H200 Nanbeige (vLLM)"
+    echo "47) H200 NVIDIA Nemotron Ultra (vLLM) PR54788 merge"
+    echo "48) H200 Nex N2 (SGLang) 0.5.19"
+    echo "49) H200 Nex N2 (vLLM) 0.29.0"
+    echo "50) H200 NVIDIA DeepSeek (SGLang)"
+    echo "51) H200 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+    echo "52) H200 NVIDIA Muse Glimmer (SGLang) 0.5.20"
+    echo "53) H200 NVIDIA Muse Glimmer (vLLM) 0.29.0"
+    echo "54) H200 NVIDIA Nemotron (vLLM)"
+    echo "55) H200 NVIDIA (SGLang)"
+    echo "56) H200 NVIDIA (SGLang) PR 33554"
+    echo "57) H200 NVIDIA (vLLM)"
+    echo "58) H200 NVIDIA GLM 5.3 Flash (vLLM) PR 55222"
+    echo "59) H200 OpenAI Whisper (SGLang) PR 38626"
+    echo "60) H200 OpenAI Whisper (vLLM) PR 53207"
+    echo "61) H200 Paradigma Limite (vLLM 0.26.0, official plugin)"
+    echo "62) H200 Poolside Laguna XS (vLLM)"
+    echo "63) H200 Poolside (SGLang)"
+    echo "64) H200 Poolside (vLLM)"
+    echo "65) H200 PrimeIntellect (SGLang)"
+    echo "66) H200 PrimeIntellect (vLLM)"
+    echo "67) H200 Qwen Flash Next (SGLang)"
+    echo "68) H200 Qwen Flash Next (vLLM)"
+    echo "69) H200 Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "70) H200 Qwen (SGLang)"
+    echo "71) H200 Qwen (SGLang) PR 22121"
+    echo "72) H200 Qwen (vLLM)"
+    echo "73) H200 RadixArk Qwen Flash Next (SGLang)"
+    echo "74) H200 RadixArk (SGLang)"
+    echo "75) H200 RedHat (SGLang) PR 35809"
+    echo "76) H200 RedHatAI (SGLang)"
+    echo "77) H200 RedHatAI (vLLM)"
+    echo "78) H200 StepFun (SGLang)"
+    echo "79) H200 StepFun (vLLM)"
+    echo "80) H200 XiaomiMiMo Flash (vLLM 1ea7c63, audio)"
+    echo "81) H200 XiaomiMiMo Distill (SGLang 0.5.20)"
+    echo "82) H200 XiaomiMiMo Distill (vLLM 0.30.0)"
+    echo "83) H200 z-lab (SGLang)"
+    echo "84) H200 z-lab (SGLang) PR 35209"
+    echo "85) H200 z-lab (vLLM)"
+    echo "86) H200 Zyphra Legacy (vLLM)"
+    echo "87) H200 Zyphra (SGLang)"
+    echo "88) H200 Zyphra (SGLang) PR 32517"
+    echo "89) H200 Zyphra (vLLM)"
+    echo "90) RTX PRO 6000 DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
+    echo "91) RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
+    echo "92) RTX PRO 6000 incoai GLM-5.3 DFlash2 (SGLang 964c45cf3)"
+    echo "93) RTX PRO 6000 incoai GLM-5.3 Flash (SGLang PR 38430, 028ac64f7)"
+    echo "94) RTX PRO 6000 incoai GLM-5.3 Flash (vLLM 73a583112, b12x)"
+    echo "95) RTX PRO 6000 incoai GLM-5.3 DFlash2 (vLLM PR 58773, 417b0b6aa)"
+    echo "96) RTX PRO 6000 Intel (SGLang)"
+    echo "97) RTX PRO 6000 LiquidAI (SGLang)"
+    echo "98) RTX PRO 6000 LiquidAI (SGLang) PR 31041"
+    echo "99) RTX PRO 6000 Nanbeige (SGLang)"
+    echo "100) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+    echo "101) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
+    echo "102) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
+    echo "103) RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
+    echo "104) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
+    echo "105) RTX PRO 6000 PrimeIntellect (SGLang)"
+    echo "106) RTX PRO 6000 Qwen Flash Next (vLLM)"
+    echo "107) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "108) RTX PRO 6000 Qwen (SGLang)"
+    echo "109) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "110) Custom (uv)"
+    echo "111) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-154): " choice
+        read -r -p "Enter your choice (1-111): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 154."
+            print_error "Invalid choice. Please enter a number between 1 and 111."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
-    # Default to GLM (SGLang) in auto mode
-    ENV_TYPE="glm_sglang"
+    # Default to Custom (uv) in auto mode
+    ENV_TYPE="custom_uv"
 fi
 
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 154."
+        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 111."
         return 1
     fi
     ENV_TYPE="$ENV_TYPE_MAPPED"

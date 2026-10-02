@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_arcee-vllm-pr-54479"
+PYTHON_ENV="env_h200-arcee-vllm-pr-54479"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="arcee-ai/Trinity-Large-Preview-FP8"

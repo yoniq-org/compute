@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_poolside-sglang"
+PYTHON_ENV="env_h200-poolside-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="poolside/Laguna-XS-2.1-INT4"

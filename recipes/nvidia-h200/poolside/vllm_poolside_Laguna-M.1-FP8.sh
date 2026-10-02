@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nex-n2-vllm-v0290"
+PYTHON_ENV="env_h200-nex-n2-vllm-v0290"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="poolside/Laguna-M.1-FP8"

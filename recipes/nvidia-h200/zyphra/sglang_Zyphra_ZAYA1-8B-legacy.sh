@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_zyphra-sglang"
+PYTHON_ENV="env_h200-zyphra-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="Zyphra/ZAYA1-8B-legacy"

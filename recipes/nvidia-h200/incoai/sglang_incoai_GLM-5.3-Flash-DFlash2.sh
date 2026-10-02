@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_glm53flash-dflash2-sglang-pr-37818"
+PYTHON_ENV="env_h200-glm53flash-dflash2-sglang-pr-37818"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="zai-org/GLM-5.3-Flash"

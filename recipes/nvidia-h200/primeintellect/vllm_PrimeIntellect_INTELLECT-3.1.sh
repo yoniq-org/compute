@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_primeintellect-vllm"
+PYTHON_ENV="env_h200-primeintellect-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="PrimeIntellect/INTELLECT-3.1"

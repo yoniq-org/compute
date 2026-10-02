@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_ibm-vllm"
+PYTHON_ENV="env_h200-ibm-vllm"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="ibm-granite/granite-4.2-3b"

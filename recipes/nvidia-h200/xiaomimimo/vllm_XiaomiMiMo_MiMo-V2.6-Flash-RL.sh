@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_xiaomimimo-flash-vllm-1ea7c63"
+PYTHON_ENV="env_h200-xiaomimimo-flash-vllm-1ea7c63"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="${MIMO_MODEL_PATH:?Set MIMO_MODEL_PATH to the complete local XiaomiMiMo/MiMo-V2.6-Flash-RL checkpoint}"

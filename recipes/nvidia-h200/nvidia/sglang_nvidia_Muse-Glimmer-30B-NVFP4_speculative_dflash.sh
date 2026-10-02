@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-muse-sglang-v0520"
+PYTHON_ENV="env_h200-nvidia-muse-sglang-v0520"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="nvidia/Muse-Glimmer-30B-NVFP4"

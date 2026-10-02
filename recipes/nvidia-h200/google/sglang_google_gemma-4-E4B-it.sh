@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_gemma-sglang"
+PYTHON_ENV="env_h200-gemma-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="google/gemma-4-E4B-it"

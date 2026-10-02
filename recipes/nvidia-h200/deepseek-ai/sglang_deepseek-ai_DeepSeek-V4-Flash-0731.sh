@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_deepseek-sglang"
+PYTHON_ENV="env_h200-deepseek-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="deepseek-ai/DeepSeek-V4-Flash-0731"

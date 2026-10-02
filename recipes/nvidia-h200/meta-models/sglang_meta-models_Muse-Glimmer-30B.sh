@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_meta-sglang"
+PYTHON_ENV="env_h200-meta-sglang"
 INFERENCE_PROVIDER="SGLang"
 INFERENCE_ENV=""
 MODEL_REPO="meta-models/Muse-Glimmer-30B"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_xiaomimimo-flash-vllm-1ea7c63"
+PYTHON_ENV="env_h200-xiaomimimo-flash-vllm-1ea7c63"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
 MODEL_REPO="${HF_HOME:-$HOME/.cache/huggingface}/mimo-v2.6-pro-rl"

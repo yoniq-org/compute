@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_nvidia-nemotron"
+PYTHON_ENV="env_h200-nvidia-nemotron"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_ALLOW_LONG_MAX_MODEL_LEN=1"
 MODEL_REPO="nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"

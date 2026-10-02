@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_paradigma-inc-vllm-v0260"
+PYTHON_ENV="env_h200-paradigma-inc-vllm-v0260"
 INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV="env VLLM_PLUGINS=limite"
 MODEL_REPO="paradigma-inc/limite-1b-violetto"
