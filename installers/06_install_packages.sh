@@ -149,7 +149,9 @@ ENV_TYPES=(
   "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
   "rtxpro6k-nvidia-glm53flash-vllm-pr-55277"
   "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
+  "rtxpro6k-nvidia-sglang-41cbe65de"
   "rtxpro6k-nvidia-sglang-964c45cf3"
+  "rtxpro6k-nvidia-vllm-pr-39e0ce172"
   "rtxpro6k-primeintellect-sglang"
   "rtxpro6k-qwen-flash-next-vllm"
   "rtxpro6k-qwen-flash-next-vllm-pr-54129"
@@ -304,7 +306,9 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-nvidia-glm53flash-sglang-pr-38430"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
   ["rtxpro6k-nvidia-glm53flash-vllm-pr-55277"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (vLLM) PR 55277 merge"
   ["rtxpro6k-nvidia-qwen38-vllm-9c2d21046"]="RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
+  ["rtxpro6k-nvidia-sglang-41cbe65de"]="RTX PRO 6000 NVIDIA Kimi (SGLang 41cbe65de)"
   ["rtxpro6k-nvidia-sglang-964c45cf3"]="RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
+  ["rtxpro6k-nvidia-vllm-pr-39e0ce172"]="RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
   ["rtxpro6k-primeintellect-sglang"]="RTX PRO 6000 PrimeIntellect (SGLang)"
   ["rtxpro6k-qwen-flash-next-vllm"]="RTX PRO 6000 Qwen Flash Next (vLLM)"
   ["rtxpro6k-qwen-flash-next-vllm-pr-54129"]="RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
@@ -716,79 +720,85 @@ resolve_env_type() {
         127|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        128|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        128|rtxpro6k_nvidia_sglang_41cbe65de|rtxpro6k-nvidia-sglang-41cbe65de)
+            echo "rtxpro6k-nvidia-sglang-41cbe65de"
+            ;;
+        129|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        129|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        130|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+            echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
+            ;;
+        131|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        130|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        132|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        131|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        133|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        132|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        134|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        133|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        135|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        134|stepfun_sglang|stepfun-sglang)
+        136|stepfun_sglang|stepfun-sglang)
             echo "stepfun-sglang"
             ;;
-        135|stepfun_transformers|stepfun-transformers)
+        137|stepfun_transformers|stepfun-transformers)
             echo "stepfun-transformers"
             ;;
-        136|stepfun_vllm|stepfun-vllm)
+        138|stepfun_vllm|stepfun-vllm)
             echo "stepfun-vllm"
             ;;
-        137|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
+        139|xiaomimimo_flash_vllm_1ea7c63|xiaomimimo-flash-vllm-1ea7c63)
             echo "xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        138|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
+        140|xiaomimimo_flash_vllm_pr_58177|xiaomimimo-flash-vllm-pr-58177)
             echo "xiaomimimo-flash-vllm-pr-58177"
             ;;
-        139|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
+        141|xiaomimimo_sglang_v0520|xiaomimimo-sglang-v0520)
             echo "xiaomimimo-sglang-v0520"
             ;;
-        140|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
+        142|xiaomimimo_vllm_v0300|xiaomimimo-vllm-v0300)
             echo "xiaomimimo-vllm-v0300"
             ;;
-        141|z_lab_sglang|z-lab-sglang)
+        143|z_lab_sglang|z-lab-sglang)
             echo "z-lab-sglang"
             ;;
-        142|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
+        144|z_lab_sglang_pr_35209|z-lab-sglang-pr-35209)
             echo "z-lab-sglang-pr-35209"
             ;;
-        143|z_lab_vllm|z-lab-vllm)
+        145|z_lab_vllm|z-lab-vllm)
             echo "z-lab-vllm"
             ;;
-        144|zyphra_legacy_sglang|zyphra-legacy-sglang)
+        146|zyphra_legacy_sglang|zyphra-legacy-sglang)
             echo "zyphra-legacy-sglang"
             ;;
-        145|zyphra_legacy_transformers|zyphra-legacy-transformers)
+        147|zyphra_legacy_transformers|zyphra-legacy-transformers)
             echo "zyphra-legacy-transformers"
             ;;
-        146|zyphra_legacy_vllm|zyphra-legacy-vllm)
+        148|zyphra_legacy_vllm|zyphra-legacy-vllm)
             echo "zyphra-legacy-vllm"
             ;;
-        147|zyphra_sglang|zyphra-sglang)
+        149|zyphra_sglang|zyphra-sglang)
             echo "zyphra-sglang"
             ;;
-        148|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
+        150|zyphra_sglang_pr_32517|zyphra-sglang-pr-32517)
             echo "zyphra-sglang-pr-32517"
             ;;
-        149|zyphra_transformers|zyphra-transformers)
+        151|zyphra_transformers|zyphra-transformers)
             echo "zyphra-transformers"
             ;;
-        150|zyphra_vllm|zyphra-vllm)
+        152|zyphra_vllm|zyphra-vllm)
             echo "zyphra-vllm"
             ;;
-        151|custom|custom_uv|custom-uv|env_custom_uv)
+        153|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        152|custom_pip|custom-pip|env_custom_pip)
+        154|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2656,6 +2666,15 @@ install_rtxpro6k_nvidia_qwen38_vllm_9c2d21046() {
         "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.18/flashinfer_cubin-0.6.18-py3-none-any.whl#sha256=2dd65c0fcfc6bc44c67f148530de5372979c2e3d260e47935730f94156d4d873" || return 1
 }
 
+install_rtxpro6k_nvidia_sglang_41cbe65de() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-sglang-41cbe65de" || return 1
+    local source_commit="41cbe65de05b209f3263942389267f79bd749d6a"
+    print_info "Installing upstream SGLang for NVIDIA Kimi at ${source_commit}..."
+    RUSTUP_TOOLCHAIN=1.92 run_uv_install --link-mode=copy --prerelease=allow \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
+        --torch-backend=auto || return 1
+}
+
 install_rtxpro6k_nvidia_sglang_964c45cf3() {
     ensure_active_environment_matches "rtxpro6k-nvidia-sglang-964c45cf3" || return 1
     # Official SGLang main; validated with Python 3.12, CUDA 13.2, Rust 1.92 and protoc.
@@ -2664,6 +2683,38 @@ install_rtxpro6k_nvidia_sglang_964c45cf3() {
     RUSTUP_TOOLCHAIN=1.92 run_uv_install --prerelease=allow \
         "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
         --torch-backend=auto || return 1
+}
+
+install_rtxpro6k_nvidia_vllm_pr_39e0ce172() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-vllm-pr-39e0ce172" || return 1
+    # Official PR 54013 test merge fixes native SM120 FP8 MLA shared-memory scheduling.
+    # https://github.com/vllm-project/vllm/pull/54013
+    local source_commit="39e0ce172b20db347fd9a66351297b9cd9d55fc4"
+    local binary_commit="840c7c2f4bc72c7c55edb2dea6d23f9a9c9734e0"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev529%2Bg840c7c2f4-cp38-abi3-manylinux_2_28_x86_64.whl"
+
+    print_info "Installing upstream NVIDIA Kimi vLLM PR 54013 at ${source_commit}..."
+    # Resolve the full runtime closure for a fresh Python 3.12 environment, not just vLLM.
+    # Native/Rust artifacts come from this test merge's own first parent, not an older stack.
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_COMMIT="${binary_commit}" \
+        VLLM_PRECOMPILED_WHEEL_VARIANT=cu130 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
+        run_uv_install --link-mode=copy --prerelease=allow --torch-backend=cu130 \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        "torch==2.13.0+cu130" "torchaudio==2.11.0+cu130" "torchvision==0.28.0+cu130" \
+        "torchcodec==0.16.0+cu130" "transformers==5.17.0" "tokenizers==0.23.2" \
+        "compressed-tensors==0.17.0" "flashinfer-python==0.7.0.post1" \
+        "nvidia-cutlass-dsl[cu13]==4.7.1" "apache-tvm-ffi==0.1.11" \
+        cuda-python "rich>=13" || return 1
+    # Published cubin is outside vLLM's install_requires and is not supplied by PyPI.
+    run_uv_install --link-mode=copy \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.7.0.post1/flashinfer_cubin-0.7.0.post1-py3-none-any.whl#sha256=f5b5fbf6e914b358219b845ed3ee586ffc1ae3c9768c8b135115ac14afbceed3" || return 1
+    # Recorded metadata exception: b12x pins DSL and its libraries to 4.6.2;
+    # retain vLLM's tested 4.7.1 stack. This is not a clean dependency-health claim.
+    # Its remaining runtime dependencies are resolved above before this --no-deps install.
+    run_uv_install --link-mode=copy --no-deps \
+        "b12x @ https://files.pythonhosted.org/packages/d2/bc/f28f6b3ade2522785f57caaebb2b02e35e7f189e647f47b0da8e7f581e36/b12x-1.3.0-py3-none-any.whl#sha256=c97d88635521a7fdd4f67717c1835a017d0dcea49d49cc7aa5b4299f290d19e3" || return 1
 }
 
 install_rtxpro6k_primeintellect_sglang() {
@@ -3287,8 +3338,14 @@ perform_environment_action() {
         rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             install_rtxpro6k_nvidia_qwen38_vllm_9c2d21046 || return 1
             ;;
+        rtxpro6k-nvidia-sglang-41cbe65de)
+            install_rtxpro6k_nvidia_sglang_41cbe65de || return 1
+            ;;
         rtxpro6k-nvidia-sglang-964c45cf3)
             install_rtxpro6k_nvidia_sglang_964c45cf3 || return 1
+            ;;
+        rtxpro6k-nvidia-vllm-pr-39e0ce172)
+            install_rtxpro6k_nvidia_vllm_pr_39e0ce172 || return 1
             ;;
         rtxpro6k-primeintellect-sglang)
             install_rtxpro6k_primeintellect_sglang || return 1
