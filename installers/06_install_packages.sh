@@ -111,8 +111,15 @@ ENV_TYPES=(
   "h200-zyphra-sglang"
   "h200-zyphra-sglang-pr-32517"
   "h200-zyphra-vllm"
+  "rtxpro6k-allenai-vllm-73a5831127a9"
+  "rtxpro6k-allenai-vllm-73a78e6f1f38"
+  "rtxpro6k-arcee-ai-vllm-73a5831127a9"
+  "rtxpro6k-arcee-ai-vllm-c8414a82712b"
+  "rtxpro6k-coherelabs-vllm-73a5831127a9"
+  "rtxpro6k-datalab-to-vllm-73a5831127a9"
   "rtxpro6k-deepseek-v41-vllm-pr-56509"
   "rtxpro6k-glm53-vllm-2617fe938"
+  "rtxpro6k-google-sglang-1093c501dfef"
   "rtxpro6k-incoai-sglang-964c45cf3"
   "rtxpro6k-incoai-sglang-pr-028ac64f7"
   "rtxpro6k-incoai-vllm-73a583112"
@@ -225,8 +232,15 @@ declare -A ENV_DESCRIPTIONS=(
   ["h200-zyphra-sglang"]="H200 Zyphra (SGLang)"
   ["h200-zyphra-sglang-pr-32517"]="H200 Zyphra (SGLang) PR 32517"
   ["h200-zyphra-vllm"]="H200 Zyphra (vLLM)"
+  ["rtxpro6k-allenai-vllm-73a5831127a9"]="RTX PRO 6000 AllenAI (vLLM) 73a5831127a9"
+  ["rtxpro6k-allenai-vllm-73a78e6f1f38"]="RTX PRO 6000 AllenAI (vLLM) 73a78e6f1f38"
+  ["rtxpro6k-arcee-ai-vllm-73a5831127a9"]="RTX PRO 6000 Arcee AI (vLLM) 73a5831127a9"
+  ["rtxpro6k-arcee-ai-vllm-c8414a82712b"]="RTX PRO 6000 Arcee AI (vLLM) c8414a82712b NVFP4"
+  ["rtxpro6k-coherelabs-vllm-73a5831127a9"]="RTX PRO 6000 CohereLabs (vLLM) 73a5831127a9"
+  ["rtxpro6k-datalab-to-vllm-73a5831127a9"]="RTX PRO 6000 Datalab (vLLM) 73a5831127a9"
   ["rtxpro6k-deepseek-v41-vllm-pr-56509"]="RTX PRO 6000 DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
   ["rtxpro6k-glm53-vllm-2617fe938"]="RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
+  ["rtxpro6k-google-sglang-1093c501dfef"]="RTX PRO 6000 Google Gemma 4 (SGLang 1093c501dfef)"
   ["rtxpro6k-incoai-sglang-964c45cf3"]="RTX PRO 6000 incoai GLM-5.3 DFlash2 (SGLang 964c45cf3)"
   ["rtxpro6k-incoai-sglang-pr-028ac64f7"]="RTX PRO 6000 incoai GLM-5.3 Flash (SGLang PR 38430, 028ac64f7)"
   ["rtxpro6k-incoai-vllm-73a583112"]="RTX PRO 6000 incoai GLM-5.3 Flash (vLLM 73a583112, b12x)"
@@ -520,70 +534,91 @@ resolve_env_type() {
         89|h200_zyphra_vllm|h200-zyphra-vllm)
             echo "h200-zyphra-vllm"
             ;;
-        90|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
+        90|rtxpro6k_allenai_vllm_73a5831127a9|rtxpro6k-allenai-vllm-73a5831127a9)
+            echo "rtxpro6k-allenai-vllm-73a5831127a9"
+            ;;
+        91|rtxpro6k_allenai_vllm_73a78e6f1f38|rtxpro6k-allenai-vllm-73a78e6f1f38)
+            echo "rtxpro6k-allenai-vllm-73a78e6f1f38"
+            ;;
+        92|rtxpro6k_arcee_ai_vllm_73a5831127a9|rtxpro6k-arcee-ai-vllm-73a5831127a9)
+            echo "rtxpro6k-arcee-ai-vllm-73a5831127a9"
+            ;;
+        93|rtxpro6k_arcee_ai_vllm_c8414a82712b|rtxpro6k-arcee-ai-vllm-c8414a82712b)
+            echo "rtxpro6k-arcee-ai-vllm-c8414a82712b"
+            ;;
+        94|rtxpro6k_coherelabs_vllm_73a5831127a9|rtxpro6k-coherelabs-vllm-73a5831127a9)
+            echo "rtxpro6k-coherelabs-vllm-73a5831127a9"
+            ;;
+        95|rtxpro6k_datalab_to_vllm_73a5831127a9|rtxpro6k-datalab-to-vllm-73a5831127a9)
+            echo "rtxpro6k-datalab-to-vllm-73a5831127a9"
+            ;;
+        96|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
             echo "rtxpro6k-deepseek-v41-vllm-pr-56509"
             ;;
-        91|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
+        97|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
             echo "rtxpro6k-glm53-vllm-2617fe938"
             ;;
-        92|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
+        98|rtxpro6k_google_sglang_1093c501dfef|rtxpro6k-google-sglang-1093c501dfef)
+            echo "rtxpro6k-google-sglang-1093c501dfef"
+            ;;
+        99|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
             echo "rtxpro6k-incoai-sglang-964c45cf3"
             ;;
-        93|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
+        100|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
             echo "rtxpro6k-incoai-sglang-pr-028ac64f7"
             ;;
-        94|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
+        101|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
             echo "rtxpro6k-incoai-vllm-73a583112"
             ;;
-        95|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+        102|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
             echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
             ;;
-        96|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        103|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        97|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        104|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        98|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        105|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        99|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        106|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        100|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        107|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        101|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        108|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        102|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        109|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        103|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        110|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        104|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        111|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        105|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        112|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        106|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        113|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        107|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        114|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        108|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        115|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        109|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        116|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        110|custom|custom_uv|custom-uv|env_custom_uv)
+        117|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        111|custom_pip|custom-pip|env_custom_pip)
+        118|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -1846,6 +1881,80 @@ install_h200_zyphra_vllm() {
 
 
 
+install_rtxpro6k_allenai_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-allenai-vllm-73a5831127a9" || return 1
+    # Official vLLM main ancestor, validated with Python 3.12 on SM120.
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official AllenAI vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_allenai_vllm_73a78e6f1f38() {
+    ensure_active_environment_matches "rtxpro6k-allenai-vllm-73a78e6f1f38" || return 1
+    # Official main commit before the Olmo tool-template startup regression.
+    local source_commit="73a78e6f1f38e280986b81e0f2a9aa5e1ee6fe47"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev151%2Bg73a78e6f1-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official AllenAI vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0" --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_arcee_ai_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-arcee-ai-vllm-73a5831127a9" || return 1
+    # Official vLLM main ancestor, validated with Python 3.12 on SM120.
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official Arcee AI vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.7.0.post1/flashinfer_cubin-0.7.0.post1-py3-none-any.whl" \
+        --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_arcee_ai_vllm_c8414a82712b() {
+    ensure_active_environment_matches "rtxpro6k-arcee-ai-vllm-c8414a82712b" || return 1
+    # Official main ancestor before the ModelOpt LM-head regression; validated on SM120.
+    local source_commit="c8414a82712bd775b7243b19a264d9623c3bb369"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.21.1rc1.dev305%2Bgc8414a827-cp38-abi3-manylinux_2_28_x86_64.whl"
+    local jit_wheel_url="https://github.com/flashinfer-ai/flashinfer/releases/download/v0.6.11.post2/flashinfer_jit_cache-0.6.11.post2+cu130-cp39-abi3-manylinux_2_28_x86_64.whl#sha256=c2af38703704ab66ddb8e9ee2fae4a46455a5d9b9547123f66bcdd7006c9a2e4"
+    print_info "Installing the official Arcee AI NVFP4 vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --torch-backend=cu130 "vllm @ ${wheel_url}" \
+        "torch==2.11.0+cu130" "torchaudio==2.11.0+cu130" "torchvision==0.26.0+cu130" \
+        "transformers==5.5.3" "tokenizers==0.22.2" \
+        "flashinfer-python==0.6.11.post2" "flashinfer-cubin==0.6.11.post2" \
+        "compressed-tensors==0.15.0.1" || return 1
+    run_uv_install "flashinfer-jit-cache @ ${jit_wheel_url}" || return 1
+}
+
+install_rtxpro6k_coherelabs_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-coherelabs-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official CohereLabs vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.7.0.post1/flashinfer_cubin-0.7.0.post1-py3-none-any.whl" \
+        "cohere-melody==0.14.0" --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_datalab_to_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-datalab-to-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official Datalab vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.7.0.post1/flashinfer_cubin-0.7.0.post1-py3-none-any.whl" \
+        --torch-backend=cu130 || return 1
+}
+
 install_rtxpro6k_deepseek_v41_vllm_pr_56509() {
     ensure_active_environment_matches "rtxpro6k-deepseek-v41-vllm-pr-56509" || return 1
     # Complete official SM120 sparse-attention integration: https://github.com/vllm-project/vllm/pull/56509
@@ -1882,6 +1991,39 @@ install_rtxpro6k_glm53_vllm_2617fe938() {
     BUILD_NVEP=0 FLASHINFER_BUILD_NO_PIP=1 FLASHINFER_LOCAL_VERSION=g915e7c49 \
         run_uv_install --reinstall-package flashinfer-python --no-deps \
         "flashinfer-python @ git+https://github.com/flashinfer-ai/flashinfer.git@${flashinfer_commit}" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
+install_rtxpro6k_google_sglang_1093c501dfef() {
+    ensure_active_environment_matches "rtxpro6k-google-sglang-1093c501dfef" || return 1
+    local source_commit="1093c501dfef0789b46fc3afe44949e35867a11a"
+    local repository="https://github.com/sgl-project/sglang.git"
+    local source_dir="$HOME/.local/share/rtxpro6k-sources/google-sglang-1093c501dfef"
+
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "SGLang target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command mkdir -p "$HOME/.local/share/rtxpro6k-sources" || return 1
+        run_command git clone --filter=blob:none --no-checkout "$repository" "$source_dir" || return 1
+        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "$repository" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "Google SGLang checkout must match the clean validated commit: $source_commit"
+        return 1
+    fi
+
+    print_info "Installing upstream Google Gemma 4 SGLang at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" TORCH_CUDA_ARCH_LIST=12.0 UV_LINK_MODE=copy \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --prerelease=allow \
+        --torch-backend=cu130 --editable "$source_dir/python" \
+        "torch==2.13.0+cu130" "transformers==5.17.0" "tokenizers==0.23.2" \
+        "sglang-kernel==0.4.8" "flashinfer-python==0.7.0.post1" \
+        "torchcodec==0.15.0+cu130" "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" || return 1
     run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
 }
 
@@ -2454,11 +2596,32 @@ perform_environment_action() {
         h200-zyphra-vllm)
             install_h200_zyphra_vllm || return 1
             ;;
+        rtxpro6k-allenai-vllm-73a5831127a9)
+            install_rtxpro6k_allenai_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-allenai-vllm-73a78e6f1f38)
+            install_rtxpro6k_allenai_vllm_73a78e6f1f38 || return 1
+            ;;
+        rtxpro6k-arcee-ai-vllm-73a5831127a9)
+            install_rtxpro6k_arcee_ai_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-arcee-ai-vllm-c8414a82712b)
+            install_rtxpro6k_arcee_ai_vllm_c8414a82712b || return 1
+            ;;
+        rtxpro6k-coherelabs-vllm-73a5831127a9)
+            install_rtxpro6k_coherelabs_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-datalab-to-vllm-73a5831127a9)
+            install_rtxpro6k_datalab_to_vllm_73a5831127a9 || return 1
+            ;;
         rtxpro6k-deepseek-v41-vllm-pr-56509)
             install_rtxpro6k_deepseek_v41_vllm_pr_56509 || return 1
             ;;
         rtxpro6k-glm53-vllm-2617fe938)
             install_rtxpro6k_glm53_vllm_2617fe938 || return 1
+            ;;
+        rtxpro6k-google-sglang-1093c501dfef)
+            install_rtxpro6k_google_sglang_1093c501dfef || return 1
             ;;
         rtxpro6k-incoai-sglang-964c45cf3)
             install_rtxpro6k_incoai_sglang_964c45cf3 || return 1
