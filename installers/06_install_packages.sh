@@ -121,6 +121,8 @@ ENV_TYPES=(
   "rtxpro6k-glm53-vllm-2617fe938"
   "rtxpro6k-google-sglang-1093c501dfef"
   "rtxpro6k-google-vllm-73a5831127a9"
+  "rtxpro6k-ibm-granite-sglang-fa7784d140ee"
+  "rtxpro6k-ibm-granite-vllm-73a5831127a9"
   "rtxpro6k-incoai-sglang-964c45cf3"
   "rtxpro6k-incoai-sglang-pr-028ac64f7"
   "rtxpro6k-incoai-vllm-73a583112"
@@ -243,6 +245,8 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-glm53-vllm-2617fe938"]="RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
   ["rtxpro6k-google-sglang-1093c501dfef"]="RTX PRO 6000 Google Gemma 4 (SGLang 1093c501dfef)"
   ["rtxpro6k-google-vllm-73a5831127a9"]="RTX PRO 6000 Google Gemma (vLLM 73a5831127a9, audio)"
+  ["rtxpro6k-ibm-granite-sglang-fa7784d140ee"]="RTX PRO 6000 IBM Granite (SGLang fa7784d140ee)"
+  ["rtxpro6k-ibm-granite-vllm-73a5831127a9"]="RTX PRO 6000 IBM Granite (vLLM 73a5831127a9)"
   ["rtxpro6k-incoai-sglang-964c45cf3"]="RTX PRO 6000 incoai GLM-5.3 DFlash2 (SGLang 964c45cf3)"
   ["rtxpro6k-incoai-sglang-pr-028ac64f7"]="RTX PRO 6000 incoai GLM-5.3 Flash (SGLang PR 38430, 028ac64f7)"
   ["rtxpro6k-incoai-vllm-73a583112"]="RTX PRO 6000 incoai GLM-5.3 Flash (vLLM 73a583112, b12x)"
@@ -566,64 +570,70 @@ resolve_env_type() {
         99|rtxpro6k_google_vllm_73a5831127a9|rtxpro6k-google-vllm-73a5831127a9)
             echo "rtxpro6k-google-vllm-73a5831127a9"
             ;;
-        100|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
+        100|rtxpro6k_ibm_granite_sglang_fa7784d140ee|rtxpro6k-ibm-granite-sglang-fa7784d140ee)
+            echo "rtxpro6k-ibm-granite-sglang-fa7784d140ee"
+            ;;
+        101|rtxpro6k_ibm_granite_vllm_73a5831127a9|rtxpro6k-ibm-granite-vllm-73a5831127a9)
+            echo "rtxpro6k-ibm-granite-vllm-73a5831127a9"
+            ;;
+        102|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
             echo "rtxpro6k-incoai-sglang-964c45cf3"
             ;;
-        101|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
+        103|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
             echo "rtxpro6k-incoai-sglang-pr-028ac64f7"
             ;;
-        102|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
+        104|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
             echo "rtxpro6k-incoai-vllm-73a583112"
             ;;
-        103|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+        105|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
             echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
             ;;
-        104|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        106|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        105|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        107|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        106|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        108|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        107|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        109|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        108|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        110|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        109|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        111|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        110|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        112|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        111|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        113|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        112|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        114|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        113|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        115|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        114|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        116|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        115|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        117|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        116|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        118|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        117|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        119|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        118|custom|custom_uv|custom-uv|env_custom_uv)
+        120|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        119|custom_pip|custom-pip|env_custom_pip)
+        121|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2046,6 +2056,53 @@ install_rtxpro6k_google_vllm_73a5831127a9() {
     run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
 }
 
+install_rtxpro6k_ibm_granite_sglang_fa7784d140ee() {
+    ensure_active_environment_matches "rtxpro6k-ibm-granite-sglang-fa7784d140ee" || return 1
+    # Official main commit, including https://github.com/sgl-project/sglang/pull/42252.
+    local source_commit="fa7784d140eef70223cabf942ab81d53a48fdb0a"
+    local repository="https://github.com/sgl-project/sglang.git"
+    local source_dir="$HOME/.local/share/rtxpro6k-sources/ibm-granite-sglang-fa7784d140ee"
+
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "SGLang target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command mkdir -p "$HOME/.local/share/rtxpro6k-sources" || return 1
+        run_command git clone --filter=blob:none --no-checkout "$repository" "$source_dir" || return 1
+        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "$repository" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "IBM Granite SGLang checkout must match the clean validated commit: $source_commit"
+        return 1
+    fi
+
+    print_info "Installing upstream IBM Granite SGLang at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" TORCH_CUDA_ARCH_LIST=12.0 UV_LINK_MODE=copy \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --prerelease=allow \
+        --torch-backend=cu130 --editable "$source_dir/python" \
+        "torch==2.13.0+cu130" "transformers==5.17.0" "tokenizers==0.23.2" \
+        "sglang-kernel==0.4.8" "flashinfer-python==0.7.0.post1" \
+        "torchcodec==0.15.0+cu130" "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
+install_rtxpro6k_ibm_granite_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-ibm-granite-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official IBM Granite vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.7.0.post1/flashinfer_cubin-0.7.0.post1-py3-none-any.whl" \
+        --torch-backend=cu130 || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
 install_rtxpro6k_incoai_sglang_964c45cf3() {
     ensure_active_environment_matches "rtxpro6k-incoai-sglang-964c45cf3" || return 1
     # Official SGLang main commit.
@@ -2644,6 +2701,12 @@ perform_environment_action() {
             ;;
         rtxpro6k-google-vllm-73a5831127a9)
             install_rtxpro6k_google_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-ibm-granite-sglang-fa7784d140ee)
+            install_rtxpro6k_ibm_granite_sglang_fa7784d140ee || return 1
+            ;;
+        rtxpro6k-ibm-granite-vllm-73a5831127a9)
+            install_rtxpro6k_ibm_granite_vllm_73a5831127a9 || return 1
             ;;
         rtxpro6k-incoai-sglang-964c45cf3)
             install_rtxpro6k_incoai_sglang_964c45cf3 || return 1
