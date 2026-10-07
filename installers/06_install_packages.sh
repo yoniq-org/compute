@@ -133,6 +133,8 @@ ENV_TYPES=(
   "rtxpro6k-liquidai-sglang"
   "rtxpro6k-liquidai-sglang-pr-31041"
   "rtxpro6k-mistralai-sglang-fa7784d140ee"
+  "rtxpro6k-mistralai-vllm-73a5831127a9"
+  "rtxpro6k-mistralai-vllm-pr-678ef33584da"
   "rtxpro6k-nanbeige-sglang"
   "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
   "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
@@ -260,6 +262,8 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-liquidai-sglang"]="RTX PRO 6000 LiquidAI (SGLang)"
   ["rtxpro6k-liquidai-sglang-pr-31041"]="RTX PRO 6000 LiquidAI (SGLang) PR 31041"
   ["rtxpro6k-mistralai-sglang-fa7784d140ee"]="RTX PRO 6000 MistralAI (SGLang fa7784d140ee)"
+  ["rtxpro6k-mistralai-vllm-73a5831127a9"]="RTX PRO 6000 MistralAI (vLLM 73a5831127a9)"
+  ["rtxpro6k-mistralai-vllm-pr-678ef33584da"]="RTX PRO 6000 MistralAI (vLLM PR 58172, 678ef33584da)"
   ["rtxpro6k-nanbeige-sglang"]="RTX PRO 6000 Nanbeige (SGLang)"
   ["rtxpro6k-nvidia-glm53-sglang-26fd7fd"]="RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
   ["rtxpro6k-nvidia-glm53flash-sglang-pr-38430"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
@@ -612,43 +616,49 @@ resolve_env_type() {
         111|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
             echo "rtxpro6k-mistralai-sglang-fa7784d140ee"
             ;;
-        112|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        112|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
+            echo "rtxpro6k-mistralai-vllm-73a5831127a9"
+            ;;
+        113|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
+            echo "rtxpro6k-mistralai-vllm-pr-678ef33584da"
+            ;;
+        114|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        113|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        115|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        114|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        116|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        115|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        117|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        116|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        118|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        117|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        119|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        118|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        120|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        119|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        121|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        120|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        122|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        121|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        123|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        122|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        124|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        123|custom|custom_uv|custom-uv|env_custom_uv)
+        125|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        124|custom_pip|custom-pip|env_custom_pip)
+        126|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2198,6 +2208,39 @@ install_rtxpro6k_mistralai_sglang_fa7784d140ee() {
     run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
 }
 
+install_rtxpro6k_mistralai_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-mistralai-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated MistralAI vLLM environment at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" run_uv_install --python "$VIRTUAL_ENV/bin/python" \
+        --no-config --no-build --no-python-downloads --prerelease=allow \
+        --torch-backend=cu130 \
+        "vllm @ ${wheel_url}" "torch==2.13.0+cu130" "transformers==5.18.0" \
+        "tokenizers==0.23.2" "flashinfer-python==0.7.0.post1" \
+        "mistral_common[image]==1.12.0" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
+install_rtxpro6k_mistralai_vllm_pr_678ef33584da() {
+    ensure_active_environment_matches "rtxpro6k-mistralai-vllm-pr-678ef33584da" || return 1
+    # Official parser-cache PR: https://github.com/vllm-project/vllm/pull/58172
+    local source_commit="678ef33584da549950a06573f3afa4f1ab31f3b0"
+    local binary_commit="8a26869bcad1ae4ab3069a7d2aece86c17c1c695"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.31.1rc1.dev19%2Bg8a26869bc-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated MistralAI vLLM PR 58172 at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
+        GIT_LFS_SKIP_SMUDGE=1 MAX_JOBS=2 VLLM_USE_PRECOMPILED=1 \
+        VLLM_TARGET_DEVICE=cuda VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
+        run_uv_install --no-config --python "$VIRTUAL_ENV/bin/python" \
+        --no-python-downloads --link-mode=hardlink --prerelease=allow \
+        --torch-backend=cu130 \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" "mistral_common[image]==1.12.0" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
 install_rtxpro6k_incoai_sglang_pr_028ac64f7() {
     ensure_active_environment_matches "rtxpro6k-incoai-sglang-pr-028ac64f7" || return 1
     # Native SM120 GLM NoPE adapter: https://github.com/sgl-project/sglang/pull/38430
@@ -2835,6 +2878,12 @@ perform_environment_action() {
             ;;
         rtxpro6k-mistralai-sglang-fa7784d140ee)
             install_rtxpro6k_mistralai_sglang_fa7784d140ee || return 1
+            ;;
+        rtxpro6k-mistralai-vllm-73a5831127a9)
+            install_rtxpro6k_mistralai_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-mistralai-vllm-pr-678ef33584da)
+            install_rtxpro6k_mistralai_vllm_pr_678ef33584da || return 1
             ;;
         rtxpro6k-nanbeige-sglang)
             install_rtxpro6k_nanbeige_sglang || return 1

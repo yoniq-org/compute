@@ -2,7 +2,7 @@
 
 # Script: 05_setup_env.sh
 # Purpose: Create ML virtual environment and set up environment variables
-# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-124]
+# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-126]
 # --refresh-activation updates only generated architecture settings in an existing environment.
 # Hardware recipe environments use env_h200-* or env_rtxpro6k-*.
 # Menus sort by environment type, with Custom (uv) and Custom (pip) last.
@@ -503,43 +503,49 @@ resolve_env_type() {
         111|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
             echo "rtxpro6k-mistralai-sglang-fa7784d140ee"
             ;;
-        112|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        112|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
+            echo "rtxpro6k-mistralai-vllm-73a5831127a9"
+            ;;
+        113|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
+            echo "rtxpro6k-mistralai-vllm-pr-678ef33584da"
+            ;;
+        114|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        113|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        115|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        114|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        116|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        115|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        117|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        116|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        118|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        117|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        119|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        118|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        120|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        119|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        121|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        120|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        122|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        121|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        123|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        122|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        124|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        123|custom|custom_uv|custom-uv|env_custom_uv)
+        125|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        124|custom_pip|custom-pip|env_custom_pip)
+        126|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -898,26 +904,28 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "109) RTX PRO 6000 LiquidAI (SGLang)"
     echo "110) RTX PRO 6000 LiquidAI (SGLang) PR 31041"
     echo "111) RTX PRO 6000 MistralAI (SGLang fa7784d140ee)"
-    echo "112) RTX PRO 6000 Nanbeige (SGLang)"
-    echo "113) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
-    echo "114) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
-    echo "115) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
-    echo "116) RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
-    echo "117) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
-    echo "118) RTX PRO 6000 PrimeIntellect (SGLang)"
-    echo "119) RTX PRO 6000 Qwen Flash Next (vLLM)"
-    echo "120) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "121) RTX PRO 6000 Qwen (SGLang)"
-    echo "122) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "123) Custom (uv)"
-    echo "124) Custom (pip)"
+    echo "112) RTX PRO 6000 MistralAI (vLLM 73a5831127a9)"
+    echo "113) RTX PRO 6000 MistralAI (vLLM PR 58172, 678ef33584da)"
+    echo "114) RTX PRO 6000 Nanbeige (SGLang)"
+    echo "115) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+    echo "116) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
+    echo "117) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
+    echo "118) RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
+    echo "119) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
+    echo "120) RTX PRO 6000 PrimeIntellect (SGLang)"
+    echo "121) RTX PRO 6000 Qwen Flash Next (vLLM)"
+    echo "122) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "123) RTX PRO 6000 Qwen (SGLang)"
+    echo "124) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "125) Custom (uv)"
+    echo "126) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-124): " choice
+        read -r -p "Enter your choice (1-126): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 124."
+            print_error "Invalid choice. Please enter a number between 1 and 126."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -928,7 +936,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 124."
+        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 126."
         if [ "$BEING_SOURCED" = true ]; then
             return 1
         fi
@@ -1055,6 +1063,12 @@ elif [ "$ENV_TYPE" = "rtxpro6k-intel-vllm-73a5831127a9" ]; then
 elif [ "$ENV_TYPE" = "rtxpro6k-mistralai-sglang-fa7784d140ee" ]; then
     PYTHON_BIN="3.12.14"
     PYTHON_VERSION="Python 3.12.14 validated for MistralAI SGLang fa7784d140ee"
+elif [ "$ENV_TYPE" = "rtxpro6k-mistralai-vllm-73a5831127a9" ]; then
+    PYTHON_BIN="3.12.14"
+    PYTHON_VERSION="Python 3.12.14 validated for MistralAI vLLM 73a5831127a9"
+elif [ "$ENV_TYPE" = "rtxpro6k-mistralai-vllm-pr-678ef33584da" ]; then
+    PYTHON_BIN="3.12.14"
+    PYTHON_VERSION="Python 3.12.14 validated for MistralAI vLLM PR 58172, 678ef33584da"
 elif [ "$ENV_TYPE" = "rtxpro6k-nvidia-vllm-pr-39e0ce172" ]; then
     PYTHON_BIN="3.12"
     PYTHON_VERSION="Python 3.12 validated for NVIDIA Kimi vLLM PR 54013, 39e0ce172"
