@@ -136,6 +136,7 @@ ENV_TYPES=(
   "rtxpro6k-mistralai-vllm-73a5831127a9"
   "rtxpro6k-mistralai-vllm-pr-678ef33584da"
   "rtxpro6k-nanbeige-sglang"
+  "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"
   "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
   "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
   "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
@@ -265,6 +266,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-mistralai-vllm-73a5831127a9"]="RTX PRO 6000 MistralAI (vLLM 73a5831127a9)"
   ["rtxpro6k-mistralai-vllm-pr-678ef33584da"]="RTX PRO 6000 MistralAI (vLLM PR 58172, 678ef33584da)"
   ["rtxpro6k-nanbeige-sglang"]="RTX PRO 6000 Nanbeige (SGLang)"
+  ["rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"]="RTX PRO 6000 Nanbeige (vLLM PR 49433, 62f6de733d7a)"
   ["rtxpro6k-nvidia-glm53-sglang-26fd7fd"]="RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
   ["rtxpro6k-nvidia-glm53flash-sglang-pr-38430"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
   ["rtxpro6k-nvidia-qwen38-vllm-9c2d21046"]="RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
@@ -625,40 +627,43 @@ resolve_env_type() {
         114|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        115|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        115|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
+            echo "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"
+            ;;
+        116|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        116|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        117|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        117|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        118|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        118|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        119|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        119|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        120|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        120|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        121|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        121|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        122|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        122|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        123|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        123|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        124|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        124|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        125|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        125|custom|custom_uv|custom-uv|env_custom_uv)
+        126|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        126|custom_pip|custom-pip|env_custom_pip)
+        127|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2337,6 +2342,162 @@ install_rtxpro6k_nanbeige_sglang() {
         "sglang[all] @ git+https://github.com/Nanbeige/sglang.git@${source_commit}#subdirectory=python" || return 1
 }
 
+install_rtxpro6k_nanbeige_vllm_pr_62f6de733d7a() {
+    ensure_active_environment_matches "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a" || return 1
+    # Whole native Nanbeige/DSpark source: https://github.com/vllm-project/vllm/pull/49433
+    local source_commit="62f6de733d7ae63b759329993bc209e67afdf431"
+    local repository="https://github.com/vllm-project/vllm.git"
+    local source_dir="$HOME/.local/share/rtxpro6k-sources/nanbeige-vllm-pr-${source_commit}"
+    local build_root="$HOME/.cache/rtxpro6k-builds/nanbeige-vllm-pr-${source_commit}"
+    local builder="$build_root/env-builder"
+    local cuda_home="${CUDA_HOME:-/usr/local/cuda}"
+    local runtime_pins=(
+        "agent-detector==2.0.0" "aiohappyeyeballs==2.7.1" "aiohttp==3.14.4"
+        "aiosignal==1.4.0" "annotated-doc==0.0.5" "annotated-types==0.8.0"
+        "anthropic==1.12.0" "anyio==4.15.1" "apache-tvm-ffi==0.1.11"
+        "astor==0.8.1" "attrs==26.1.0" "blake3==1.0.10"
+        "cachetools==7.2.1" "cbor2==6.1.5" "certifi==2026.7.22"
+        "cffi==2.1.1" "charset-normalizer==3.5.2" "click==8.5.0"
+        "cloudpickle==3.1.2" "compressed-tensors==0.17.0" "cryptography==50.0.2"
+        "cuda-bindings==13.4.3" "cuda-core==1.2.1" "cuda-pathfinder==1.8.3"
+        "cuda-python==13.4.1" "cuda-tile==1.6.0" "cuda-toolkit==13.0.3.0"
+        "depyf==0.20.0" "detect-installer==0.2.1" "dill==0.4.1"
+        "dnspython==2.8.0" "docstring-parser==0.18.0" "einops==0.8.2"
+        "email-validator==2.3.0" "fastapi==0.136.3" "fastapi-cli==0.0.32"
+        "fastapi-cloud-cli==0.26.0" "fastar==0.12.0" "fastsafetensors==0.4.0"
+        "filelock==4.0.12" "flashinfer-cubin==0.6.17" "flashinfer-python==0.6.17"
+        "frozenlist==1.8.0" "fsspec==2026.9.0" "googleapis-common-protos==1.75.5"
+        "grpcio==1.84.0" "h11==0.16.0" "hf-xet==1.7.0"
+        "httpcore==1.0.9" "httpcore2==2.13.1" "httptools==0.8.0"
+        "httpx==0.28.1" "httpx2==2.13.1" "huggingface-hub==1.33.0"
+        "humming-kernels==0.1.12" "idna==3.20" "ijson==3.5.1"
+        "instanttensor==0.2.1" "interegular==0.3.3" "jinja2==3.1.6"
+        "jiter==0.17.0" "jmespath==1.1.0" "jsonschema==4.26.0"
+        "jsonschema-specifications==2025.9.1" "lark==1.2.2" "llguidance==1.7.6"
+        "llvmlite==0.47.0" "lm-format-enforcer==0.11.3" "loguru==0.7.3"
+        "markdown-it-py==4.2.0" "markupsafe==3.0.4" "mcp==2.3.0"
+        "mcp-types==2.3.0" "mdurl==0.1.2" "mistral-common==1.12.0"
+        "ml-dtypes==0.6.0" "model-hosting-container-standards==0.1.16" "mpmath==1.3.0"
+        "msgspec==0.22.0" "multidict==6.9.1" "nccl4py==0.6.0"
+        "networkx==3.7" "ninja==1.13.2" "numba==0.65.0"
+        "numpy==2.3.5" "nvidia-cublas==13.1.1.3" "nvidia-cuda-cccl==13.3.4.3.1"
+        "nvidia-cuda-crt==13.4.92" "nvidia-cuda-cupti==13.0.85" "nvidia-cuda-nvcc==13.4.92"
+        "nvidia-cuda-nvdisasm==13.4.92" "nvidia-cuda-nvrtc==13.0.88" "nvidia-cuda-runtime==13.0.96"
+        "nvidia-cudnn-cu13==9.20.0.48" "nvidia-cudnn-frontend==1.30.0" "nvidia-cufft==12.0.0.61"
+        "nvidia-cufile==1.15.1.6" "nvidia-curand==10.4.0.35" "nvidia-cusolver==12.0.4.66"
+        "nvidia-cusparse==12.6.3.3" "nvidia-cusparselt-cu13==0.8.1" "nvidia-cutlass-dsl==4.6.2"
+        "nvidia-cutlass-dsl-libs-base==4.6.2" "nvidia-cutlass-dsl-libs-core==4.6.2" "nvidia-cutlass-dsl-libs-cu12==4.6.2"
+        "nvidia-cutlass-dsl-libs-cu13==4.6.2" "nvidia-ml-py==13.615.71" "nvidia-nccl-cu13==2.29.7"
+        "nvidia-nvjitlink==13.4.92" "nvidia-nvshmem-cu13==3.4.5" "nvidia-nvtx==13.0.85"
+        "nvidia-nvvm==13.4.92" "nvtx==0.2.15" "openai==3.26.0"
+        "openai-harmony==0.0.8" "opencv-python-headless==5.0.0.93" "opentelemetry-api==1.45.1"
+        "opentelemetry-exporter-http-transport==0.66b1" "opentelemetry-exporter-otlp==1.45.1" "opentelemetry-exporter-otlp-common==0.66b1"
+        "opentelemetry-exporter-otlp-proto-common==1.45.1" "opentelemetry-exporter-otlp-proto-grpc==1.45.1" "opentelemetry-exporter-otlp-proto-http==1.45.1"
+        "opentelemetry-proto==1.45.1" "opentelemetry-sdk==1.45.1" "opentelemetry-semantic-conventions==0.66b1"
+        "opentelemetry-semantic-conventions-ai==0.5.1" "outlines-core==0.2.14" "packaging==26.3"
+        "partial-json-parser==0.2.1.1.post7" "pillow==12.3.0" "pip==26.2.1"
+        "prometheus-client==0.26.0" "prometheus-fastapi-instrumentator==8.1.0" "propcache==0.5.4"
+        "protobuf==6.33.6" "psutil==7.2.2" "py-cpuinfo==9.0.0"
+        "pybase64==1.5.1" "pycountry==26.2.16" "pycparser==3.0"
+        "pydantic==2.13.5" "pydantic-core==2.46.5" "pydantic-extra-types==2.11.1"
+        "pydantic-settings==2.15.0" "pygments==2.21.0" "pyjwt==2.15.1"
+        "pynvvideocodec==2.0.4" "python-dotenv==1.2.4" "python-json-logger==4.2.0"
+        "python-multipart==0.0.32" "pyyaml==6.0.3" "pyzmq==27.2.0"
+        "quack-kernels==0.6.4" "referencing==0.37.0" "regex==2026.9.29"
+        "requests==2.34.2" "rich==15.0.0" "rich-toolkit==0.20.5"
+        "rignore==0.8.1" "rpds-py==2026.9.1" "safetensors==0.8.0"
+        "sentencepiece==0.2.2" "sentry-sdk==2.71.0" "setproctitle==1.3.8"
+        "setuptools==80.10.2" "shellingham==1.5.4" "six==1.17.0"
+        "sniffio==1.3.1" "sse-starlette==3.5.0" "starlette==1.7.0"
+        "supervisor==4.3.0" "sympy==1.14.0" "tabulate==0.10.0"
+        "tiktoken==0.14.0" "tilelang==0.1.12" "tokenizers==0.23.2"
+        "tokenspeed-mla==0.1.8" "tokenspeed-triton==3.8.10.post20260920" "torch==2.13.0+cu130"
+        "torch-c-dlpack-ext==0.1.5" "torchaudio==2.11.0+cu130" "torchcodec==0.17.0+cu130"
+        "torchvision==0.28.0+cu130" "tqdm==4.70.1" "transformers==5.19.0"
+        "triton==3.7.1" "truststore==0.10.4" "typer==0.27.3"
+        "typing-extensions==4.16.0" "typing-inspection==0.4.4" "urllib3==2.8.0"
+        "uvicorn==0.54.0" "uvloop==0.23.0" "watchfiles==1.3.0"
+        "websockets==17.2" "xgrammar==0.2.8" "yarl==1.25.1"
+        "z3-solver==4.15.4.0"
+    )
+    local build_pins=(
+        "build==1.6.1" "cmake==4.4.4" "pyproject-hooks==1.3.3"
+        "semantic-version==2.10.0" "setuptools-rust==1.13.0" "setuptools-scm==10.3.4"
+        "vcs-versioning==2.6.0" "wheel==0.48.0"
+    )
+
+    # Validated whole-source build: Python 3.12.14, CUDA 13.2.86, GCC 15.2, Rust 1.99.
+    if [ ! -x "$cuda_home/bin/nvcc" ] ||
+       [[ "$("$cuda_home/bin/nvcc" --version)" != *"release 13.2"* ]]; then
+        print_error "This native build requires the validated CUDA 13.2 toolkit."
+        return 1
+    fi
+    if ! command -v rustc >/dev/null 2>&1 || ! command -v cargo >/dev/null 2>&1 ||
+       ! command -v g++ >/dev/null 2>&1; then
+        print_error "The native build requires Rust, Cargo and a C++ compiler on PATH."
+        return 1
+    fi
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "Native vLLM source path is not a git checkout: $source_dir"
+        return 1
+    fi
+    run_command mkdir -p "$build_root/tmp" "$HOME/.local/share/rtxpro6k-sources" || return 1
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command git init "$source_dir" || return 1
+        run_command git -C "$source_dir" remote add origin "$repository" || return 1
+        run_command git -C "$source_dir" fetch --depth=1024 origin "$source_commit" || return 1
+        run_command git -C "$source_dir" checkout --detach FETCH_HEAD || return 1
+        run_command git -C "$source_dir" fetch --filter=blob:none origin '+refs/tags/*:refs/tags/*' || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "$repository" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "Native Nanbeige source must match the clean official PR commit: $source_commit"
+        return 1
+    fi
+    if [ ! -e "$builder" ]; then
+        run_command uv venv --seed --python 3.12.14 "$builder" || return 1
+    fi
+    if [ ! -x "$builder/bin/python" ]; then
+        print_error "Native build environment is unusable: $builder"
+        return 1
+    fi
+    CUDA_VISIBLE_DEVICES="" TMPDIR="$build_root/tmp" \
+        run_uv_install --python "$builder/bin/python" --index-strategy unsafe-best-match \
+        --extra-index-url https://download.pytorch.org/whl/cu130 \
+        --extra-index-url https://flashinfer.ai/whl/ \
+        -r "$source_dir/requirements/build/cuda.txt" -r "$source_dir/requirements/cuda.txt" \
+        "${runtime_pins[@]}" "${build_pins[@]}" || return 1
+    CUDA_VISIBLE_DEVICES="" TMPDIR="$build_root/tmp" \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --index-strategy unsafe-best-match \
+        --extra-index-url https://download.pytorch.org/whl/cu130 \
+        --extra-index-url https://flashinfer.ai/whl/ \
+        -r "$source_dir/requirements/cuda.txt" "${runtime_pins[@]}" || return 1
+
+    local wheel_dir
+    wheel_dir=$(mktemp -d "$build_root/wheels.XXXXXXXX") || return 1
+    print_info "Building all native Nanbeige/DSpark components from upstream PR 49433 at ${source_commit}..."
+    run_command env -u PYTHONPATH -u VLLM_PRECOMPILED_WHEEL_LOCATION \
+        -u VLLM_VERSION_OVERRIDE -u SETUPTOOLS_SCM_PRETEND_VERSION \
+        CUDA_VISIBLE_DEVICES="" TMPDIR="$build_root/tmp" PATH="$builder/bin:$PATH" \
+        CUDA_HOME="$cuda_home" TORCH_CUDA_ARCH_LIST=12.0 VLLM_TARGET_DEVICE=cuda \
+        VLLM_USE_PRECOMPILED=0 VLLM_USE_PRECOMPILED_RUST=0 \
+        MAX_JOBS=8 NVCC_THREADS=2 CARGO_BUILD_JOBS=4 PYTHONNOUSERSITE=1 \
+        "$builder/bin/python" -m build --wheel --no-isolation \
+        --outdir "$wheel_dir" "$source_dir" || return 1
+    local wheels=("$wheel_dir"/vllm-*.whl)
+    if [ "${#wheels[@]}" -ne 1 ] || [ ! -f "${wheels[0]}" ]; then
+        print_error "Expected exactly one freshly built native vLLM wheel in $wheel_dir"
+        return 1
+    fi
+    CUDA_VISIBLE_DEVICES="" TMPDIR="$build_root/tmp" \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --index-strategy unsafe-best-match \
+        --extra-index-url https://download.pytorch.org/whl/cu130 \
+        --extra-index-url https://flashinfer.ai/whl/ \
+        "${wheels[0]}" "${runtime_pins[@]}" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
 install_rtxpro6k_nvidia_glm53_sglang_26fd7fd() {
     ensure_active_environment_matches "rtxpro6k-nvidia-glm53-sglang-26fd7fd" || return 1
     print_info "Installing the validated SGLang commit for NVIDIA GLM-5.3 NVFP4 on RTX PRO 6000..."
@@ -2887,6 +3048,9 @@ perform_environment_action() {
             ;;
         rtxpro6k-nanbeige-sglang)
             install_rtxpro6k_nanbeige_sglang || return 1
+            ;;
+        rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
+            install_rtxpro6k_nanbeige_vllm_pr_62f6de733d7a || return 1
             ;;
         rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             install_rtxpro6k_nvidia_glm53_sglang_26fd7fd || return 1
