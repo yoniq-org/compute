@@ -141,6 +141,8 @@ ENV_TYPES=(
   "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
   "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
   "rtxpro6k-nvidia-sglang-964c45cf3"
+  "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
+  "rtxpro6k-nvidia-vllm-73a5831127a9"
   "rtxpro6k-nvidia-vllm-pr-39e0ce172"
   "rtxpro6k-primeintellect-sglang"
   "rtxpro6k-qwen-flash-next-vllm"
@@ -271,6 +273,8 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-nvidia-glm53flash-sglang-pr-38430"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
   ["rtxpro6k-nvidia-qwen38-vllm-9c2d21046"]="RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
   ["rtxpro6k-nvidia-sglang-964c45cf3"]="RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
+  ["rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"]="RTX PRO 6000 NVIDIA Qwen3.6 NVFP4 (SGLang PR 41352, 13e5dcf04f082f8040f46d49)"
+  ["rtxpro6k-nvidia-vllm-73a5831127a9"]="RTX PRO 6000 NVIDIA (vLLM 73a5831127a9)"
   ["rtxpro6k-nvidia-vllm-pr-39e0ce172"]="RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
   ["rtxpro6k-primeintellect-sglang"]="RTX PRO 6000 PrimeIntellect (SGLang)"
   ["rtxpro6k-qwen-flash-next-vllm"]="RTX PRO 6000 Qwen Flash Next (vLLM)"
@@ -642,28 +646,34 @@ resolve_env_type() {
         119|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        120|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        120|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+            echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
+            ;;
+        121|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+            echo "rtxpro6k-nvidia-vllm-73a5831127a9"
+            ;;
+        122|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        121|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        123|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        122|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        124|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        123|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        125|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        124|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        126|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        125|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        127|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        126|custom|custom_uv|custom-uv|env_custom_uv)
+        128|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        127|custom_pip|custom-pip|env_custom_pip)
+        129|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2557,6 +2567,114 @@ install_rtxpro6k_nvidia_sglang_964c45cf3() {
         --torch-backend=auto || return 1
 }
 
+install_rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49" || return 1
+    # Whole official PR 41352: https://github.com/sgl-project/sglang/pull/41352
+    # Python 3.12.14; all 205 dependency versions from the passing 206-package install.
+    local source_commit="13e5dcf04f082f8040f46d49b61ee933368308ae"
+    local runtime_pins=(
+        "aiohappyeyeballs==2.7.1" "aiohttp==3.14.4" "aiosignal==1.4.0"
+        "airportsdata==20260905" "annotated-doc==0.0.5" "annotated-types==0.8.0"
+        "anthropic==1.12.1" "anyio==4.15.1" "apache-tvm-ffi==0.1.11"
+        "asttokens==3.0.2" "attrs==26.1.0" "blobfile==3.0.0"
+        "build==1.6.1" "certifi==2026.7.22" "cffi==2.1.1"
+        "charset-normalizer==3.5.2" "click==8.5.0" "cloudpickle==3.1.2"
+        "compressed-tensors==0.18.0" "cryptography==50.0.2" "cuda-bindings==13.4.3"
+        "cuda-core==1.2.1" "cuda-pathfinder==1.8.3" "cuda-python==13.4.1"
+        "cuda-tile==1.6.0rc5" "cuda-toolkit==13.0.3.0" "Cython==3.3.0"
+        "datasets==5.1.0" "dill==0.4.1" "diskcache==5.6.3"
+        "distro==1.9.0" "docstring_parser==0.18.0" "easydict==1.13"
+        "einops==0.9.0.dev0" "executing==2.2.1" "fastapi==0.143.0"
+        "filelock==4.0.12" "flash-attn-4==4.0.0b34" "flashinfer-python==0.6.18"
+        "frozenlist==1.8.0" "fsspec==2026.7.0" "gguf==0.19.0"
+        "grpcio==1.84.0" "grpcio-health-checking==1.82.0rc2" "grpcio-reflection==1.82.0rc2"
+        "h11==0.16.0" "hf-xet==1.7.0" "httpcore==1.0.9"
+        "httpcore2==2.13.1" "httpx==0.28.1" "httpx2==2.13.1"
+        "huggingface_hub==1.33.0" "humming-kernels==0.1.12" "idna==3.20"
+        "interegular==0.3.3" "ipython==9.17.1" "ipython_pygments_lexers==1.1.1"
+        "jedi==0.20.0" "Jinja2==3.1.6" "jiter==0.17.0"
+        "jsonschema==4.26.0" "jsonschema-specifications==2025.9.1" "kernels==0.14.1"
+        "kernels-data==0.16.2" "lark==1.3.1" "llguidance==1.9.1"
+        "llvmlite==0.47.0" "loguru==0.7.3" "lxml==7.0.0b1"
+        "markdown-it-py==4.2.0" "MarkupSafe==3.0.4" "matplotlib-inline==0.2.2"
+        "mdurl==0.1.2" "mistral_common==1.12.0" "ml_dtypes==0.6.0"
+        "modelscope==1.40.1" "modelscope-hub==0.4.5" "mpmath==1.3.0"
+        "msgspec==0.22.0" "multidict==6.9.1" "multiprocess==0.70.19"
+        "nccl4py==0.6.0" "nest-asyncio==1.6.0" "networkx==3.7"
+        "ninja==1.13.2" "numba==0.65.1" "numpy==2.3.5"
+        "nvidia-cublas==13.1.1.3" "nvidia-cuda-cccl==13.3.4.3.1" "nvidia-cuda-crt==13.4.92"
+        "nvidia-cuda-cupti==13.0.85" "nvidia-cuda-nvcc==13.4.92" "nvidia-cuda-nvdisasm==13.4.92"
+        "nvidia-cuda-nvrtc==13.0.88" "nvidia-cuda-runtime==13.0.96" "nvidia-cudnn-cu13==9.20.0.48"
+        "nvidia-cudnn-frontend==1.31.0" "nvidia-cufft==12.0.0.61" "nvidia-cufile==1.15.1.6"
+        "nvidia-curand==10.4.0.35" "nvidia-cusolver==12.0.4.66" "nvidia-cusparse==12.6.3.3"
+        "nvidia-cusparselt-cu13==0.8.1" "nvidia-cutlass-dsl==4.6.2" "nvidia-cutlass-dsl-libs-base==4.6.2"
+        "nvidia-cutlass-dsl-libs-core==4.6.2" "nvidia-cutlass-dsl-libs-cu12==4.6.2" "nvidia-cutlass-dsl-libs-cu13==4.6.2"
+        "nvidia-mathdx==25.6.0" "nvidia-ml-py==13.615.71" "nvidia-nccl-cu13==2.29.7"
+        "nvidia-nvjitlink==13.4.92" "nvidia-nvshmem-cu13==3.4.5" "nvidia-nvtx==13.0.85"
+        "nvidia-nvvm==13.4.92" "nvshmem4py-cu13==0.4.0" "openai==2.6.1"
+        "openai-harmony==0.0.4" "opentelemetry-api==1.45.1" "orjson==3.13.0"
+        "outlines==0.1.11" "outlines_core==0.1.26" "packaging==26.3"
+        "pandas==3.1.0rc0" "parso==0.8.7" "partial-json-parser==0.2.1.1.post7"
+        "pexpect==4.9.0" "pillow==12.3.0" "prometheus_client==0.26.0"
+        "prompt_toolkit==3.0.53" "propcache==0.5.4" "protobuf==6.33.6"
+        "psutil==7.2.2" "ptyprocess==0.7.0" "pure_eval==0.2.4"
+        "py-spy==0.4.2" "pyarrow==25.0.1" "pybase64==1.5.1"
+        "pycountry==26.2.16" "pycparser==3.1" "pycryptodomex==3.24.0"
+        "pydantic==2.14.0" "pydantic_core==2.50.0" "pydantic-extra-types==2.11.1"
+        "Pygments==2.21.0" "pyproject_hooks==1.3.3" "python-dateutil==2.9.0.post0"
+        "python-multipart==0.0.32" "PyYAML==6.0.3" "pyzmq==27.2.0"
+        "quack-kernels==0.6.4" "referencing==0.37.0" "regex==2026.9.29"
+        "requests==2.34.2" "rich==15.0.0" "rpds-py==2026.9.1"
+        "safetensors==0.9.0rc1" "scipy==1.18.1" "sentencepiece==0.2.2"
+        "setproctitle==1.3.8" "setuptools==84.0.0" "sgl-deep-ep==0.1.2"
+        "sgl-deep-gemm==0.2.0" "sglang-kernel==0.4.7" "shellingham==1.5.4"
+        "six==1.17.0" "smg-grpc-proto==0.4.25" "smg-grpc-servicer==0.13.5"
+        "sniffio==1.3.1" "soundfile==0.13.1" "stack-data==0.6.3"
+        "starlette==1.7.0" "sympy==1.14.0" "tabulate==0.10.0"
+        "tiktoken==0.14.0" "tilelang==0.1.12" "timm==1.0.16"
+        "tokenizers==0.22.2" "tokenspeed-mla==0.1.8" "tokenspeed-triton==3.8.10.post20260920"
+        "tomlkit==0.15.1" "torch==2.13.0+cu130" "torch_c_dlpack_ext==0.1.5"
+        "torch_memory_saver==0.0.10" "torchaudio==2.11.0+cu130" "torchcodec==0.15.0+cu130"
+        "torchvision==0.28.0+cu130" "tqdm==4.70.1" "traitlets==5.16.1"
+        "transformers==5.12.1" "triton==3.7.1" "truststore==0.10.4"
+        "typer==0.27.3" "typing_extensions==4.16.0" "typing-inspection==0.4.4"
+        "urllib3==2.8.0" "uvicorn==0.54.0" "uvloop==0.23.0"
+        "watchfiles==1.3.0" "wcwidth==0.9.2" "xgrammar==0.2.7"
+        "xxhash==4.0.1" "yarl==1.25.1" "z3-solver==4.15.4.0"
+        "zstandard==0.25.0"
+    )
+
+    # Normal isolated VCS build produces _multimodal, _grpc, _server and mem_cache.
+    # Rust/Cargo and the native compiler are prerequisites, not copied wheel artifacts.
+    # The validated stable toolchain was Rust 1.99.0 (b940084d7).
+    # Runtime pins do not promise byte-identical compiler or isolated Python build tools.
+    if ! command -v rustc >/dev/null 2>&1 || ! command -v cargo >/dev/null 2>&1 ||
+       ! command -v c++ >/dev/null 2>&1; then
+        print_error "Rust, Cargo and a C++ compiler are required; run installers/01_install_dependencies.sh --rust first."
+        return 1
+    fi
+    print_info "Installing whole official NVIDIA SGLang PR 41352 at ${source_commit}..."
+    RUSTUP_TOOLCHAIN=stable CUDA_VISIBLE_DEVICES="" SGLANG_BUILD_RUST_EXTS=all CARGO_BUILD_JOBS=2 \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --prerelease=allow \
+        --index-strategy unsafe-best-match \
+        --index https://download.pytorch.org/whl/cu130 \
+        --index https://flashinfer.ai/whl/cu130 \
+        --default-index https://pypi.org/simple \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
+        "${runtime_pins[@]}" || return 1
+    run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
+}
+
+install_rtxpro6k_nvidia_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official NVIDIA vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+}
+
 install_rtxpro6k_nvidia_vllm_pr_39e0ce172() {
     ensure_active_environment_matches "rtxpro6k-nvidia-vllm-pr-39e0ce172" || return 1
     # Official PR 54013 test merge fixes native SM120 FP8 MLA shared-memory scheduling.
@@ -3063,6 +3181,12 @@ perform_environment_action() {
             ;;
         rtxpro6k-nvidia-sglang-964c45cf3)
             install_rtxpro6k_nvidia_sglang_964c45cf3 || return 1
+            ;;
+        rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+            install_rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49 || return 1
+            ;;
+        rtxpro6k-nvidia-vllm-73a5831127a9)
+            install_rtxpro6k_nvidia_vllm_73a5831127a9 || return 1
             ;;
         rtxpro6k-nvidia-vllm-pr-39e0ce172)
             install_rtxpro6k_nvidia_vllm_pr_39e0ce172 || return 1

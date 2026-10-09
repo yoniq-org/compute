@@ -2,7 +2,7 @@
 
 # Script: 05_setup_env.sh
 # Purpose: Create ML virtual environment and set up environment variables
-# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-127]
+# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-129]
 # --refresh-activation updates only generated architecture settings in an existing environment.
 # Hardware recipe environments use env_h200-* or env_rtxpro6k-*.
 # Menus sort by environment type, with Custom (uv) and Custom (pip) last.
@@ -527,28 +527,34 @@ resolve_env_type() {
         119|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        120|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        120|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+            echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
+            ;;
+        121|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+            echo "rtxpro6k-nvidia-vllm-73a5831127a9"
+            ;;
+        122|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        121|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        123|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        122|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        124|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        123|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        125|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        124|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        126|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        125|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        127|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        126|custom|custom_uv|custom-uv|env_custom_uv)
+        128|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        127|custom_pip|custom-pip|env_custom_pip)
+        129|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -915,21 +921,23 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "117) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
     echo "118) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
     echo "119) RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
-    echo "120) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
-    echo "121) RTX PRO 6000 PrimeIntellect (SGLang)"
-    echo "122) RTX PRO 6000 Qwen Flash Next (vLLM)"
-    echo "123) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "124) RTX PRO 6000 Qwen (SGLang)"
-    echo "125) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "126) Custom (uv)"
-    echo "127) Custom (pip)"
+    echo "120) RTX PRO 6000 NVIDIA Qwen3.6 NVFP4 (SGLang PR 41352, 13e5dcf04f082f8040f46d49)"
+    echo "121) RTX PRO 6000 NVIDIA (vLLM 73a5831127a9)"
+    echo "122) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
+    echo "123) RTX PRO 6000 PrimeIntellect (SGLang)"
+    echo "124) RTX PRO 6000 Qwen Flash Next (vLLM)"
+    echo "125) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "126) RTX PRO 6000 Qwen (SGLang)"
+    echo "127) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "128) Custom (uv)"
+    echo "129) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-127): " choice
+        read -r -p "Enter your choice (1-129): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 127."
+            print_error "Invalid choice. Please enter a number between 1 and 129."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -940,7 +948,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 127."
+        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 129."
         if [ "$BEING_SOURCED" = true ]; then
             return 1
         fi
@@ -1076,6 +1084,12 @@ elif [ "$ENV_TYPE" = "rtxpro6k-mistralai-vllm-pr-678ef33584da" ]; then
 elif [ "$ENV_TYPE" = "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a" ]; then
     PYTHON_BIN="3.12.14"
     PYTHON_VERSION="Python 3.12.14 validated for Nanbeige vLLM PR 49433, 62f6de733d7a"
+elif [ "$ENV_TYPE" = "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49" ]; then
+    PYTHON_BIN="3.12.14"
+    PYTHON_VERSION="Python 3.12.14 validated for NVIDIA SGLang PR 41352"
+elif [ "$ENV_TYPE" = "rtxpro6k-nvidia-vllm-73a5831127a9" ]; then
+    PYTHON_BIN="3.12.14"
+    PYTHON_VERSION="Python 3.12.14 validated for NVIDIA vLLM 73a5831127a9"
 elif [ "$ENV_TYPE" = "rtxpro6k-nvidia-vllm-pr-39e0ce172" ]; then
     PYTHON_BIN="3.12"
     PYTHON_VERSION="Python 3.12 validated for NVIDIA Kimi vLLM PR 54013, 39e0ce172"
