@@ -144,11 +144,18 @@ ENV_TYPES=(
   "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
   "rtxpro6k-nvidia-vllm-73a5831127a9"
   "rtxpro6k-nvidia-vllm-pr-39e0ce172"
+  "rtxpro6k-openai-vllm-73a5831127a9"
+  "rtxpro6k-poolside-vllm-73a5831127a9"
   "rtxpro6k-primeintellect-sglang"
+  "rtxpro6k-primeintellect-vllm-73a5831127a9"
   "rtxpro6k-qwen-flash-next-vllm"
   "rtxpro6k-qwen-flash-next-vllm-pr-54129"
   "rtxpro6k-qwen-sglang"
+  "rtxpro6k-qwen-vllm-73a5831127a9"
+  "rtxpro6k-radixark-sglang-fa7784d140ee"
+  "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
   "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
+  "rtxpro6k-z-lab-vllm-73a5831127a9"
   "custom_uv"
   "custom_pip"
 )
@@ -276,11 +283,18 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"]="RTX PRO 6000 NVIDIA Qwen3.6 NVFP4 (SGLang PR 41352, 13e5dcf04f082f8040f46d49)"
   ["rtxpro6k-nvidia-vllm-73a5831127a9"]="RTX PRO 6000 NVIDIA (vLLM 73a5831127a9)"
   ["rtxpro6k-nvidia-vllm-pr-39e0ce172"]="RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
+  ["rtxpro6k-openai-vllm-73a5831127a9"]="RTX PRO 6000 OpenAI (vLLM 73a5831127a9)"
+  ["rtxpro6k-poolside-vllm-73a5831127a9"]="RTX PRO 6000 Poolside (vLLM 73a5831127a9)"
   ["rtxpro6k-primeintellect-sglang"]="RTX PRO 6000 PrimeIntellect (SGLang)"
+  ["rtxpro6k-primeintellect-vllm-73a5831127a9"]="RTX PRO 6000 PrimeIntellect (vLLM 73a5831127a9)"
   ["rtxpro6k-qwen-flash-next-vllm"]="RTX PRO 6000 Qwen Flash Next (vLLM)"
   ["rtxpro6k-qwen-flash-next-vllm-pr-54129"]="RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
   ["rtxpro6k-qwen-sglang"]="RTX PRO 6000 Qwen (SGLang)"
+  ["rtxpro6k-qwen-vllm-73a5831127a9"]="RTX PRO 6000 Qwen (vLLM 73a5831127a9)"
+  ["rtxpro6k-radixark-sglang-fa7784d140ee"]="RTX PRO 6000 RadixArk (SGLang fa7784d140ee)"
+  ["rtxpro6k-redhatai-vllm-73a5831127a9d2b8"]="RTX PRO 6000 RedHatAI (vLLM 73a5831127a9d2b8, timm)"
   ["rtxpro6k-xiaomimimo-flash-vllm-pr-58177"]="RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
+  ["rtxpro6k-z-lab-vllm-73a5831127a9"]="RTX PRO 6000 z-lab (vLLM 73a5831127a9)"
   ["custom_uv"]="Custom (uv)"
   ["custom_pip"]="Custom (pip)"
 )
@@ -655,25 +669,46 @@ resolve_env_type() {
         122|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        123|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        123|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+            echo "rtxpro6k-openai-vllm-73a5831127a9"
+            ;;
+        124|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+            echo "rtxpro6k-poolside-vllm-73a5831127a9"
+            ;;
+        125|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        124|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        126|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+            echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
+            ;;
+        127|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        125|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        128|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        126|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        129|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        127|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        130|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+            echo "rtxpro6k-qwen-vllm-73a5831127a9"
+            ;;
+        131|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+            echo "rtxpro6k-radixark-sglang-fa7784d140ee"
+            ;;
+        132|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+            echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
+            ;;
+        133|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        128|custom|custom_uv|custom-uv|env_custom_uv)
+        134|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+            echo "rtxpro6k-z-lab-vllm-73a5831127a9"
+            ;;
+        135|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        129|custom_pip|custom-pip|env_custom_pip)
+        136|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2707,12 +2742,42 @@ install_rtxpro6k_nvidia_vllm_pr_39e0ce172() {
         "b12x @ https://files.pythonhosted.org/packages/d2/bc/f28f6b3ade2522785f57caaebb2b02e35e7f189e647f47b0da8e7f581e36/b12x-1.3.0-py3-none-any.whl#sha256=c97d88635521a7fdd4f67717c1835a017d0dcea49d49cc7aa5b4299f290d19e3" || return 1
 }
 
+install_rtxpro6k_openai_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-openai-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official OpenAI vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_poolside_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-poolside-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official Poolside vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+}
+
 install_rtxpro6k_primeintellect_sglang() {
     install_pinned_sglang_commit \
         "rtxpro6k-primeintellect-sglang" \
         "PrimeIntellect (SGLang) commit dd15fb57b5ef7d13419f92ddc9b241591b71c0b5" \
         "https://github.com/sgl-project/sglang.git" \
         "dd15fb57b5ef7d13419f92ddc9b241591b71c0b5"
+}
+
+install_rtxpro6k_primeintellect_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-primeintellect-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official PrimeIntellect vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
 }
 
 install_rtxpro6k_qwen_flash_next_vllm() {
@@ -2761,6 +2826,41 @@ install_rtxpro6k_qwen_sglang() {
     print_info "Installing the validated Qwen DFlash2 SGLang commit..."
     run_uv_install -U --reinstall --prerelease=allow \
         "sglang[all] @ git+https://github.com/sgl-project/sglang.git@1cf2b8c54d81802abc15dcf23a29b9cc687bc01e#subdirectory=python" || return 1
+}
+
+install_rtxpro6k_qwen_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-qwen-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official Qwen vLLM SM120 wheel at ${source_commit}..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_radixark_sglang_fa7784d140ee() {
+    ensure_active_environment_matches "rtxpro6k-radixark-sglang-fa7784d140ee" || return 1
+    local source_commit="fa7784d140eef70223cabf942ab81d53a48fdb0a"
+    print_info "Installing the official RadixArk SGLang commit at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" TORCH_CUDA_ARCH_LIST=12.0 UV_LINK_MODE=hardlink MAX_JOBS=2 \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --prerelease=allow \
+        --torch-backend=cu130 \
+        "sglang @ git+https://github.com/sgl-project/sglang.git@${source_commit}#subdirectory=python" \
+        "torch==2.13.0+cu130" "transformers==5.17.0" "tokenizers==0.23.2" \
+        "sglang-kernel==0.4.8" "flashinfer-python==0.7.0.post1" \
+        "torchcodec==0.15.0+cu130" "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" || return 1
+}
+
+install_rtxpro6k_redhatai_vllm_73a5831127a9d2b8() {
+    ensure_active_environment_matches "rtxpro6k-redhatai-vllm-73a5831127a9d2b8" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official RedHatAI vLLM SM120 wheel at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 TORCH_CUDA_ARCH_LIST=12.0 \
+        run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" "timm==1.0.30" --torch-backend=cu130 || return 1
 }
 
 install_rtxpro6k_xiaomimimo_flash_vllm_pr_58177() {
@@ -2822,6 +2922,17 @@ install_rtxpro6k_xiaomimimo_flash_vllm_pr_58177() {
 
 
 
+
+install_rtxpro6k_z_lab_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-z-lab-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the official z-lab vLLM SM120 wheel at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 TORCH_CUDA_ARCH_LIST=12.0 \
+        run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+}
 
 perform_environment_action() {
     case "$1" in
@@ -3191,8 +3302,17 @@ perform_environment_action() {
         rtxpro6k-nvidia-vllm-pr-39e0ce172)
             install_rtxpro6k_nvidia_vllm_pr_39e0ce172 || return 1
             ;;
+        rtxpro6k-openai-vllm-73a5831127a9)
+            install_rtxpro6k_openai_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-poolside-vllm-73a5831127a9)
+            install_rtxpro6k_poolside_vllm_73a5831127a9 || return 1
+            ;;
         rtxpro6k-primeintellect-sglang)
             install_rtxpro6k_primeintellect_sglang || return 1
+            ;;
+        rtxpro6k-primeintellect-vllm-73a5831127a9)
+            install_rtxpro6k_primeintellect_vllm_73a5831127a9 || return 1
             ;;
         rtxpro6k-qwen-flash-next-vllm)
             install_rtxpro6k_qwen_flash_next_vllm || return 1
@@ -3203,8 +3323,20 @@ perform_environment_action() {
         rtxpro6k-qwen-sglang)
             install_rtxpro6k_qwen_sglang || return 1
             ;;
+        rtxpro6k-qwen-vllm-73a5831127a9)
+            install_rtxpro6k_qwen_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-radixark-sglang-fa7784d140ee)
+            install_rtxpro6k_radixark_sglang_fa7784d140ee || return 1
+            ;;
+        rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+            install_rtxpro6k_redhatai_vllm_73a5831127a9d2b8 || return 1
+            ;;
         rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             install_rtxpro6k_xiaomimimo_flash_vllm_pr_58177 || return 1
+            ;;
+        rtxpro6k-z-lab-vllm-73a5831127a9)
+            install_rtxpro6k_z_lab_vllm_73a5831127a9 || return 1
             ;;
         *)
             print_info "No automated package actions configured for this environment."

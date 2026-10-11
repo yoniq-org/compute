@@ -2,7 +2,7 @@
 
 # Script: launch_env.sh
 # Purpose: Activate ML environment with all optimizations
-# Usage: source launch_env.sh [--auto] [ENV_NAME|1-129]
+# Usage: source launch_env.sh [--auto] [ENV_NAME|1-136]
 
 WORKSPACE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
@@ -516,25 +516,46 @@ resolve_env_type() {
         122|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        123|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        123|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+            echo "rtxpro6k-openai-vllm-73a5831127a9"
+            ;;
+        124|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+            echo "rtxpro6k-poolside-vllm-73a5831127a9"
+            ;;
+        125|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        124|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        126|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+            echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
+            ;;
+        127|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        125|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        128|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        126|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        129|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        127|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        130|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+            echo "rtxpro6k-qwen-vllm-73a5831127a9"
+            ;;
+        131|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+            echo "rtxpro6k-radixark-sglang-fa7784d140ee"
+            ;;
+        132|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+            echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
+            ;;
+        133|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        128|custom|custom_uv|custom-uv|env_custom_uv)
+        134|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+            echo "rtxpro6k-z-lab-vllm-73a5831127a9"
+            ;;
+        135|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        129|custom_pip|custom-pip|env_custom_pip)
+        136|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -557,7 +578,7 @@ resolve_env_name() {
 # This launcher mutates the caller's shell and therefore must be sourced.
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     print_error "This script must be sourced, not executed!"
-    print_error "Use: source $0 [--auto] [ENV_NAME|1-129]"
+    print_error "Use: source $0 [--auto] [ENV_NAME|1-136]"
     exit 1
 fi
 
@@ -704,20 +725,27 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "120) RTX PRO 6000 NVIDIA Qwen3.6 NVFP4 (SGLang PR 41352, 13e5dcf04f082f8040f46d49)"
     echo "121) RTX PRO 6000 NVIDIA (vLLM 73a5831127a9)"
     echo "122) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
-    echo "123) RTX PRO 6000 PrimeIntellect (SGLang)"
-    echo "124) RTX PRO 6000 Qwen Flash Next (vLLM)"
-    echo "125) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "126) RTX PRO 6000 Qwen (SGLang)"
-    echo "127) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "128) Custom (uv)"
-    echo "129) Custom (pip)"
+    echo "123) RTX PRO 6000 OpenAI (vLLM 73a5831127a9)"
+    echo "124) RTX PRO 6000 Poolside (vLLM 73a5831127a9)"
+    echo "125) RTX PRO 6000 PrimeIntellect (SGLang)"
+    echo "126) RTX PRO 6000 PrimeIntellect (vLLM 73a5831127a9)"
+    echo "127) RTX PRO 6000 Qwen Flash Next (vLLM)"
+    echo "128) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "129) RTX PRO 6000 Qwen (SGLang)"
+    echo "130) RTX PRO 6000 Qwen (vLLM 73a5831127a9)"
+    echo "131) RTX PRO 6000 RadixArk (SGLang fa7784d140ee)"
+    echo "132) RTX PRO 6000 RedHatAI (vLLM 73a5831127a9d2b8, timm)"
+    echo "133) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "134) RTX PRO 6000 z-lab (vLLM 73a5831127a9)"
+    echo "135) Custom (uv)"
+    echo "136) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-129): " choice
+        read -r -p "Enter your choice (1-136): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 129."
+            print_error "Invalid choice. Please enter a number between 1 and 136."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -728,7 +756,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 129."
+        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 136."
         return 1
     fi
     ENV_TYPE="$ENV_TYPE_MAPPED"
