@@ -123,6 +123,8 @@ ENV_TYPES=(
   "rtxpro6k-google-vllm-73a5831127a9"
   "rtxpro6k-ibm-granite-sglang-fa7784d140ee"
   "rtxpro6k-ibm-granite-vllm-73a5831127a9"
+  "rtxpro6k-inclusionai-sglang-1093c501dfef"
+  "rtxpro6k-inclusionai-vllm-73a5831127a9"
   "rtxpro6k-incoai-sglang-964c45cf3"
   "rtxpro6k-incoai-sglang-fa7784d140ee"
   "rtxpro6k-incoai-sglang-pr-028ac64f7"
@@ -132,6 +134,8 @@ ENV_TYPES=(
   "rtxpro6k-intel-vllm-73a5831127a9"
   "rtxpro6k-liquidai-sglang"
   "rtxpro6k-liquidai-sglang-pr-31041"
+  "rtxpro6k-meta-models-sglang-fa7784d140ee"
+  "rtxpro6k-meta-models-vllm-73a5831127a9"
   "rtxpro6k-microsoft-vllm-73a5831127a9"
   "rtxpro6k-mistralai-sglang-fa7784d140ee"
   "rtxpro6k-mistralai-vllm-73a5831127a9"
@@ -267,6 +271,8 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-google-vllm-73a5831127a9"]="RTX PRO 6000 Google Gemma (vLLM 73a5831127a9, audio)"
   ["rtxpro6k-ibm-granite-sglang-fa7784d140ee"]="RTX PRO 6000 IBM Granite (SGLang fa7784d140ee)"
   ["rtxpro6k-ibm-granite-vllm-73a5831127a9"]="RTX PRO 6000 IBM Granite (vLLM 73a5831127a9)"
+  ["rtxpro6k-inclusionai-sglang-1093c501dfef"]="RTX PRO 6000 Inclusion Ling (SGLang 1093c501dfef)"
+  ["rtxpro6k-inclusionai-vllm-73a5831127a9"]="RTX PRO 6000 Inclusion Ling (vLLM 73a5831127a9)"
   ["rtxpro6k-incoai-sglang-964c45cf3"]="RTX PRO 6000 incoai GLM-5.3 DFlash2 (SGLang 964c45cf3)"
   ["rtxpro6k-incoai-sglang-fa7784d140ee"]="RTX PRO 6000 incoai Qwen3.8 DFlash2 (SGLang fa7784d140ee)"
   ["rtxpro6k-incoai-sglang-pr-028ac64f7"]="RTX PRO 6000 incoai GLM-5.3 Flash (SGLang PR 38430, 028ac64f7)"
@@ -276,6 +282,8 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-intel-vllm-73a5831127a9"]="RTX PRO 6000 Intel AutoRound (vLLM 73a5831127a9)"
   ["rtxpro6k-liquidai-sglang"]="RTX PRO 6000 LiquidAI (SGLang)"
   ["rtxpro6k-liquidai-sglang-pr-31041"]="RTX PRO 6000 LiquidAI (SGLang) PR 31041"
+  ["rtxpro6k-meta-models-sglang-fa7784d140ee"]="RTX PRO 6000 Meta Muse (SGLang fa7784d140ee)"
+  ["rtxpro6k-meta-models-vllm-73a5831127a9"]="RTX PRO 6000 Meta Muse (vLLM 73a5831127a9)"
   ["rtxpro6k-microsoft-vllm-73a5831127a9"]="RTX PRO 6000 Microsoft Fara (vLLM 73a5831127a9)"
   ["rtxpro6k-mistralai-sglang-fa7784d140ee"]="RTX PRO 6000 MistralAI (SGLang fa7784d140ee)"
   ["rtxpro6k-mistralai-vllm-73a5831127a9"]="RTX PRO 6000 MistralAI (vLLM 73a5831127a9)"
@@ -616,124 +624,136 @@ resolve_env_type() {
         101|rtxpro6k_ibm_granite_vllm_73a5831127a9|rtxpro6k-ibm-granite-vllm-73a5831127a9)
             echo "rtxpro6k-ibm-granite-vllm-73a5831127a9"
             ;;
-        102|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
+        102|rtxpro6k_inclusionai_sglang_1093c501dfef|rtxpro6k-inclusionai-sglang-1093c501dfef)
+            echo "rtxpro6k-inclusionai-sglang-1093c501dfef"
+            ;;
+        103|rtxpro6k_inclusionai_vllm_73a5831127a9|rtxpro6k-inclusionai-vllm-73a5831127a9)
+            echo "rtxpro6k-inclusionai-vllm-73a5831127a9"
+            ;;
+        104|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
             echo "rtxpro6k-incoai-sglang-964c45cf3"
             ;;
-        103|rtxpro6k_incoai_sglang_fa7784d140ee|rtxpro6k-incoai-sglang-fa7784d140ee)
+        105|rtxpro6k_incoai_sglang_fa7784d140ee|rtxpro6k-incoai-sglang-fa7784d140ee)
             echo "rtxpro6k-incoai-sglang-fa7784d140ee"
             ;;
-        104|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
+        106|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
             echo "rtxpro6k-incoai-sglang-pr-028ac64f7"
             ;;
-        105|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
+        107|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
             echo "rtxpro6k-incoai-vllm-73a583112"
             ;;
-        106|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+        108|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
             echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
             ;;
-        107|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        109|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        108|rtxpro6k_intel_vllm_73a5831127a9|rtxpro6k-intel-vllm-73a5831127a9)
+        110|rtxpro6k_intel_vllm_73a5831127a9|rtxpro6k-intel-vllm-73a5831127a9)
             echo "rtxpro6k-intel-vllm-73a5831127a9"
             ;;
-        109|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        111|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        110|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        112|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        111|rtxpro6k_microsoft_vllm_73a5831127a9|rtxpro6k-microsoft-vllm-73a5831127a9)
+        113|rtxpro6k_meta_models_sglang_fa7784d140ee|rtxpro6k-meta-models-sglang-fa7784d140ee)
+            echo "rtxpro6k-meta-models-sglang-fa7784d140ee"
+            ;;
+        114|rtxpro6k_meta_models_vllm_73a5831127a9|rtxpro6k-meta-models-vllm-73a5831127a9)
+            echo "rtxpro6k-meta-models-vllm-73a5831127a9"
+            ;;
+        115|rtxpro6k_microsoft_vllm_73a5831127a9|rtxpro6k-microsoft-vllm-73a5831127a9)
             echo "rtxpro6k-microsoft-vllm-73a5831127a9"
             ;;
-        112|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
+        116|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
             echo "rtxpro6k-mistralai-sglang-fa7784d140ee"
             ;;
-        113|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
+        117|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
             echo "rtxpro6k-mistralai-vllm-73a5831127a9"
             ;;
-        114|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
+        118|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
             echo "rtxpro6k-mistralai-vllm-pr-678ef33584da"
             ;;
-        115|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        119|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        116|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
+        120|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
             echo "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"
             ;;
-        117|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        121|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        118|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        122|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        119|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        123|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        120|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        124|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        121|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+        125|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
             echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
             ;;
-        122|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+        126|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
             echo "rtxpro6k-nvidia-vllm-73a5831127a9"
             ;;
-        123|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        127|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        124|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+        128|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
             echo "rtxpro6k-openai-vllm-73a5831127a9"
             ;;
-        125|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
+        129|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
             echo "rtxpro6k-paradigma-inc-vllm-73a5831127a9"
             ;;
-        126|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+        130|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
             echo "rtxpro6k-poolside-vllm-73a5831127a9"
             ;;
-        127|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        131|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        128|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+        132|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
             echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
             ;;
-        129|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        133|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        130|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        134|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        131|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        135|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        132|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+        136|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
             echo "rtxpro6k-qwen-vllm-73a5831127a9"
             ;;
-        133|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+        137|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
             echo "rtxpro6k-radixark-sglang-fa7784d140ee"
             ;;
-        134|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+        138|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
             echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
             ;;
-        135|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        139|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        136|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+        140|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        137|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+        141|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
             echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
             ;;
-        138|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+        142|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
             echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
             ;;
-        139|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+        143|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
             echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
             ;;
-        140|custom|custom_uv|custom-uv|env_custom_uv)
+        144|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        141|custom_pip|custom-pip|env_custom_pip)
+        145|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2248,6 +2268,93 @@ install_rtxpro6k_incoai_sglang_fa7784d140ee() {
     run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
 }
 
+install_rtxpro6k_inclusionai_sglang_1093c501dfef() {
+    ensure_active_environment_matches "rtxpro6k-inclusionai-sglang-1093c501dfef" || return 1
+    local source_commit="1093c501dfef0789b46fc3afe44949e35867a11a"
+    local repository="https://github.com/sgl-project/sglang.git"
+    local source_dir="$HOME/.local/share/rtxpro6k-sources/inclusionai-sglang-1093c501dfef"
+
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "SGLang target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command mkdir -p "$HOME/.local/share/rtxpro6k-sources" || return 1
+        run_command git clone --filter=blob:none --no-checkout "$repository" "$source_dir" || return 1
+        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "$repository" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "Inclusion Ling SGLang checkout must match the clean validated commit: $source_commit"
+        return 1
+    fi
+
+    print_info "Installing upstream Inclusion Ling SGLang at ${source_commit}..."
+    TORCH_CUDA_ARCH_LIST=12.0 \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --prerelease=allow \
+        --torch-backend=cu130 --editable "$source_dir/python" \
+        "torch==2.13.0+cu130" "transformers==5.17.0" "tokenizers==0.23.2" \
+        "sglang-kernel==0.4.8" "flashinfer-python==0.7.0.post1" \
+        "nvidia-cutlass-dsl==4.8.0" "apache-tvm-ffi==0.1.11" \
+        "torchcodec==0.15.0+cu130" "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" || return 1
+}
+
+install_rtxpro6k_inclusionai_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-inclusionai-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated Inclusion Ling vLLM SM120 runtime..."
+    run_uv_install --prerelease=allow --torch-backend=cu130 \
+        "vllm @ ${wheel_url}" "torch==2.13.0+cu130" "transformers==5.18.0" \
+        "tokenizers==0.23.2" "flashinfer-python==0.7.0.post1" || return 1
+}
+
+install_rtxpro6k_meta_models_sglang_fa7784d140ee() {
+    ensure_active_environment_matches "rtxpro6k-meta-models-sglang-fa7784d140ee" || return 1
+    # Qualified whole official commit; the private environment used the IBM Granite checkout.
+    local source_commit="fa7784d140eef70223cabf942ab81d53a48fdb0a"
+    local repository="https://github.com/sgl-project/sglang.git"
+    local source_dir="$HOME/.local/share/rtxpro6k-sources/ibm-granite-sglang-fa7784d140ee"
+
+    if [ -e "$source_dir" ] && [ ! -d "$source_dir/.git" ]; then
+        print_error "SGLang target exists but is not a git checkout: $source_dir"
+        return 1
+    fi
+    if [ ! -d "$source_dir/.git" ]; then
+        run_command mkdir -p "$HOME/.local/share/rtxpro6k-sources" || return 1
+        run_command git clone --filter=blob:none --no-checkout "$repository" "$source_dir" || return 1
+        run_command git -C "$source_dir" checkout --detach "$source_commit" || return 1
+    fi
+    if [ "$(git -C "$source_dir" remote get-url origin)" != "$repository" ] ||
+       [ "$(git -C "$source_dir" rev-parse HEAD)" != "$source_commit" ] ||
+       [ -n "$(git -C "$source_dir" status --porcelain --untracked-files=no)" ]; then
+        print_error "Meta Muse SGLang checkout must match the clean validated commit: $source_commit"
+        return 1
+    fi
+
+    print_info "Installing upstream Meta Muse SGLang at ${source_commit}..."
+    TORCH_CUDA_ARCH_LIST=12.0 \
+        run_uv_install --python "$VIRTUAL_ENV/bin/python" --prerelease=allow \
+        --torch-backend=cu130 --editable "$source_dir/python" \
+        "torch==2.13.0+cu130" "transformers==5.17.0" "tokenizers==0.23.2" \
+        "sglang-kernel==0.4.8" "flashinfer-python==0.7.0.post1" \
+        "nvidia-cutlass-dsl==4.8.0" "apache-tvm-ffi==0.1.11" \
+        "torchcodec==0.15.0+cu130" "torchaudio==2.11.0+cu130" \
+        "torchvision==0.28.0+cu130" || return 1
+}
+
+install_rtxpro6k_meta_models_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-meta-models-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated Meta Muse vLLM SM120 runtime..."
+    run_uv_install --prerelease=allow --torch-backend=cu130 \
+        "vllm @ ${wheel_url}" "torch==2.13.0+cu130" "transformers==5.18.0" \
+        "tokenizers==0.23.2" "flashinfer-python==0.7.0.post1" || return 1
+}
+
 install_rtxpro6k_microsoft_vllm_73a5831127a9() {
     ensure_active_environment_matches "rtxpro6k-microsoft-vllm-73a5831127a9" || return 1
     local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
@@ -3353,6 +3460,12 @@ perform_environment_action() {
         rtxpro6k-ibm-granite-vllm-73a5831127a9)
             install_rtxpro6k_ibm_granite_vllm_73a5831127a9 || return 1
             ;;
+        rtxpro6k-inclusionai-sglang-1093c501dfef)
+            install_rtxpro6k_inclusionai_sglang_1093c501dfef || return 1
+            ;;
+        rtxpro6k-inclusionai-vllm-73a5831127a9)
+            install_rtxpro6k_inclusionai_vllm_73a5831127a9 || return 1
+            ;;
         rtxpro6k-incoai-sglang-964c45cf3)
             install_rtxpro6k_incoai_sglang_964c45cf3 || return 1
             ;;
@@ -3379,6 +3492,12 @@ perform_environment_action() {
             ;;
         rtxpro6k-liquidai-sglang-pr-31041)
             install_rtxpro6k_liquidai_sglang_pr_31041 || return 1
+            ;;
+        rtxpro6k-meta-models-sglang-fa7784d140ee)
+            install_rtxpro6k_meta_models_sglang_fa7784d140ee || return 1
+            ;;
+        rtxpro6k-meta-models-vllm-73a5831127a9)
+            install_rtxpro6k_meta_models_vllm_73a5831127a9 || return 1
             ;;
         rtxpro6k-microsoft-vllm-73a5831127a9)
             install_rtxpro6k_microsoft_vllm_73a5831127a9 || return 1
