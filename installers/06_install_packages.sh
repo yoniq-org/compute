@@ -132,6 +132,7 @@ ENV_TYPES=(
   "rtxpro6k-intel-vllm-73a5831127a9"
   "rtxpro6k-liquidai-sglang"
   "rtxpro6k-liquidai-sglang-pr-31041"
+  "rtxpro6k-microsoft-vllm-73a5831127a9"
   "rtxpro6k-mistralai-sglang-fa7784d140ee"
   "rtxpro6k-mistralai-vllm-73a5831127a9"
   "rtxpro6k-mistralai-vllm-pr-678ef33584da"
@@ -145,6 +146,7 @@ ENV_TYPES=(
   "rtxpro6k-nvidia-vllm-73a5831127a9"
   "rtxpro6k-nvidia-vllm-pr-39e0ce172"
   "rtxpro6k-openai-vllm-73a5831127a9"
+  "rtxpro6k-paradigma-inc-vllm-73a5831127a9"
   "rtxpro6k-poolside-vllm-73a5831127a9"
   "rtxpro6k-primeintellect-sglang"
   "rtxpro6k-primeintellect-vllm-73a5831127a9"
@@ -274,6 +276,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-intel-vllm-73a5831127a9"]="RTX PRO 6000 Intel AutoRound (vLLM 73a5831127a9)"
   ["rtxpro6k-liquidai-sglang"]="RTX PRO 6000 LiquidAI (SGLang)"
   ["rtxpro6k-liquidai-sglang-pr-31041"]="RTX PRO 6000 LiquidAI (SGLang) PR 31041"
+  ["rtxpro6k-microsoft-vllm-73a5831127a9"]="RTX PRO 6000 Microsoft Fara (vLLM 73a5831127a9)"
   ["rtxpro6k-mistralai-sglang-fa7784d140ee"]="RTX PRO 6000 MistralAI (SGLang fa7784d140ee)"
   ["rtxpro6k-mistralai-vllm-73a5831127a9"]="RTX PRO 6000 MistralAI (vLLM 73a5831127a9)"
   ["rtxpro6k-mistralai-vllm-pr-678ef33584da"]="RTX PRO 6000 MistralAI (vLLM PR 58172, 678ef33584da)"
@@ -287,6 +290,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-nvidia-vllm-73a5831127a9"]="RTX PRO 6000 NVIDIA (vLLM 73a5831127a9)"
   ["rtxpro6k-nvidia-vllm-pr-39e0ce172"]="RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
   ["rtxpro6k-openai-vllm-73a5831127a9"]="RTX PRO 6000 OpenAI (vLLM 73a5831127a9)"
+  ["rtxpro6k-paradigma-inc-vllm-73a5831127a9"]="RTX PRO 6000 Paradigma Limite (vLLM 73a5831127a9, official plugin)"
   ["rtxpro6k-poolside-vllm-73a5831127a9"]="RTX PRO 6000 Poolside (vLLM 73a5831127a9)"
   ["rtxpro6k-primeintellect-sglang"]="RTX PRO 6000 PrimeIntellect (SGLang)"
   ["rtxpro6k-primeintellect-vllm-73a5831127a9"]="RTX PRO 6000 PrimeIntellect (vLLM 73a5831127a9)"
@@ -639,91 +643,97 @@ resolve_env_type() {
         110|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        111|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
+        111|rtxpro6k_microsoft_vllm_73a5831127a9|rtxpro6k-microsoft-vllm-73a5831127a9)
+            echo "rtxpro6k-microsoft-vllm-73a5831127a9"
+            ;;
+        112|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
             echo "rtxpro6k-mistralai-sglang-fa7784d140ee"
             ;;
-        112|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
+        113|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
             echo "rtxpro6k-mistralai-vllm-73a5831127a9"
             ;;
-        113|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
+        114|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
             echo "rtxpro6k-mistralai-vllm-pr-678ef33584da"
             ;;
-        114|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        115|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        115|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
+        116|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
             echo "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"
             ;;
-        116|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        117|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        117|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        118|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        118|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        119|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        119|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        120|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        120|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+        121|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
             echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
             ;;
-        121|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+        122|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
             echo "rtxpro6k-nvidia-vllm-73a5831127a9"
             ;;
-        122|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        123|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        123|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+        124|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
             echo "rtxpro6k-openai-vllm-73a5831127a9"
             ;;
-        124|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+        125|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
+            echo "rtxpro6k-paradigma-inc-vllm-73a5831127a9"
+            ;;
+        126|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
             echo "rtxpro6k-poolside-vllm-73a5831127a9"
             ;;
-        125|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        127|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        126|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+        128|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
             echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
             ;;
-        127|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        129|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        128|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        130|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        129|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        131|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        130|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+        132|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
             echo "rtxpro6k-qwen-vllm-73a5831127a9"
             ;;
-        131|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+        133|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
             echo "rtxpro6k-radixark-sglang-fa7784d140ee"
             ;;
-        132|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+        134|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
             echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
             ;;
-        133|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        135|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        134|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+        136|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        135|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+        137|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
             echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
             ;;
-        136|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+        138|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
             echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
             ;;
-        137|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+        139|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
             echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
             ;;
-        138|custom|custom_uv|custom-uv|env_custom_uv)
+        140|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        139|custom_pip|custom-pip|env_custom_pip)
+        141|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2238,6 +2248,16 @@ install_rtxpro6k_incoai_sglang_fa7784d140ee() {
     run_command uv pip check --python "$VIRTUAL_ENV/bin/python" || return 1
 }
 
+install_rtxpro6k_microsoft_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-microsoft-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated Microsoft Fara vLLM SM120 runtime..."
+    run_uv_install --prerelease=allow --torch-backend=cu130 \
+        "vllm @ ${wheel_url}" "torch==2.13.0+cu130" "transformers==5.18.0" \
+        "tokenizers==0.23.2" "flashinfer-python==0.7.0.post1" || return 1
+}
+
 install_rtxpro6k_mistralai_sglang_fa7784d140ee() {
     ensure_active_environment_matches "rtxpro6k-mistralai-sglang-fa7784d140ee" || return 1
     # Qualified whole official commit; the private environment used the IBM Granite checkout.
@@ -2765,6 +2785,19 @@ install_rtxpro6k_openai_vllm_73a5831127a9() {
     run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
         "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
         "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_paradigma_inc_vllm_73a5831127a9() {
+    ensure_active_environment_matches "rtxpro6k-paradigma-inc-vllm-73a5831127a9" || return 1
+    local source_commit="73a5831127a9d2b87102da8a6e7c96b6f7f64fcd"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.30.1rc1.dev452%2Bg73a583112-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated Paradigma vLLM SM120 runtime and independent RTX Limite plugin..."
+    run_uv_install --prerelease=allow "vllm @ ${wheel_url}" \
+        "torch==2.13.0+cu130" "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
+    # Independently built from https://github.com/paradigma-inc/limite-violetto/tree/7ddad34f5e3d25ddea68c6745fc00373b82bca21
+    run_uv_install --no-deps \
+        "$(dirname -- "${BASH_SOURCE[0]}")/../recipes/nvidia-rtxpro6k/paradigma-inc/plugin/limite_vllm-0.1.0-py3-none-any.whl" || return 1
 }
 
 install_rtxpro6k_poolside_vllm_73a5831127a9() {
@@ -3347,6 +3380,9 @@ perform_environment_action() {
         rtxpro6k-liquidai-sglang-pr-31041)
             install_rtxpro6k_liquidai_sglang_pr_31041 || return 1
             ;;
+        rtxpro6k-microsoft-vllm-73a5831127a9)
+            install_rtxpro6k_microsoft_vllm_73a5831127a9 || return 1
+            ;;
         rtxpro6k-mistralai-sglang-fa7784d140ee)
             install_rtxpro6k_mistralai_sglang_fa7784d140ee || return 1
             ;;
@@ -3385,6 +3421,9 @@ perform_environment_action() {
             ;;
         rtxpro6k-openai-vllm-73a5831127a9)
             install_rtxpro6k_openai_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-paradigma-inc-vllm-73a5831127a9)
+            install_rtxpro6k_paradigma_inc_vllm_73a5831127a9 || return 1
             ;;
         rtxpro6k-poolside-vllm-73a5831127a9)
             install_rtxpro6k_poolside_vllm_73a5831127a9 || return 1
