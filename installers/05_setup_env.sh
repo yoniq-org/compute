@@ -2,7 +2,7 @@
 
 # Script: 05_setup_env.sh
 # Purpose: Create ML virtual environment and set up environment variables
-# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-136]
+# Usage: source ./installers/05_setup_env.sh [--auto] [--refresh-activation] [ENV_NAME|1-139]
 # --refresh-activation updates only generated architecture settings in an existing environment.
 # Hardware recipe environments use env_h200-* or env_rtxpro6k-*.
 # Menus sort by environment type, with Custom (uv) and Custom (pip) last.
@@ -572,10 +572,19 @@ resolve_env_type() {
         134|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        135|custom|custom_uv|custom-uv|env_custom_uv)
+        135|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+            echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
+            ;;
+        136|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+            echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
+            ;;
+        137|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+            echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
+            ;;
+        138|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        136|custom_pip|custom-pip|env_custom_pip)
+        139|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -957,15 +966,18 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "132) RTX PRO 6000 RedHatAI (vLLM 73a5831127a9d2b8, timm)"
     echo "133) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
     echo "134) RTX PRO 6000 z-lab (vLLM 73a5831127a9)"
-    echo "135) Custom (uv)"
-    echo "136) Custom (pip)"
+    echo "135) RTX PRO 6000 z-lab DFlash2 (vLLM PR 58207, e55909cad00f)"
+    echo "136) RTX PRO 6000 Zyphra ZAYA legacy (vLLM PR 41999, 2ce2f26c282d)"
+    echo "137) RTX PRO 6000 Zyphra ZAYA current (vLLM PR 41999, b1b99a08b20f)"
+    echo "138) Custom (uv)"
+    echo "139) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-136): " choice
+        read -r -p "Enter your choice (1-139): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 136."
+            print_error "Invalid choice. Please enter a number between 1 and 139."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -976,7 +988,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 136."
+        fail_script "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 139."
         if [ "$BEING_SOURCED" = true ]; then
             return 1
         fi
@@ -1139,6 +1151,15 @@ elif [ "$ENV_TYPE" = "rtxpro6k-xiaomimimo-flash-vllm-pr-58177" ]; then
 elif [ "$ENV_TYPE" = "rtxpro6k-z-lab-vllm-73a5831127a9" ]; then
     PYTHON_BIN="3.12.14"
     PYTHON_VERSION="Python 3.12.14 validated for z-lab vLLM 73a5831127a9"
+elif [ "$ENV_TYPE" = "rtxpro6k-z-lab-vllm-pr-e55909cad00f" ]; then
+    PYTHON_BIN="3.12.14"
+    PYTHON_VERSION="Python 3.12.14 validated for z-lab vLLM PR 58207 e55909cad00f"
+elif [ "$ENV_TYPE" = "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d" ]; then
+    PYTHON_BIN="3.12.14"
+    PYTHON_VERSION="Python 3.12.14 validated for Zyphra ZAYA legacy vLLM PR 41999 2ce2f26c282d"
+elif [ "$ENV_TYPE" = "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f" ]; then
+    PYTHON_BIN="3.12.14"
+    PYTHON_VERSION="Python 3.12.14 validated for Zyphra ZAYA current vLLM PR 41999 b1b99a08b20f"
 else
     PYTHON_BIN=$(python -c 'import sys; print(sys._base_executable)')
     PYTHON_VERSION=$("$PYTHON_BIN" --version 2>&1)

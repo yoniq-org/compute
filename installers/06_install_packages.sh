@@ -156,6 +156,9 @@ ENV_TYPES=(
   "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
   "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
   "rtxpro6k-z-lab-vllm-73a5831127a9"
+  "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
+  "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
+  "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
   "custom_uv"
   "custom_pip"
 )
@@ -295,6 +298,9 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-redhatai-vllm-73a5831127a9d2b8"]="RTX PRO 6000 RedHatAI (vLLM 73a5831127a9d2b8, timm)"
   ["rtxpro6k-xiaomimimo-flash-vllm-pr-58177"]="RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
   ["rtxpro6k-z-lab-vllm-73a5831127a9"]="RTX PRO 6000 z-lab (vLLM 73a5831127a9)"
+  ["rtxpro6k-z-lab-vllm-pr-e55909cad00f"]="RTX PRO 6000 z-lab DFlash2 (vLLM PR 58207, e55909cad00f)"
+  ["rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"]="RTX PRO 6000 Zyphra ZAYA legacy (vLLM PR 41999, 2ce2f26c282d)"
+  ["rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"]="RTX PRO 6000 Zyphra ZAYA current (vLLM PR 41999, b1b99a08b20f)"
   ["custom_uv"]="Custom (uv)"
   ["custom_pip"]="Custom (pip)"
 )
@@ -705,10 +711,19 @@ resolve_env_type() {
         134|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        135|custom|custom_uv|custom-uv|env_custom_uv)
+        135|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+            echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
+            ;;
+        136|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+            echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
+            ;;
+        137|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+            echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
+            ;;
+        138|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        136|custom_pip|custom-pip|env_custom_pip)
+        139|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2934,6 +2949,72 @@ install_rtxpro6k_z_lab_vllm_73a5831127a9() {
         "flashinfer-python==0.7.0.post1" --torch-backend=cu130 || return 1
 }
 
+install_rtxpro6k_z_lab_vllm_pr_e55909cad00f() {
+    ensure_active_environment_matches "rtxpro6k-z-lab-vllm-pr-e55909cad00f" || return 1
+    # Whole official hybrid-KV padding recovery: https://github.com/vllm-project/vllm/pull/58207
+    local source_commit="e55909cad00ffc71c7bc4a97c74a117041094176"
+    local binary_commit="38cc054fc2269941cd35ecdfd198aacbb2eabfb8"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.30.1rc1.dev156%2Bg38cc054fc-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated z-lab DFlash2 recovery at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 TORCH_CUDA_ARCH_LIST=12.0 \
+        run_uv_install --prerelease=allow --index-strategy unsafe-best-match \
+        --extra-index-url https://flashinfer.ai/whl/ \
+        "vllm @ ${wheel_url}" "torch==2.13.0+cu130" \
+        "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.7.0" "flashinfer-cubin==0.7.0" \
+        "cmake>=3.26.1" "setuptools>=77.0.3,<81.0.0" \
+        "setuptools-scm>=8.0" "setuptools-rust>=1.9.0" "wheel" \
+        --torch-backend=cu130 || return 1
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 \
+        VLLM_USE_PRECOMPILED=1 VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
+        run_uv_install --no-deps --no-build-isolation --reinstall-package vllm \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" || return 1
+}
+
+install_rtxpro6k_zyphra_vllm_pr_2ce2f26c282d() {
+    ensure_active_environment_matches "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d" || return 1
+    # Whole official legacy ZAYA head: https://github.com/vllm-project/vllm/pull/41999#event-26086912733
+    local source_commit="2ce2f26c282db4b75d11314be18b0bc2bd3b6fba"
+    local binary_commit="69c9f199574e7fe3a05847f6652bf914639f4c08"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.21.1rc1.dev406%2Bg69c9f1995-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated Zyphra ZAYA legacy recovery at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 TORCH_CUDA_ARCH_LIST=12.0 \
+        run_uv_install --prerelease=allow --index-strategy unsafe-best-match \
+        "vllm @ ${wheel_url}" "torch==2.11.0+cu130" \
+        "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.6.11.post2" "flashinfer-cubin==0.6.11.post2" \
+        "cmake>=3.26.1" "ninja" "packaging>=24.2" \
+        "setuptools>=77.0.3,<81.0.0" "setuptools-scm>=8.0" \
+        "setuptools-rust>=1.9.0" "wheel" "jinja2" \
+        --torch-backend=cu130 || return 1
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 \
+        VLLM_USE_PRECOMPILED=1 VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
+        run_uv_install --no-deps --no-build-isolation --reinstall-package vllm \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" || return 1
+}
+
+install_rtxpro6k_zyphra_vllm_pr_b1b99a08b20f() {
+    ensure_active_environment_matches "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f" || return 1
+    # Whole official current ZAYA head: https://github.com/vllm-project/vllm/pull/41999#event-27547334592
+    local source_commit="b1b99a08b20f858035894f7f2a8080c556423844"
+    local binary_commit="d6d39c111e60e7b3c684503fe7a9bb7ecf9358dc"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.23.1rc1.dev766%2Bgd6d39c111-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing the validated Zyphra ZAYA current recovery at ${source_commit}..."
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 TORCH_CUDA_ARCH_LIST=12.0 \
+        run_uv_install --prerelease=allow --index-strategy unsafe-best-match \
+        "vllm @ ${wheel_url}" "torch==2.11.0+cu130" \
+        "transformers==5.18.0" "tokenizers==0.23.2" \
+        "flashinfer-python==0.6.13" "flashinfer-cubin==0.6.13" \
+        "cmake>=3.26.1" "ninja" "packaging>=24.2" \
+        "setuptools>=77.0.3,<81.0.0" "setuptools-scm>=8.0" \
+        "setuptools-rust>=1.9.0" "wheel" "jinja2" \
+        --torch-backend=cu130 || return 1
+    CUDA_VISIBLE_DEVICES="" UV_LINK_MODE=hardlink MAX_JOBS=2 \
+        VLLM_USE_PRECOMPILED=1 VLLM_PRECOMPILED_WHEEL_LOCATION="$wheel_url" \
+        run_uv_install --no-deps --no-build-isolation --reinstall-package vllm \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" || return 1
+}
+
 perform_environment_action() {
     case "$1" in
         h200-allenai-vllm)
@@ -3337,6 +3418,15 @@ perform_environment_action() {
             ;;
         rtxpro6k-z-lab-vllm-73a5831127a9)
             install_rtxpro6k_z_lab_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+            install_rtxpro6k_z_lab_vllm_pr_e55909cad00f || return 1
+            ;;
+        rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+            install_rtxpro6k_zyphra_vllm_pr_2ce2f26c282d || return 1
+            ;;
+        rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+            install_rtxpro6k_zyphra_vllm_pr_b1b99a08b20f || return 1
             ;;
         *)
             print_info "No automated package actions configured for this environment."
