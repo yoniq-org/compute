@@ -3874,6 +3874,19 @@ main() {
     fi
 
     if [ -n "${VIRTUAL_ENV:-}" ]; then
+        export DG_JIT_CACHE_DIR="$VIRTUAL_ENV/.cache/deep_gemm"
+        export FLASHINFER_WORKSPACE_BASE="$VIRTUAL_ENV"
+        export SGLANG_CACHE_DIR="$VIRTUAL_ENV/.cache/sglang"
+        export SGLANG_DG_CACHE_DIR="$VIRTUAL_ENV/.cache/deep_gemm"
+        export TORCH_EXTENSIONS_DIR="$VIRTUAL_ENV/.cache/torch_extensions"
+        export TORCH_HOME="$VIRTUAL_ENV/.cache/torch"
+        export TORCHINDUCTOR_CACHE_DIR="$VIRTUAL_ENV/.cache/torchinductor"
+        export TRITON_CACHE_DIR="$VIRTUAL_ENV/.cache/triton"
+        export TRITON_HOME="$VIRTUAL_ENV"
+        export TVM_FFI_CACHE_DIR="$VIRTUAL_ENV/.cache/tvm-ffi"
+        export VLLM_CACHE_ROOT="$VIRTUAL_ENV/.cache/vllm"
+        export VLLM_FLASHINFER_AUTOTUNE_CACHE_DIR="$VIRTUAL_ENV/.cache/vllm/flashinfer_autotune_cache"
+        export XDG_CACHE_HOME="$VIRTUAL_ENV/.cache"
         print_info "Virtual environment: $VIRTUAL_ENV"
     fi
 

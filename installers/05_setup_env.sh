@@ -1494,6 +1494,7 @@ cat > "$ENV_PATH/activate_ml" << EOF
 source "$ENV_PATH/bin/activate"
 export DG_JIT_CACHE_DIR="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/deep_gemm"
 export FLASHINFER_WORKSPACE_BASE="\${VIRTUAL_ENV:-$ENV_PATH}"
+export SGLANG_CACHE_DIR="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/sglang"
 export SGLANG_DG_CACHE_DIR="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/deep_gemm"
 export TORCH_EXTENSIONS_DIR="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/torch_extensions"
 export TORCH_HOME="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/torch"
@@ -1502,6 +1503,7 @@ export TRITON_CACHE_DIR="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/triton"
 export TRITON_HOME="\${VIRTUAL_ENV:-$ENV_PATH}"
 export TVM_FFI_CACHE_DIR="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/tvm-ffi"
 export VLLM_CACHE_ROOT="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/vllm"
+export VLLM_FLASHINFER_AUTOTUNE_CACHE_DIR="\${VIRTUAL_ENV:-$ENV_PATH}/.cache/vllm/flashinfer_autotune_cache"
 export XDG_CACHE_HOME="\${VIRTUAL_ENV:-$ENV_PATH}/.cache"
 
 # Set ML environment variables
