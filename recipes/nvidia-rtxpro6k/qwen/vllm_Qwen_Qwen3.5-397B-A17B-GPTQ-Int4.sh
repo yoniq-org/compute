@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-PYTHON_ENV="env_rtxpro6k-nvidia-sglang-964c45cf3"
-INFERENCE_PROVIDER="SGLang"
+PYTHON_ENV="env_rtxpro6k-qwen-vllm-73a5831127a9"
+INFERENCE_PROVIDER="vLLM"
 INFERENCE_ENV=""
-MODEL_REPO="nvidia/Kimi-K2.6-NVFP4"
-MODEL_NAME="Kimi-K2.6-NVFP4"
-SERVED_MODEL_NAME="Kimi-K2.6-NVFP4"
+MODEL_REPO="Qwen/Qwen3.5-397B-A17B-GPTQ-Int4"
+MODEL_NAME="qwen3"
+SERVED_MODEL_NAME="qwen"
 TRUST_REMOTE_CODE="--trust-remote-code"
-REASONING_PARSER="--reasoning-parser kimi_k2"
-ENABLE_AUTO_TOOL_CHOICE=""
-TOOL_CALL_PARSER="--tool-call-parser kimi_k2"
-METRICS_FLAG="--enable-metrics"
+REASONING_PARSER="--reasoning-parser qwen3"
+ENABLE_AUTO_TOOL_CHOICE="--enable-auto-tool-choice"
+TOOL_CALL_PARSER="--tool-call-parser qwen3_coder"
+METRICS_FLAG=""
 HOST="0.0.0.0"
 DEFAULT_PORT=8000
 API_KEY="--api-key YOUR_API_KEY"
@@ -18,11 +18,11 @@ API_KEY="--api-key YOUR_API_KEY"
 ENABLE_CACHE_FLAG=0
 ENABLE_SPECULATIVE=0
 ENABLE_REASONING_PARSER=0
-SPECULATIVE=""
-QUANTIZATION="--quantization modelopt_fp4"
-NO_PREFIX_CACHE="--disable-radix-cache"
+SPECULATIVE="--speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\":2}"
+QUANTIZATION="--quantization moe_wna16"
+NO_PREFIX_CACHE="--no-enable-prefix-caching"
 REASONING_PARSER_PLUGIN=""
-EXTRA_ARGS="--max-running-requests 8"
+EXTRA_ARGS=""
 
 RECIPE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 source "$RECIPE_DIR/../../../tools/recipes/inference_recipe.sh"
@@ -51,13 +51,13 @@ CONTEXT_LEN_VALUE_SM103=""
 GPU_MEM_UTIL_VALUE_SM103=""
 TENSOR_PARALLEL_SIZE_SM103=""
 
-BACKEND_ATTENTION_SM120="--attention-backend triton"
+BACKEND_ATTENTION_SM120="--attention-backend FLASH_ATTN"
 BACKEND_FP8_GEMM_SM120=""
-BACKEND_FP4_GEMM_SM120=""
-BACKEND_MOE_RUNNER_SM120="--moe-runner-backend flashinfer_cutlass"
-CONTEXT_LEN_VALUE_SM120=65536
-GPU_MEM_UTIL_VALUE_SM120="0.795"
-TENSOR_PARALLEL_SIZE_SM120=8
+BACKEND_FP4_GEMM_SM120="--linear-backend marlin"
+BACKEND_MOE_RUNNER_SM120="--moe-backend triton"
+CONTEXT_LEN_VALUE_SM120=262144
+GPU_MEM_UTIL_VALUE_SM120="0.91"
+TENSOR_PARALLEL_SIZE_SM120=4
 
 BACKEND_ATTENTION_SM121=""
 BACKEND_FP8_GEMM_SM121=""
