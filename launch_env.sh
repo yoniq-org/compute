@@ -2,7 +2,7 @@
 
 # Script: launch_env.sh
 # Purpose: Activate ML environment with all optimizations
-# Usage: source launch_env.sh [--auto] [ENV_NAME|1-148]
+# Usage: source launch_env.sh [--auto] [ENV_NAME|1-149]
 
 WORKSPACE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
@@ -507,91 +507,94 @@ resolve_env_type() {
         119|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
             echo "rtxpro6k-mistralai-vllm-pr-678ef33584da"
             ;;
-        120|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        120|rtxpro6k_moonshotai_vllm_73a5831127a9|rtxpro6k-moonshotai-vllm-73a5831127a9)
+            echo "rtxpro6k-moonshotai-vllm-73a5831127a9"
+            ;;
+        121|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        121|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
+        122|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
             echo "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"
             ;;
-        122|rtxpro6k_nex_agi_vllm_e0317b28ce3b|rtxpro6k-nex-agi-vllm-e0317b28ce3b)
+        123|rtxpro6k_nex_agi_vllm_e0317b28ce3b|rtxpro6k-nex-agi-vllm-e0317b28ce3b)
             echo "rtxpro6k-nex-agi-vllm-e0317b28ce3b"
             ;;
-        123|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        124|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        124|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        125|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        125|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        126|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        126|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        127|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        127|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+        128|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
             echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
             ;;
-        128|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+        129|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
             echo "rtxpro6k-nvidia-vllm-73a5831127a9"
             ;;
-        129|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        130|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        130|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+        131|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
             echo "rtxpro6k-openai-vllm-73a5831127a9"
             ;;
-        131|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
+        132|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
             echo "rtxpro6k-paradigma-inc-vllm-73a5831127a9"
             ;;
-        132|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+        133|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
             echo "rtxpro6k-poolside-vllm-73a5831127a9"
             ;;
-        133|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        134|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        134|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+        135|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
             echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
             ;;
-        135|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        136|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        136|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        137|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        137|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        138|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        138|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+        139|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
             echo "rtxpro6k-qwen-vllm-73a5831127a9"
             ;;
-        139|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+        140|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
             echo "rtxpro6k-radixark-sglang-fa7784d140ee"
             ;;
-        140|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+        141|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
             echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
             ;;
-        141|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
+        142|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
             echo "rtxpro6k-stepfun-ai-sglang-f92199b569d2"
             ;;
-        142|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        143|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        143|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+        144|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        144|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+        145|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
             echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
             ;;
-        145|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+        146|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
             echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
             ;;
-        146|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+        147|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
             echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
             ;;
-        147|custom|custom_uv|custom-uv|env_custom_uv)
+        148|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        148|custom_pip|custom-pip|env_custom_pip)
+        149|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -614,7 +617,7 @@ resolve_env_name() {
 # This launcher mutates the caller's shell and therefore must be sourced.
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     print_error "This script must be sourced, not executed!"
-    print_error "Use: source $0 [--auto] [ENV_NAME|1-148]"
+    print_error "Use: source $0 [--auto] [ENV_NAME|1-149]"
     exit 1
 fi
 
@@ -758,42 +761,43 @@ if [ -z "$ENV_TYPE" ] && [ "$AUTO_MODE" = false ]; then
     echo "117) RTX PRO 6000 MistralAI (SGLang fa7784d140ee)"
     echo "118) RTX PRO 6000 MistralAI (vLLM 73a5831127a9)"
     echo "119) RTX PRO 6000 MistralAI (vLLM PR 58172, 678ef33584da)"
-    echo "120) RTX PRO 6000 Nanbeige (SGLang)"
-    echo "121) RTX PRO 6000 Nanbeige (vLLM PR 49433, 62f6de733d7a)"
-    echo "122) RTX PRO 6000 Nex AGI (vLLM e0317b28ce3b)"
-    echo "123) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
-    echo "124) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
-    echo "125) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
-    echo "126) RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
-    echo "127) RTX PRO 6000 NVIDIA Qwen3.6 NVFP4 (SGLang PR 41352, 13e5dcf04f082f8040f46d49)"
-    echo "128) RTX PRO 6000 NVIDIA (vLLM 73a5831127a9)"
-    echo "129) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
-    echo "130) RTX PRO 6000 OpenAI (vLLM 73a5831127a9)"
-    echo "131) RTX PRO 6000 Paradigma Limite (vLLM 73a5831127a9, official plugin)"
-    echo "132) RTX PRO 6000 Poolside (vLLM 73a5831127a9)"
-    echo "133) RTX PRO 6000 PrimeIntellect (SGLang)"
-    echo "134) RTX PRO 6000 PrimeIntellect (vLLM 73a5831127a9)"
-    echo "135) RTX PRO 6000 Qwen Flash Next (vLLM)"
-    echo "136) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
-    echo "137) RTX PRO 6000 Qwen (SGLang)"
-    echo "138) RTX PRO 6000 Qwen (vLLM 73a5831127a9)"
-    echo "139) RTX PRO 6000 RadixArk (SGLang fa7784d140ee)"
-    echo "140) RTX PRO 6000 RedHatAI (vLLM 73a5831127a9d2b8, timm)"
-    echo "141) RTX PRO 6000 StepFun AI (SGLang f92199b569d2)"
-    echo "142) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
-    echo "143) RTX PRO 6000 z-lab (vLLM 73a5831127a9)"
-    echo "144) RTX PRO 6000 z-lab DFlash2 (vLLM PR 58207, e55909cad00f)"
-    echo "145) RTX PRO 6000 Zyphra ZAYA legacy (vLLM PR 41999, 2ce2f26c282d)"
-    echo "146) RTX PRO 6000 Zyphra ZAYA current (vLLM PR 41999, b1b99a08b20f)"
-    echo "147) Custom (uv)"
-    echo "148) Custom (pip)"
+    echo "120) RTX PRO 6000 MoonshotAI (vLLM 73a5831127a9)"
+    echo "121) RTX PRO 6000 Nanbeige (SGLang)"
+    echo "122) RTX PRO 6000 Nanbeige (vLLM PR 49433, 62f6de733d7a)"
+    echo "123) RTX PRO 6000 Nex AGI (vLLM e0317b28ce3b)"
+    echo "124) RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
+    echo "125) RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
+    echo "126) RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
+    echo "127) RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
+    echo "128) RTX PRO 6000 NVIDIA Qwen3.6 NVFP4 (SGLang PR 41352, 13e5dcf04f082f8040f46d49)"
+    echo "129) RTX PRO 6000 NVIDIA (vLLM 73a5831127a9)"
+    echo "130) RTX PRO 6000 NVIDIA Kimi (vLLM PR 54013, 39e0ce172)"
+    echo "131) RTX PRO 6000 OpenAI (vLLM 73a5831127a9)"
+    echo "132) RTX PRO 6000 Paradigma Limite (vLLM 73a5831127a9, official plugin)"
+    echo "133) RTX PRO 6000 Poolside (vLLM 73a5831127a9)"
+    echo "134) RTX PRO 6000 PrimeIntellect (SGLang)"
+    echo "135) RTX PRO 6000 PrimeIntellect (vLLM 73a5831127a9)"
+    echo "136) RTX PRO 6000 Qwen Flash Next (vLLM)"
+    echo "137) RTX PRO 6000 Qwen Flash Next disk PLE (vLLM PR 54129)"
+    echo "138) RTX PRO 6000 Qwen (SGLang)"
+    echo "139) RTX PRO 6000 Qwen (vLLM 73a5831127a9)"
+    echo "140) RTX PRO 6000 RadixArk (SGLang fa7784d140ee)"
+    echo "141) RTX PRO 6000 RedHatAI (vLLM 73a5831127a9d2b8, timm)"
+    echo "142) RTX PRO 6000 StepFun AI (SGLang f92199b569d2)"
+    echo "143) RTX PRO 6000 XiaomiMiMo Flash (vLLM PR 58177, audio)"
+    echo "144) RTX PRO 6000 z-lab (vLLM 73a5831127a9)"
+    echo "145) RTX PRO 6000 z-lab DFlash2 (vLLM PR 58207, e55909cad00f)"
+    echo "146) RTX PRO 6000 Zyphra ZAYA legacy (vLLM PR 41999, 2ce2f26c282d)"
+    echo "147) RTX PRO 6000 Zyphra ZAYA current (vLLM PR 41999, b1b99a08b20f)"
+    echo "148) Custom (uv)"
+    echo "149) Custom (pip)"
     echo ""
     while true; do
-        read -r -p "Enter your choice (1-148): " choice
+        read -r -p "Enter your choice (1-149): " choice
         if ENV_TYPE=$(resolve_env_type "$choice"); then
             break
         else
-            print_error "Invalid choice. Please enter a number between 1 and 148."
+            print_error "Invalid choice. Please enter a number between 1 and 149."
         fi
     done
 elif [ -z "$ENV_TYPE" ]; then
@@ -804,7 +808,7 @@ fi
 # Normalize and validate the selected managed environment.
 if [ -n "$ENV_TYPE" ]; then
     if ! ENV_TYPE_MAPPED=$(resolve_env_type "$ENV_TYPE"); then
-        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 140."
+        print_error "Invalid environment selection: $ENV_TYPE. Choose a listed environment name or a number from 1 to 149."
         return 1
     fi
     ENV_TYPE="$ENV_TYPE_MAPPED"
