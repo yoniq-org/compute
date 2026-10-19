@@ -32,6 +32,7 @@ ENV_TYPES=(
   "h200-cohere-vllm-pr-54479"
   "h200-datalab-vllm"
   "h200-deepseek-sglang"
+  "h200-deepseek-v41-1017-vllm-5df63a720"
   "h200-deepseek-v41-vllm-e77daef89"
   "h200-deepseek-vision-sglang-pr-37253"
   "h200-deepseek-vision-vllm-pr-54566"
@@ -185,6 +186,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["h200-cohere-vllm-pr-54479"]="H200 Cohere (vLLM) PR 54479"
   ["h200-datalab-vllm"]="H200 DataLab (vLLM)"
   ["h200-deepseek-sglang"]="H200 DeepSeek (SGLang)"
+  ["h200-deepseek-v41-1017-vllm-5df63a720"]="H200 DeepSeek V4.1 Flash 1017 (vLLM) 5df63a720"
   ["h200-deepseek-v41-vllm-e77daef89"]="H200 DeepSeek V4.1 Flash (vLLM) e77daef89"
   ["h200-deepseek-vision-sglang-pr-37253"]="H200 DeepSeek V4 Flash Vision Exp (SGLang) PR 37253"
   ["h200-deepseek-vision-vllm-pr-54566"]="H200 DeepSeek V4 Flash Vision Exp (vLLM) PR 54566"
@@ -361,424 +363,427 @@ resolve_env_type() {
         10|h200_deepseek_sglang|h200-deepseek-sglang)
             echo "h200-deepseek-sglang"
             ;;
-        11|h200_deepseek_v41_vllm_e77daef89|h200-deepseek-v41-vllm-e77daef89)
+        11|h200_deepseek_v41_1017_vllm_5df63a720|h200-deepseek-v41-1017-vllm-5df63a720)
+            echo "h200-deepseek-v41-1017-vllm-5df63a720"
+            ;;
+        12|h200_deepseek_v41_vllm_e77daef89|h200-deepseek-v41-vllm-e77daef89)
             echo "h200-deepseek-v41-vllm-e77daef89"
             ;;
-        12|h200_deepseek_vision_sglang_pr_37253|h200-deepseek-vision-sglang-pr-37253)
+        13|h200_deepseek_vision_sglang_pr_37253|h200-deepseek-vision-sglang-pr-37253)
             echo "h200-deepseek-vision-sglang-pr-37253"
             ;;
-        13|h200_deepseek_vision_vllm_pr_54566|h200-deepseek-vision-vllm-pr-54566)
+        14|h200_deepseek_vision_vllm_pr_54566|h200-deepseek-vision-vllm-pr-54566)
             echo "h200-deepseek-vision-vllm-pr-54566"
             ;;
-        14|h200_deepseek_vllm|h200-deepseek-vllm)
+        15|h200_deepseek_vllm|h200-deepseek-vllm)
             echo "h200-deepseek-vllm"
             ;;
-        15|h200_diffusiongemma_sglang|h200-diffusiongemma-sglang)
+        16|h200_diffusiongemma_sglang|h200-diffusiongemma-sglang)
             echo "h200-diffusiongemma-sglang"
             ;;
-        16|h200_gemma_sglang|h200-gemma-sglang)
+        17|h200_gemma_sglang|h200-gemma-sglang)
             echo "h200-gemma-sglang"
             ;;
-        17|h200_gemma_vllm|h200-gemma-vllm|h200_gemma4_vllm|h200-gemma4-vllm|h200_gemma_4_vllm|h200-gemma-4-vllm)
+        18|h200_gemma_vllm|h200-gemma-vllm|h200_gemma4_vllm|h200-gemma4-vllm|h200_gemma_4_vllm|h200-gemma-4-vllm)
             echo "h200-gemma-vllm"
             ;;
-        18|h200_gemma3n_vllm|h200-gemma3n-vllm)
+        19|h200_gemma3n_vllm|h200-gemma3n-vllm)
             echo "h200-gemma3n-vllm"
             ;;
-        19|h200_glm53_vllm_v0290|h200-glm53-vllm-v0290)
+        20|h200_glm53_vllm_v0290|h200-glm53-vllm-v0290)
             echo "h200-glm53-vllm-v0290"
             ;;
-        20|h200_glm53flash_dflash2_sglang_pr_37818|h200-glm53flash-dflash2-sglang-pr-37818)
+        21|h200_glm53flash_dflash2_sglang_pr_37818|h200-glm53flash-dflash2-sglang-pr-37818)
             echo "h200-glm53flash-dflash2-sglang-pr-37818"
             ;;
-        21|h200_glm53flash_dflash2_vllm_pr_55423|h200-glm53flash-dflash2-vllm-pr-55423)
+        22|h200_glm53flash_dflash2_vllm_pr_55423|h200-glm53flash-dflash2-vllm-pr-55423)
             echo "h200-glm53flash-dflash2-vllm-pr-55423"
             ;;
-        22|h200_glm53flash_vllm_pr_53906|h200-glm53flash-vllm-pr-53906)
+        23|h200_glm53flash_vllm_pr_53906|h200-glm53flash-vllm-pr-53906)
             echo "h200-glm53flash-vllm-pr-53906"
             ;;
-        23|h200_gpt_oss_sglang|h200_gptoss_sglang|h200_gpt-oss_sglang|h200-gptoss-sglang|h200-gpt-oss-sglang)
+        24|h200_gpt_oss_sglang|h200_gptoss_sglang|h200_gpt-oss_sglang|h200-gptoss-sglang|h200-gpt-oss-sglang)
             echo "h200-gpt-oss-sglang"
             ;;
-        24|h200_gpt_oss_vllm|h200_gptoss_vllm|h200_gpt-oss_vllm|h200_vllm_gptoss|h200-gptoss-vllm|h200-gpt-oss-vllm)
+        25|h200_gpt_oss_vllm|h200_gptoss_vllm|h200-gpt-oss_vllm|h200_vllm_gptoss|h200-gptoss-vllm|h200-gpt-oss-vllm)
             echo "h200-gpt-oss-vllm"
             ;;
-        25|h200_ibm_sglang|h200-ibm-sglang)
+        26|h200_ibm_sglang|h200-ibm-sglang)
             echo "h200-ibm-sglang"
             ;;
-        26|h200_ibm_vllm|h200-ibm-vllm)
+        27|h200_ibm_vllm|h200-ibm-vllm)
             echo "h200-ibm-vllm"
             ;;
-        27|h200_inclusionai_ling3_vllm|h200-inclusionai-ling3-vllm)
+        28|h200_inclusionai_ling3_vllm|h200-inclusionai-ling3-vllm)
             echo "h200-inclusionai-ling3-vllm"
             ;;
-        28|h200_inclusionai_sglang|h200-inclusionai-sglang)
+        29|h200_inclusionai_sglang|h200-inclusionai-sglang)
             echo "h200-inclusionai-sglang"
             ;;
-        29|h200_inclusionai_vllm|h200-inclusionai-vllm)
+        30|h200_inclusionai_vllm|h200-inclusionai-vllm)
             echo "h200-inclusionai-vllm"
             ;;
-        30|h200_incoai_sglang|h200-incoai-sglang)
+        31|h200_incoai_sglang|h200-incoai-sglang)
             echo "h200-incoai-sglang"
             ;;
-        31|h200_incoai_vllm|h200-incoai-vllm)
+        32|h200_incoai_vllm|h200-incoai-vllm)
             echo "h200-incoai-vllm"
             ;;
-        32|h200_intel_sglang|h200-intel-sglang)
+        33|h200_intel_sglang|h200-intel-sglang)
             echo "h200-intel-sglang"
             ;;
-        33|h200_intel_vllm|h200-intel-vllm)
+        34|h200_intel_vllm|h200-intel-vllm)
             echo "h200-intel-vllm"
             ;;
-        34|h200_liquidai_sglang|h200-liquidai-sglang)
+        35|h200_liquidai_sglang|h200-liquidai-sglang)
             echo "h200-liquidai-sglang"
             ;;
-        35|h200_liquidai_sglang_pr_31041|h200-liquidai-sglang-pr-31041)
+        36|h200_liquidai_sglang_pr_31041|h200-liquidai-sglang-pr-31041)
             echo "h200-liquidai-sglang-pr-31041"
             ;;
-        36|h200_liquidai_vllm|h200-liquidai-vllm)
+        37|h200_liquidai_vllm|h200-liquidai-vllm)
             echo "h200-liquidai-vllm"
             ;;
-        37|h200_meta_sglang|h200-meta-sglang)
+        38|h200_meta_sglang|h200-meta-sglang)
             echo "h200-meta-sglang"
             ;;
-        38|h200_meta_vllm|h200-meta-vllm)
+        39|h200_meta_vllm|h200-meta-vllm)
             echo "h200-meta-vllm"
             ;;
-        39|h200_microsoft_vllm|h200-microsoft-vllm)
+        40|h200_microsoft_vllm|h200-microsoft-vllm)
             echo "h200-microsoft-vllm"
             ;;
-        40|h200_minimax_m2_sglang_v0510_post1|h200-minimax-m2-sglang-v0510-post1)
+        41|h200_minimax_m2_sglang_v0510_post1|h200-minimax-m2-sglang-v0510-post1)
             echo "h200-minimax-m2-sglang-v0510-post1"
             ;;
-        41|h200_minimax_m2_vllm_0f3ce4c74|h200-minimax-m2-vllm-0f3ce4c74)
+        42|h200_minimax_m2_vllm_0f3ce4c74|h200-minimax-m2-vllm-0f3ce4c74)
             echo "h200-minimax-m2-vllm-0f3ce4c74"
             ;;
-        42|h200_minimax_m25_vllm_v0280|h200-minimax-m25-vllm-v0280)
+        43|h200_minimax_m25_vllm_v0280|h200-minimax-m25-vllm-v0280)
             echo "h200-minimax-m25-vllm-v0280"
             ;;
-        43|h200_mistralai_sglang|h200-mistralai-sglang)
+        44|h200_mistralai_sglang|h200-mistralai-sglang)
             echo "h200-mistralai-sglang"
             ;;
-        44|h200_mistralai_vllm|h200-mistralai-vllm)
+        45|h200_mistralai_vllm|h200-mistralai-vllm)
             echo "h200-mistralai-vllm"
             ;;
-        45|h200_nanbeige_sglang|h200-nanbeige-sglang)
+        46|h200_nanbeige_sglang|h200-nanbeige-sglang)
             echo "h200-nanbeige-sglang"
             ;;
-        46|h200_nanbeige_vllm|h200-nanbeige-vllm)
+        47|h200_nanbeige_vllm|h200-nanbeige-vllm)
             echo "h200-nanbeige-vllm"
             ;;
-        47|h200_nemotron_ultra_vllm_9c2d21046|h200-nemotron-ultra-vllm-9c2d21046)
+        48|h200_nemotron_ultra_vllm_9c2d21046|h200-nemotron-ultra-vllm-9c2d21046)
             echo "h200-nemotron-ultra-vllm-9c2d21046"
             ;;
-        48|h200_nex_n2_sglang_v0519|h200-nex-n2-sglang-v0519)
+        49|h200_nex_n2_sglang_v0519|h200-nex-n2-sglang-v0519)
             echo "h200-nex-n2-sglang-v0519"
             ;;
-        49|h200_nex_n2_vllm_v0290|h200-nex-n2-vllm-v0290)
+        50|h200_nex_n2_vllm_v0290|h200-nex-n2-vllm-v0290)
             echo "h200-nex-n2-vllm-v0290"
             ;;
-        50|h200_nvidia_deepseek_sglang|h200-nvidia-deepseek-sglang)
+        51|h200_nvidia_deepseek_sglang|h200-nvidia-deepseek-sglang)
             echo "h200-nvidia-deepseek-sglang"
             ;;
-        51|h200_nvidia_glm53_sglang_26fd7fd|h200-nvidia-glm53-sglang-26fd7fd)
+        52|h200_nvidia_glm53_sglang_26fd7fd|h200-nvidia-glm53-sglang-26fd7fd)
             echo "h200-nvidia-glm53-sglang-26fd7fd"
             ;;
-        52|h200_nvidia_muse_sglang_v0520|h200-nvidia-muse-sglang-v0520)
+        53|h200_nvidia_muse_sglang_v0520|h200-nvidia-muse-sglang-v0520)
             echo "h200-nvidia-muse-sglang-v0520"
             ;;
-        53|h200_nvidia_muse_vllm_v0290|h200-nvidia-muse-vllm-v0290)
+        54|h200_nvidia_muse_vllm_v0290|h200-nvidia-muse-v0290)
             echo "h200-nvidia-muse-vllm-v0290"
             ;;
-        54|h200_nvidia_nemotron|h200-nvidia-nemotron)
+        55|h200_nvidia_nemotron|h200-nvidia-nemotron)
             echo "h200-nvidia-nemotron"
             ;;
-        55|h200_nvidia_sglang|h200-nvidia-sglang)
+        56|h200_nvidia_sglang|h200-nvidia-sglang)
             echo "h200-nvidia-sglang"
             ;;
-        56|h200_nvidia_sglang_pr_33554|h200-nvidia-sglang-pr-33554)
+        57|h200_nvidia_sglang_pr_33554|h200-nvidia-sglang-pr-33554)
             echo "h200-nvidia-sglang-pr-33554"
             ;;
-        57|h200_nvidia_vllm|h200-nvidia-vllm)
+        58|h200_nvidia_vllm|h200-nvidia-vllm)
             echo "h200-nvidia-vllm"
             ;;
-        58|h200_nvidia_vllm_pr_55222|h200-nvidia-vllm-pr-55222)
+        59|h200_nvidia_vllm_pr_55222|h200-nvidia-vllm-pr-55222)
             echo "h200-nvidia-vllm-pr-55222"
             ;;
-        59|h200_openai_sglang_pr_38626|h200-openai-sglang-pr-38626)
+        60|h200_openai_sglang_pr_38626|h200-openai-sglang-pr-38626)
             echo "h200-openai-sglang-pr-38626"
             ;;
-        60|h200_openai_vllm_pr_53207|h200-openai-vllm-pr-53207)
+        61|h200_openai_vllm_pr_53207|h200-openai-vllm-pr-53207)
             echo "h200-openai-vllm-pr-53207"
             ;;
-        61|h200_paradigma_inc_vllm_v0260|h200-paradigma-inc-vllm-v0260)
+        62|h200_paradigma_inc_vllm_v0260|h200-paradigma-inc-vllm-v0260)
             echo "h200-paradigma-inc-vllm-v0260"
             ;;
-        62|h200_poolside_laguna_xs_vllm|h200-poolside-laguna-xs-vllm)
+        63|h200_poolside_laguna_xs_vllm|h200-poolside-laguna-xs-vllm)
             echo "h200-poolside-laguna-xs-vllm"
             ;;
-        63|h200_poolside_sglang|h200-poolside-sglang)
+        64|h200_poolside_sglang|h200-poolside-sglang)
             echo "h200-poolside-sglang"
             ;;
-        64|h200_poolside_vllm|h200-poolside-vllm)
+        65|h200_poolside_vllm|h200-poolside-vllm)
             echo "h200-poolside-vllm"
             ;;
-        65|h200_primeintellect_sglang|h200-primeintellect-sglang)
+        66|h200_primeintellect_sglang|h200-primeintellect-sglang)
             echo "h200-primeintellect-sglang"
             ;;
-        66|h200_primeintellect_vllm|h200-primeintellect-vllm)
+        67|h200_primeintellect_vllm|h200-primeintellect-vllm)
             echo "h200-primeintellect-vllm"
             ;;
-        67|h200_qwen_flash_next_sglang|h200-qwen-flash-next-sglang)
+        68|h200_qwen_flash_next_sglang|h200-qwen-flash-next-sglang)
             echo "h200-qwen-flash-next-sglang"
             ;;
-        68|h200_qwen_flash_next_vllm|h200-qwen-flash-next-vllm)
+        69|h200_qwen_flash_next_vllm|h200-qwen-flash-next-vllm)
             echo "h200-qwen-flash-next-vllm"
             ;;
-        69|h200_qwen_flash_next_vllm_pr_54129|h200-qwen-flash-next-vllm-pr-54129)
+        70|h200_qwen_flash_next_vllm_pr_54129|h200-qwen-flash-next-vllm-pr-54129)
             echo "h200-qwen-flash-next-vllm-pr-54129"
             ;;
-        70|h200_qwen_sglang|h200-qwen-sglang)
+        71|h200_qwen_sglang|h200-qwen-sglang)
             echo "h200-qwen-sglang"
             ;;
-        71|h200_qwen_sglang_pr_22121|h200-qwen-sglang-pr-22121)
+        72|h200_qwen_sglang_pr_22121|h200-qwen-sglang-pr-22121)
             echo "h200-qwen-sglang-pr-22121"
             ;;
-        72|h200_qwen_vllm|h200-qwen-vllm)
+        73|h200_qwen_vllm|h200-qwen-vllm)
             echo "h200-qwen-vllm"
             ;;
-        73|h200_radixark_qwen_sglang|h200-radixark-qwen-sglang)
+        74|h200_radixark_qwen_sglang|h200-radixark-qwen-sglang)
             echo "h200-radixark-qwen-sglang"
             ;;
-        74|h200_radixark_sglang|h200-radixark-sglang)
+        75|h200_radixark_sglang|h200-radixark-sglang)
             echo "h200-radixark-sglang"
             ;;
-        75|h200_redhat_sglang_pr_35809|h200-redhat-sglang-pr-35809)
+        76|h200_redhat_sglang_pr_35809|h200-redhat-sglang-pr-35809)
             echo "h200-redhat-sglang-pr-35809"
             ;;
-        76|h200_redhatai_sglang|h200-redhatai-sglang)
+        77|h200_redhatai_sglang|h200-redhatai-sglang)
             echo "h200-redhatai-sglang"
             ;;
-        77|h200_redhatai_vllm|h200-redhatai-vllm)
+        78|h200_redhatai_vllm|h200-redhatai-vllm)
             echo "h200-redhatai-vllm"
             ;;
-        78|h200_stepfun_sglang|h200-stepfun-sglang)
+        79|h200_stepfun_sglang|h200-stepfun-sglang)
             echo "h200-stepfun-sglang"
             ;;
-        79|h200_stepfun_vllm|h200-stepfun-vllm)
+        80|h200_stepfun_vllm|h200-stepfun-vllm)
             echo "h200-stepfun-vllm"
             ;;
-        80|h200_xiaomimimo_flash_vllm_1ea7c63|h200-xiaomimimo-flash-vllm-1ea7c63)
+        81|h200_xiaomimimo_flash_vllm_1ea7c63|h200-xiaomimimo-flash-vllm-1ea7c63)
             echo "h200-xiaomimimo-flash-vllm-1ea7c63"
             ;;
-        81|h200_xiaomimimo_sglang_v0520|h200-xiaomimimo-sglang-v0520)
+        82|h200_xiaomimimo_sglang_v0520|h200-xiaomimimo-sglang-v0520)
             echo "h200-xiaomimimo-sglang-v0520"
             ;;
-        82|h200_xiaomimimo_vllm_v0300|h200-xiaomimimo-vllm-v0300)
+        83|h200_xiaomimimo_vllm_v0300|h200-xiaomimimo-vllm-v0300)
             echo "h200-xiaomimimo-vllm-v0300"
             ;;
-        83|h200_z_lab_sglang|h200-z-lab-sglang)
+        84|h200_z_lab_sglang|h200-z-lab-sglang)
             echo "h200-z-lab-sglang"
             ;;
-        84|h200_z_lab_sglang_pr_35209|h200-z-lab-sglang-pr-35209)
+        85|h200_z_lab_sglang_pr_35209|h200-z-lab-sglang-pr-35209)
             echo "h200-z-lab-sglang-pr-35209"
             ;;
-        85|h200_z_lab_vllm|h200-z-lab-vllm)
+        86|h200_z_lab_vllm|h200-z-lab-vllm)
             echo "h200-z-lab-vllm"
             ;;
-        86|h200_zyphra_legacy_vllm|h200-zyphra-legacy-vllm)
+        87|h200_zyphra_legacy_vllm|h200-zyphra-legacy-vllm)
             echo "h200-zyphra-legacy-vllm"
             ;;
-        87|h200_zyphra_sglang|h200-zyphra-sglang)
+        88|h200_zyphra_sglang|h200-zyphra-sglang)
             echo "h200-zyphra-sglang"
             ;;
-        88|h200_zyphra_sglang_pr_32517|h200-zyphra-sglang-pr-32517)
+        89|h200_zyphra_sglang_pr_32517|h200-zyphra-sglang-pr-32517)
             echo "h200-zyphra-sglang-pr-32517"
             ;;
-        89|h200_zyphra_vllm|h200-zyphra-vllm)
+        90|h200_zyphra_vllm|h200-zyphra-vllm)
             echo "h200-zyphra-vllm"
             ;;
-        90|rtxpro6k_allenai_vllm_73a5831127a9|rtxpro6k-allenai-vllm-73a5831127a9)
+        91|rtxpro6k_allenai_vllm_73a5831127a9|rtxpro6k-allenai-vllm-73a5831127a9)
             echo "rtxpro6k-allenai-vllm-73a5831127a9"
             ;;
-        91|rtxpro6k_allenai_vllm_73a78e6f1f38|rtxpro6k-allenai-vllm-73a78e6f1f38)
+        92|rtxpro6k_allenai_vllm_73a78e6f1f38|rtxpro6k-allenai-vllm-73a78e6f1f38)
             echo "rtxpro6k-allenai-vllm-73a78e6f1f38"
             ;;
-        92|rtxpro6k_arcee_ai_vllm_73a5831127a9|rtxpro6k-arcee-ai-vllm-73a5831127a9)
+        93|rtxpro6k_arcee_ai_vllm_73a5831127a9|rtxpro6k-arcee-ai-vllm-73a5831127a9)
             echo "rtxpro6k-arcee-ai-vllm-73a5831127a9"
             ;;
-        93|rtxpro6k_arcee_ai_vllm_c8414a82712b|rtxpro6k-arcee-ai-vllm-c8414a82712b)
+        94|rtxpro6k_arcee_ai_vllm_c8414a82712b|rtxpro6k-arcee-ai-vllm-c8414a82712b)
             echo "rtxpro6k-arcee-ai-vllm-c8414a82712b"
             ;;
-        94|rtxpro6k_coherelabs_vllm_73a5831127a9|rtxpro6k-coherelabs-vllm-73a5831127a9)
+        95|rtxpro6k_coherelabs_vllm_73a5831127a9|rtxpro6k-coherelabs-vllm-73a5831127a9)
             echo "rtxpro6k-coherelabs-vllm-73a5831127a9"
             ;;
-        95|rtxpro6k_datalab_to_vllm_73a5831127a9|rtxpro6k-datalab-to-vllm-73a5831127a9)
+        96|rtxpro6k_datalab_to_vllm_73a5831127a9|rtxpro6k-datalab-to-vllm-73a5831127a9)
             echo "rtxpro6k-datalab-to-vllm-73a5831127a9"
             ;;
-        96|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
+        97|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
             echo "rtxpro6k-deepseek-v41-vllm-pr-56509"
             ;;
-        97|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
+        98|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
             echo "rtxpro6k-glm53-vllm-2617fe938"
             ;;
-        98|rtxpro6k_google_sglang_1093c501dfef|rtxpro6k-google-sglang-1093c501dfef)
+        99|rtxpro6k_google_sglang_1093c501dfef|rtxpro6k-google-sglang-1093c501dfef)
             echo "rtxpro6k-google-sglang-1093c501dfef"
             ;;
-        99|rtxpro6k_google_vllm_73a5831127a9|rtxpro6k-google-vllm-73a5831127a9)
+        100|rtxpro6k_google_vllm_73a5831127a9|rtxpro6k-google-vllm-73a5831127a9)
             echo "rtxpro6k-google-vllm-73a5831127a9"
             ;;
-        100|rtxpro6k_ibm_granite_sglang_fa7784d140ee|rtxpro6k-ibm-granite-sglang-fa7784d140ee)
+        101|rtxpro6k_ibm_granite_sglang_fa7784d140ee|rtxpro6k-ibm-granite-sglang-fa7784d140ee)
             echo "rtxpro6k-ibm-granite-sglang-fa7784d140ee"
             ;;
-        101|rtxpro6k_ibm_granite_vllm_73a5831127a9|rtxpro6k-ibm-granite-vllm-73a5831127a9)
+        102|rtxpro6k_ibm_granite_vllm_73a5831127a9|rtxpro6k-ibm-granite-vllm-73a5831127a9)
             echo "rtxpro6k-ibm-granite-vllm-73a5831127a9"
             ;;
-        102|rtxpro6k_inclusionai_sglang_1093c501dfef|rtxpro6k-inclusionai-sglang-1093c501dfef)
+        103|rtxpro6k_inclusionai_sglang_1093c501dfef|rtxpro6k-inclusionai-sglang-1093c501dfef)
             echo "rtxpro6k-inclusionai-sglang-1093c501dfef"
             ;;
-        103|rtxpro6k_inclusionai_vllm_73a5831127a9|rtxpro6k-inclusionai-vllm-73a5831127a9)
+        104|rtxpro6k_inclusionai_vllm_73a5831127a9|rtxpro6k-inclusionai-vllm-73a5831127a9)
             echo "rtxpro6k-inclusionai-vllm-73a5831127a9"
             ;;
-        104|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
+        105|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
             echo "rtxpro6k-incoai-sglang-964c45cf3"
             ;;
-        105|rtxpro6k_incoai_sglang_fa7784d140ee|rtxpro6k-incoai-sglang-fa7784d140ee)
+        106|rtxpro6k_incoai_sglang_fa7784d140ee|rtxpro6k-incoai-sglang-fa7784d140ee)
             echo "rtxpro6k-incoai-sglang-fa7784d140ee"
             ;;
-        106|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
+        107|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
             echo "rtxpro6k-incoai-sglang-pr-028ac64f7"
             ;;
-        107|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
+        108|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
             echo "rtxpro6k-incoai-vllm-73a583112"
             ;;
-        108|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+        109|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
             echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
             ;;
-        109|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        110|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        110|rtxpro6k_intel_vllm_73a5831127a9|rtxpro6k-intel-vllm-73a5831127a9)
+        111|rtxpro6k_intel_vllm_73a5831127a9|rtxpro6k-intel-vllm-73a5831127a9)
             echo "rtxpro6k-intel-vllm-73a5831127a9"
             ;;
-        111|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        112|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        112|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        113|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        113|rtxpro6k_meta_models_sglang_fa7784d140ee|rtxpro6k-meta-models-sglang-fa7784d140ee)
+        114|rtxpro6k_meta_models_sglang_fa7784d140ee|rtxpro6k-meta-models-sglang-fa7784d140ee)
             echo "rtxpro6k-meta-models-sglang-fa7784d140ee"
             ;;
-        114|rtxpro6k_meta_models_vllm_73a5831127a9|rtxpro6k-meta-models-vllm-73a5831127a9)
+        115|rtxpro6k_meta_models_vllm_73a5831127a9|rtxpro6k-meta-models-vllm-73a5831127a9)
             echo "rtxpro6k-meta-models-vllm-73a5831127a9"
             ;;
-        115|rtxpro6k_microsoft_vllm_73a5831127a9|rtxpro6k-microsoft-vllm-73a5831127a9)
+        116|rtxpro6k_microsoft_vllm_73a5831127a9|rtxpro6k-microsoft-vllm-73a5831127a9)
             echo "rtxpro6k-microsoft-vllm-73a5831127a9"
             ;;
-        116|rtxpro6k_minimaxai_vllm_e0317b28ce3b|rtxpro6k-minimaxai-vllm-e0317b28ce3b)
+        117|rtxpro6k_minimaxai_vllm_e0317b28ce3b|rtxpro6k-minimaxai-vllm-e0317b28ce3b)
             echo "rtxpro6k-minimaxai-vllm-e0317b28ce3b"
             ;;
-        117|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
+        118|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
             echo "rtxpro6k-mistralai-sglang-fa7784d140ee"
             ;;
-        118|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
+        119|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
             echo "rtxpro6k-mistralai-vllm-73a5831127a9"
             ;;
-        119|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
+        120|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
             echo "rtxpro6k-mistralai-vllm-pr-678ef33584da"
             ;;
-        120|rtxpro6k_moonshotai_vllm_73a5831127a9|rtxpro6k-moonshotai-vllm-73a5831127a9)
+        121|rtxpro6k_moonshotai_vllm_73a5831127a9|rtxpro6k-moonshotai-vllm-73a5831127a9)
             echo "rtxpro6k-moonshotai-vllm-73a5831127a9"
             ;;
-        121|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        122|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        122|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
+        123|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
             echo "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"
             ;;
-        123|rtxpro6k_nex_agi_vllm_e0317b28ce3b|rtxpro6k-nex-agi-vllm-e0317b28ce3b)
+        124|rtxpro6k_nex_agi_vllm_e0317b28ce3b|rtxpro6k-nex-agi-vllm-e0317b28ce3b)
             echo "rtxpro6k-nex-agi-vllm-e0317b28ce3b"
             ;;
-        124|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        125|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        125|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        126|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        126|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        127|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        127|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        128|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        128|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+        129|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
             echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
             ;;
-        129|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+        130|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
             echo "rtxpro6k-nvidia-vllm-73a5831127a9"
             ;;
-        130|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        131|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        131|rtxpro6k_nvidia_vllm_pr_9fedd24fa864|rtxpro6k-nvidia-vllm-pr-9fedd24fa864)
+        132|rtxpro6k_nvidia_vllm_pr_9fedd24fa864|rtxpro6k-nvidia-vllm-pr-9fedd24fa864)
             echo "rtxpro6k-nvidia-vllm-pr-9fedd24fa864"
             ;;
-        132|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+        133|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
             echo "rtxpro6k-openai-vllm-73a5831127a9"
             ;;
-        133|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
+        134|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
             echo "rtxpro6k-paradigma-inc-vllm-73a5831127a9"
             ;;
-        134|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+        135|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
             echo "rtxpro6k-poolside-vllm-73a5831127a9"
             ;;
-        135|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        136|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        136|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+        137|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
             echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
             ;;
-        137|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        138|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        138|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        139|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        139|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        140|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        140|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+        141|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
             echo "rtxpro6k-qwen-vllm-73a5831127a9"
             ;;
-        141|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+        142|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
             echo "rtxpro6k-radixark-sglang-fa7784d140ee"
             ;;
-        142|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+        143|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
             echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
             ;;
-        143|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
+        144|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
             echo "rtxpro6k-stepfun-ai-sglang-f92199b569d2"
             ;;
-        144|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        145|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        145|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+        146|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        146|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+        147|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
             echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
             ;;
-        147|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+        148|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
             echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
             ;;
-        148|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+        149|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
             echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
             ;;
-        149|custom|custom_uv|custom-uv|env_custom_uv)
+        150|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        150|custom_pip|custom-pip|env_custom_pip)
+        151|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -1265,6 +1270,13 @@ install_h200_datalab_vllm() {
 install_h200_deepseek_sglang() {
     print_info "Installing SGLang 0.5.16 for DeepSeek..."
     run_uv_install -U --prerelease=allow "sglang[all]==0.5.16" || return 1
+}
+
+install_h200_deepseek_v41_1017_vllm_5df63a720() {
+    ensure_active_environment_matches "h200-deepseek-v41-1017-vllm-5df63a720" || return 1
+    # Verified vLLM v0.32.0 release commit: 5df63a7203cdb9328d824a27b682e77c7b9928be
+    print_info "Installing official DeepSeek V4.1 Flash vLLM 0.32.0..."
+    run_uv_install "vllm==0.32.0" --torch-backend=cu130 || return 1
 }
 
 install_h200_deepseek_v41_vllm_e77daef89() {
@@ -3394,6 +3406,9 @@ perform_environment_action() {
         h200-deepseek-sglang)
             install_h200_deepseek_sglang || return 1
             ;;
+        h200-deepseek-v41-1017-vllm-5df63a720)
+            install_h200_deepseek_v41_1017_vllm_5df63a720 || return 1
+            ;;
         h200-deepseek-v41-vllm-e77daef89)
             install_h200_deepseek_v41_vllm_e77daef89 || return 1
             ;;
@@ -3874,6 +3889,7 @@ main() {
     fi
 
     if [ -n "${VIRTUAL_ENV:-}" ]; then
+        export HF_HUB_DISABLE_SHARED_BLOBS="${HF_HUB_DISABLE_SHARED_BLOBS:-1}"
         export DG_JIT_CACHE_DIR="$VIRTUAL_ENV/.cache/deep_gemm"
         export FLASHINFER_WORKSPACE_BASE="$VIRTUAL_ENV"
         export SGLANG_CACHE_DIR="$VIRTUAL_ENV/.cache/sglang"

@@ -149,6 +149,7 @@ while [[ $# -gt 0 ]]; do
             echo "  HF_DOWNLOAD_MAX_WORKERS             Parallel hf download workers (default: $DEFAULT_HF_DOWNLOAD_MAX_WORKERS)"
             echo "  HF_XET_NUM_CONCURRENT_RANGE_GETS    Per-file Xet range concurrency (default: $DEFAULT_HF_XET_NUM_CONCURRENT_RANGE_GETS)"
             echo "  HF_XET_HIGH_PERFORMANCE             Enable Xet high-performance mode (default: 1)"
+            echo "  HF_HUB_DISABLE_SHARED_BLOBS         Disable cross-repo blob sharing (default: 1; 0 enables sharing)"
             echo "  HF_DOWNLOAD_CONNECTION_REFRESH_SECONDS  Recreate download connections periodically (default: $DEFAULT_HF_DOWNLOAD_CONNECTION_REFRESH_SECONDS; 0 disables)"
             echo "  HF_DOWNLOAD_CONNECTION_REFRESH_JITTER_SECONDS  Per-instance refresh jitter (default: $DEFAULT_HF_DOWNLOAD_CONNECTION_REFRESH_JITTER_SECONDS)"
             echo "  HF_DOWNLOAD_RETRY_DELAY_SECONDS     Delay after a transient hf failure (default: $DEFAULT_HF_DOWNLOAD_RETRY_DELAY_SECONDS)"
@@ -434,6 +435,7 @@ setup_directory "$HF_CACHE_PATH"
 # Export environment variables using the standard Hugging Face cache layout.
 export HF_HOME="$HF_PATH"
 export HF_HUB_CACHE="$HF_CACHE_PATH"
+export HF_HUB_DISABLE_SHARED_BLOBS="${HF_HUB_DISABLE_SHARED_BLOBS:-1}"
 export MODEL_NAME
 export REPO_TYPE
 export AUTO_YES
@@ -479,6 +481,7 @@ esac
 print_info "Environment variables set:"
 print_info "  HF_HOME=$HF_HOME"
 print_info "  HF_HUB_CACHE=$HF_HUB_CACHE"
+print_info "  HF_HUB_DISABLE_SHARED_BLOBS=$HF_HUB_DISABLE_SHARED_BLOBS"
 print_info "  REPO_TYPE=$REPO_TYPE"
 print_info "  HF_XET_HIGH_PERFORMANCE=$HF_XET_HIGH_PERFORMANCE"
 print_info "  HF_XET_NUM_CONCURRENT_RANGE_GETS=$HF_XET_NUM_CONCURRENT_RANGE_GETS"
@@ -1228,6 +1231,7 @@ if [ $RESULT -eq 0 ]; then
 # Auto-generated script to load $MODEL_NAME
 export HF_HOME="$HF_PATH"
 export HF_HUB_CACHE="$HF_CACHE_PATH"
+export HF_HUB_DISABLE_SHARED_BLOBS="\${HF_HUB_DISABLE_SHARED_BLOBS:-1}"
 echo "Environment set for $MODEL_NAME"
 echo "Model cache location: \$HF_HUB_CACHE"
 echo ""
