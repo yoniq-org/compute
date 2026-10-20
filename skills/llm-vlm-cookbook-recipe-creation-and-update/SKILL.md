@@ -159,7 +159,7 @@ This path takes precedence over conflicting full-creation requirements. Preserve
 3. If the baseline failed, follow the recovery workflow below before sweeping. Otherwise do not redo cookbook, model-card, `config.json`, parser, backend, context, or engine-version research.
 4. Run the full one → two → four → eight eligible-GPU ladder and two-decimal sweep. On the normal sweep-only path, the only recipe fields that may change are the target `TENSOR_PARALLEL_SIZE_<ARCH>` and `GPU_MEM_UTIL_VALUE_<ARCH>`. Keep the target `CONTEXT_LEN_VALUE_<ARCH>` and all four backend fields unchanged.
 5. Preserve unrelated existing model/draft revision selectors in sweep-only mode; never add a new selector. A non-VRAM error during an otherwise working sweep is not permission to redesign the recipe. Report it unless the user requests repair or the explicit SM120/SM121 backend-recovery rule applies.
-6. At the smallest passing GPU count and maximum passing two-decimal utilization, rerun the `/tmp` copy, wait for final API readiness, verify the 16,384 MiB reserve on every selected GPU, and check a coherent baseline response. Do not rerun reasoning, tool-call, modality, speculative, model-card, or parser-specific suites for an unchanged sweep-only setup unless requested.
+6. At the smallest passing GPU count and maximum passing two-decimal utilization, rerun the `/tmp` copy, wait for final API readiness, verify the 8,192 MiB reserve on every selected GPU, and check a coherent baseline response. Do not rerun reasoning, tool-call, modality, speculative, model-card, or parser-specific suites for an unchanged sweep-only setup unless requested.
 7. Only after that run passes, replace the original with the validated copy, restoring the standard helper source line. Preserve all unrelated content; if both target values are unchanged, do not rewrite the original needlessly.
 8. Run Bash syntax and ShellCheck on the saved script and verify the restored helper path statically. Reuse the successful temporary-run evidence; do not launch the repository copy or repeat reserve/baseline checks after copying. Apply the completion boundary in "Promotion after success" below.
 9. Do not add a new recipe, environment, installer, or catalog entry for a normal sweep-only update. If no available target GPU count can satisfy maximum context plus reserve, leave the original byte-for-byte unchanged and mark the sweep failed.
@@ -530,9 +530,9 @@ For each GPU count, set only `TENSOR_PARALLEL_SIZE_<ARCH>` in the target block a
 0.xx
 ```
 
-The selected value MUST leave at least **16 GiB = 16,384 MiB** free on **every selected GPU** after the engine has fully loaded the model, completed internal warmup/graph capture, exposed the API, and reached its true ready state. Aggregate free memory is not sufficient; the least-free selected GPU controls the result.
+The selected value MUST leave at least **8 GiB = 8,192 MiB** free on **every selected GPU** after the engine has fully loaded the model, completed internal warmup/graph capture, exposed the API, and reached its true ready state. Aggregate free memory is not sufficient; the least-free selected GPU controls the result.
 
-This is a **startup-only reserve**, measured at settled API readiness before behavioral requests or benchmark traffic. It is not a minimum that must remain during or after inference, long-context tests, or benchmarking. Retain that launch's startup measurement separately from later memory telemetry. A later drop below 16,384 MiB, including after requests finish, is not a failure and must not trigger a lower utilization setting, rejection of validation, or withholding of a completed benchmark. Actual OOMs, crashes, incorrect responses, and incomplete benchmarks still fail their applicable checks. Do not add a post-workload reserve gate.
+This is a **startup-only reserve**, measured at settled API readiness before behavioral requests or benchmark traffic. It is not a minimum that must remain during or after inference, long-context tests, or benchmarking. Retain that launch's startup measurement separately from later memory telemetry. A later drop below 8,192 MiB, including after requests finish, is not a failure and must not trigger a lower utilization setting, rejection of validation, or withholding of a completed benchmark. Actual OOMs, crashes, incorrect responses, and incomplete benchmarks still fail their applicable checks. Do not add a post-workload reserve gate.
 
 For each GPU count:
 
@@ -541,19 +541,19 @@ For each GPU count:
 3. Compute an initial two-decimal utilization estimate from each selected GPU's total memory:
 
    ```text
-   floor_to_2_decimals((total_mib - 16384) / total_mib)
+   floor_to_2_decimals((total_mib - 8192) / total_mib)
    ```
 
    Use the smallest estimate across selected GPUs as a starting point, not a hard upper cap. Engine utilization does not map exactly to observed free memory, so a higher value may still leave the required startup reserve. The measured per-GPU startup readings determine the limit. Never test above `0.99`.
 4. Write each utilization candidate only into the temporary recipe's `GPU_MEM_UTIL_VALUE_<ARCH>` for the target block. Leave `TENSOR_PARALLEL_SIZE_<ARCH>` at this ladder count. Launch from a clean process/GPU state.
-5. A candidate passes the memory sweep only if the server reaches its final ready state and the supported vendor telemetry reports at least 16,384 MiB free on every selected GPU after memory settles.
-6. A startup crash, OOM, inability to allocate KV cache for maximum context, or startup reserve below 16,384 MiB is a failed candidate. Classify non-VRAM software/configuration errors separately. In full mode, fix them through an allowed engine source and retry the same GPU count; in sweep-only mode, obey its narrower repair rules. On SM120/SM121 vLLM backend failures, follow the b12x recovery policy. Restart measurements if the engine, backend, or dependencies change.
+5. A candidate passes the memory sweep only if the server reaches its final ready state and the supported vendor telemetry reports at least 8,192 MiB free on every selected GPU after memory settles.
+6. A startup crash, OOM, inability to allocate KV cache for maximum context, or startup reserve below 8,192 MiB is a failed candidate. Classify non-VRAM software/configuration errors separately. In full mode, fix them through an allowed engine source and retry the same GPU count; in sweep-only mode, obey its narrower repair rules. On SM120/SM121 vLLM backend failures, follow the b12x recovery policy. Restart measurements if the engine, backend, or dependencies change.
 7. Establish a passing/failing bracket and use bounded search in `0.01` increments, keeping every candidate at exactly two decimal places. Runtime behavior is authoritative; do not assume engine memory utilization is perfectly linear.
 8. Prove maximality: after finding a passing two-decimal value, test the next value `+0.01` up to `0.99`, including values above the initial calculated estimate. If the next value also passes, continue the search. The selected value requires an actual failing adjacent `+0.01` startup trial, unless `0.99` itself passes. Do not claim the calculated estimate is the measured maximum.
 9. Restart once more at the selected value, wait for final API readiness, resample every selected GPU, and retain the measured free MiB as evidence.
 10. Stop cleanly and confirm GPU memory is released before any next candidate or GPU-count attempt.
 
-If no utilization value can both start the maximum-context model and leave 16,384 MiB free per selected GPU at settled API readiness, that GPU count fails for insufficient VRAM. Continue to the next available eligible ladder count. If the next count does not physically exist on the target architecture, stop; do not substitute another topology or use GPUs from another architecture. Stop increasing the count as soon as the smallest count passes.
+If no utilization value can both start the maximum-context model and leave 8,192 MiB free per selected GPU at settled API readiness, that GPU count fails for insufficient VRAM. Continue to the next available eligible ladder count. If the next count does not physically exist on the target architecture, stop; do not substitute another topology or use GPUs from another architecture. Stop increasing the count as soon as the smallest count passes.
 
 NEVER respond to sweep failure by:
 
@@ -563,7 +563,7 @@ NEVER respond to sweep failure by:
 - disabling CUDA graphs;
 - changing the selected recipe variant's established cache behavior as a memory workaround;
 - changing precision away from the requested checkpoint;
-- accepting less than 16,384 MiB free on any selected GPU at settled API readiness before workload traffic.
+- accepting less than 8,192 MiB free on any selected GPU at settled API readiness before workload traffic.
 
 If no available ladder count through eight GPUs passes, record every attempted count, utilization bound, and failure, then mark the recipe failed.
 
@@ -600,7 +600,7 @@ Do not claim a model/engine combination works unless this complete suite passes 
 
 Mark the effort failed when any of these remain true after exhausting applicable sources allowed by the engine-source policy and the available GPU ladder:
 
-- insufficient per-GPU VRAM to start at maximum context with at least 16,384 MiB free on every selected GPU at settled API readiness before workload traffic;
+- insufficient per-GPU VRAM to start at maximum context with at least 8,192 MiB free on every selected GPU at settled API readiness before workload traffic;
 - no permitted upstream main or verified upstream PR commit can serve the required configuration with unmodified supported dependencies;
 - required modality, reasoning, or tool behavior fails its applicable API checks; an unavailable or inapplicable reasoning parser alone is not a failure;
 - startup requires a forbidden context/batch/CUDA workaround;
