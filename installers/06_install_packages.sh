@@ -148,6 +148,7 @@ ENV_TYPES=(
   "rtxpro6k-nex-agi-vllm-e0317b28ce3b"
   "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
   "rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430"
+  "rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b"
   "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
   "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
   "rtxpro6k-nvidia-sglang-964c45cf3"
@@ -303,6 +304,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-nex-agi-vllm-e0317b28ce3b"]="RTX PRO 6000 Nex AGI (vLLM e0317b28ce3b)"
   ["rtxpro6k-nvidia-glm53-sglang-26fd7fd"]="RTX PRO 6000 NVIDIA GLM-5.3 NVFP4 (SGLang 26fd7fd)"
   ["rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 DFlash2 (SGLang PR 38430, 4df49edcf)"
+  ["rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 DFlash2 (vLLM 8c60cf07b, cuBLAS 13.6.1)"
   ["rtxpro6k-nvidia-glm53flash-sglang-pr-38430"]="RTX PRO 6000 NVIDIA GLM-5.3 Flash NVFP4 (SGLang) PR 38430"
   ["rtxpro6k-nvidia-qwen38-vllm-9c2d21046"]="RTX PRO 6000 NVIDIA Qwen3.8 Flash Next NVFP4 (vLLM) 9c2d21046"
   ["rtxpro6k-nvidia-sglang-964c45cf3"]="RTX PRO 6000 NVIDIA Kimi-K2.6 NVFP4 (SGLang 964c45cf3)"
@@ -713,82 +715,85 @@ resolve_env_type() {
         126|rtxpro6k_nvidia_glm53flash_dflash2_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430"
             ;;
-        127|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        127|rtxpro6k_nvidia_glm53flash_dflash2_vllm_8c60cf07b|rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b)
+            echo "rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b"
+            ;;
+        128|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        128|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        129|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        129|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        130|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        130|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+        131|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
             echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
             ;;
-        131|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+        132|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
             echo "rtxpro6k-nvidia-vllm-73a5831127a9"
             ;;
-        132|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        133|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        133|rtxpro6k_nvidia_vllm_pr_9fedd24fa864|rtxpro6k-nvidia-vllm-pr-9fedd24fa864)
+        134|rtxpro6k_nvidia_vllm_pr_9fedd24fa864|rtxpro6k-nvidia-vllm-pr-9fedd24fa864)
             echo "rtxpro6k-nvidia-vllm-pr-9fedd24fa864"
             ;;
-        134|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+        135|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
             echo "rtxpro6k-openai-vllm-73a5831127a9"
             ;;
-        135|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
+        136|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
             echo "rtxpro6k-paradigma-inc-vllm-73a5831127a9"
             ;;
-        136|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+        137|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
             echo "rtxpro6k-poolside-vllm-73a5831127a9"
             ;;
-        137|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        138|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        138|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+        139|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
             echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
             ;;
-        139|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        140|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        140|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        141|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        141|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        142|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        142|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+        143|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
             echo "rtxpro6k-qwen-vllm-73a5831127a9"
             ;;
-        143|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+        144|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
             echo "rtxpro6k-radixark-sglang-fa7784d140ee"
             ;;
-        144|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+        145|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
             echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
             ;;
-        145|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
+        146|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
             echo "rtxpro6k-stepfun-ai-sglang-f92199b569d2"
             ;;
-        146|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        147|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        147|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+        148|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        148|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+        149|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
             echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
             ;;
-        149|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+        150|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
             echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
             ;;
-        150|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+        151|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
             echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
             ;;
-        151|custom|custom_uv|custom-uv|env_custom_uv)
+        152|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        152|custom_pip|custom-pip|env_custom_pip)
+        153|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2858,6 +2863,27 @@ install_rtxpro6k_nvidia_glm53flash_dflash2_sglang_pr_38430() {
     run_uv_install --no-deps "flashinfer-python==0.7.2" || return 1
 }
 
+install_rtxpro6k_nvidia_glm53flash_dflash2_vllm_8c60cf07b() {
+    ensure_active_environment_matches "rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b" || return 1
+    # Official main wheel; no local source patches.
+    local source_commit="8c60cf07b3df3b289c310fbd45a382a10709d9ab"
+    local wheel_url="https://wheels.vllm.ai/${source_commit}/vllm-0.32.1rc1.dev96%2Bg8c60cf07b-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing validated NVIDIA GLM-5.3 Flash DFlash2 vLLM ${source_commit}..."
+    run_uv_install --prerelease=allow --torch-backend=cu132 \
+        "vllm @ ${wheel_url}" \
+        "torch==2.14.0+cu132" "torchvision==0.29.0+cu132" "torchcodec==0.17.0+cu132" \
+        "transformers==5.19.0" "tokenizers==0.23.3" "flashinfer-python==0.7.2" \
+        "tilelang==0.1.12" "triton==3.8.0" "nvidia-cutlass-dsl==4.8.0" \
+        "cuda-toolkit==13.2.1" "nccl-extensions==0.1.0" || return 1
+    # NVIDIA SM120/121 strided-batched GEMM fix, bugs 6040940/5996751:
+    # https://docs.nvidia.com/cuda/cublas-patch-release-notes/#cublas-patch-release-13-6-1
+    # Deliberately overrides cuda-toolkit 13.2.1's nvidia-cublas==13.4.0.1 pin.
+    # TP4/full 1,048,576 context: utilization 0.92, 8,855 MiB free/GPU, 3,894,106 KV tokens.
+    print_info "Applying official cuBLAS 13.6.1.10; intentionally overriding the CUDA Toolkit cuBLAS pin."
+    run_uv_install --no-config --no-deps \
+        "https://files.pythonhosted.org/packages/dd/e9/288a93d8234b8f8ea0ccac7b8cc5d7aa4c663d9676c64f4a2eb3a1f9ffc4/nvidia_cublas-13.6.1.10-py3-none-manylinux_2_27_x86_64.whl#sha256=feb2ed8a1e211bc5774413efc0f1a08c4d5269b56f68b4ac6fe5408e57f7dc1c" || return 1
+}
+
 install_rtxpro6k_nvidia_glm53flash_sglang_pr_38430() {
     ensure_active_environment_matches "rtxpro6k-nvidia-glm53flash-sglang-pr-38430" || return 1
     # The unmodified official source build requires the existing Rust toolchain.
@@ -3777,6 +3803,9 @@ perform_environment_action() {
             ;;
         rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430)
             install_rtxpro6k_nvidia_glm53flash_dflash2_sglang_pr_38430 || return 1
+            ;;
+        rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b)
+            install_rtxpro6k_nvidia_glm53flash_dflash2_vllm_8c60cf07b || return 1
             ;;
         rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             install_rtxpro6k_nvidia_glm53flash_sglang_pr_38430 || return 1
