@@ -215,15 +215,15 @@ Confirm authenticated `/v1/models` readiness and the intended served model befor
 Write the benchmark output to `/tmp` first:
 
 ```text
-/tmp/<launch-script-stem>_<gpu-type>x<gpu-qty>.json
+/tmp/<benchmark-filename>
 ```
 
-Remove only the recipe launch script's final extension; preserve its other spelling, capitalization, punctuation, and variant suffixes. Validate `gpu_type` as a lowercase filename label matching `[a-z0-9][a-z0-9._-]*` and GPU quantity as a positive integer. Keep the filename convention exactly `<launch-script-stem>_<gpu-type>x<gpu-qty>.json`; the vendor belongs in the directory, not in the GPU-type label.
+Remove only the recipe launch script's final extension; preserve its other spelling, capitalization, punctuation, and variant suffixes. Form `<benchmark-filename>` by appending `_<gpu-type>x<gpu-qty>` only if the stem does not already end with that exact suffix, then append `.json`. NEVER duplicate an existing matching GPU suffix. Validate `gpu_type` as a lowercase filename label matching `[a-z0-9][a-z0-9._-]*` and GPU quantity as a positive integer; the vendor belongs in the directory, not in the GPU-type label.
 
 The **only publication destination** is the matching recipe's directory, expressed relative to the caller's checkout:
 
 ```text
-recipes/<gpu-vendor>-<gpu-type>/<provider>/llm-inference-bench/<launch-script-stem>_<gpu-type>x<gpu-qty>.json
+recipes/<gpu-vendor>-<gpu-type>/<provider>/llm-inference-bench/<benchmark-filename>
 ```
 
 Resolve the checkout, hardware group, and provider from the actual launcher's path. Require the hardware-group directory to match `[a-z0-9]+-[a-z0-9][a-z0-9._-]*`. Split it at its first hyphen: the prefix is the vendor, and the entire remaining suffix is the GPU type. Require that suffix to equal the supplied lowercase `gpu_type` exactly before benchmarking or publishing. Accept any labels matching these rules; do not maintain a hardware-directory allowlist or special-case known GPUs. A launcher under `recipes/nvidia-b200/incoai/` publishes beside that recipe even if its checkpoint belongs to another organization. Neither `MODEL_REPO` nor a served-model alias determines the provider or hardware group.
@@ -279,14 +279,16 @@ def benchmark_paths(
     vendor, separator, directory_gpu_type = hardware_group.name.partition("-")
     if directory_gpu_type != gpu_type:
         raise ValueError("Supplied GPU type does not match the recipe's hardware group")
-    filename = f"{recipe.stem}_{gpu_type}x{gpu_qty}.json"
+    stem = recipe.stem
+    suffix = f"_{gpu_type}x{gpu_qty}"
+    filename = f"{stem}{'' if stem.endswith(suffix) else suffix}.json"
     return Path("/tmp") / filename, recipe_directory / "llm-inference-bench" / filename
 ```
 
 For example:
 
 ```text
-recipes/nvidia-b200/qwen/vllm_Qwen_Qwen3.8-27B-FP8.sh
+recipes/nvidia-b200/qwen/vllm_Qwen_Qwen3.8-27B-FP8_b200x1.sh
   + gpu_type=b200, gpu_qty=1
   -> /tmp/vllm_Qwen_Qwen3.8-27B-FP8_b200x1.json
   -> publish only after success: recipes/nvidia-b200/qwen/llm-inference-bench/vllm_Qwen_Qwen3.8-27B-FP8_b200x1.json
