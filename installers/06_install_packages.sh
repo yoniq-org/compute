@@ -120,6 +120,7 @@ ENV_TYPES=(
   "rtxpro6k-arcee-ai-vllm-c8414a82712b"
   "rtxpro6k-coherelabs-vllm-73a5831127a9"
   "rtxpro6k-datalab-to-vllm-73a5831127a9"
+  "rtxpro6k-deepseek-v41-1017-vllm-pr-60762"
   "rtxpro6k-deepseek-v41-vllm-pr-56509"
   "rtxpro6k-glm53-vllm-2617fe938"
   "rtxpro6k-google-sglang-1093c501dfef"
@@ -278,6 +279,7 @@ declare -A ENV_DESCRIPTIONS=(
   ["rtxpro6k-arcee-ai-vllm-c8414a82712b"]="RTX PRO 6000 Arcee AI (vLLM) c8414a82712b NVFP4"
   ["rtxpro6k-coherelabs-vllm-73a5831127a9"]="RTX PRO 6000 CohereLabs (vLLM) 73a5831127a9"
   ["rtxpro6k-datalab-to-vllm-73a5831127a9"]="RTX PRO 6000 Datalab (vLLM) 73a5831127a9"
+  ["rtxpro6k-deepseek-v41-1017-vllm-pr-60762"]="RTX PRO 6000 DeepSeek V4.1 Flash 1017 (vLLM) PR 60762 SM120"
   ["rtxpro6k-deepseek-v41-vllm-pr-56509"]="RTX PRO 6000 DeepSeek V4.1 Flash (vLLM) PR 56509 SM120"
   ["rtxpro6k-glm53-vllm-2617fe938"]="RTX PRO 6000 GLM 5.3 Flash (vLLM) 2617fe938 SM120"
   ["rtxpro6k-google-sglang-1093c501dfef"]="RTX PRO 6000 Google Gemma 4 (SGLang 1093c501dfef)"
@@ -635,175 +637,178 @@ resolve_env_type() {
         98|rtxpro6k_datalab_to_vllm_73a5831127a9|rtxpro6k-datalab-to-vllm-73a5831127a9)
             echo "rtxpro6k-datalab-to-vllm-73a5831127a9"
             ;;
-        99|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
+        99|rtxpro6k_deepseek_v41_1017_vllm_pr_60762|rtxpro6k-deepseek-v41-1017-vllm-pr-60762)
+            echo "rtxpro6k-deepseek-v41-1017-vllm-pr-60762"
+            ;;
+        100|rtxpro6k_deepseek_v41_vllm_pr_56509|rtxpro6k-deepseek-v41-vllm-pr-56509)
             echo "rtxpro6k-deepseek-v41-vllm-pr-56509"
             ;;
-        100|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
+        101|rtxpro6k_glm53_vllm_2617fe938|rtxpro6k-glm53-vllm-2617fe938)
             echo "rtxpro6k-glm53-vllm-2617fe938"
             ;;
-        101|rtxpro6k_google_sglang_1093c501dfef|rtxpro6k-google-sglang-1093c501dfef)
+        102|rtxpro6k_google_sglang_1093c501dfef|rtxpro6k-google-sglang-1093c501dfef)
             echo "rtxpro6k-google-sglang-1093c501dfef"
             ;;
-        102|rtxpro6k_google_vllm_73a5831127a9|rtxpro6k-google-vllm-73a5831127a9)
+        103|rtxpro6k_google_vllm_73a5831127a9|rtxpro6k-google-vllm-73a5831127a9)
             echo "rtxpro6k-google-vllm-73a5831127a9"
             ;;
-        103|rtxpro6k_ibm_granite_sglang_fa7784d140ee|rtxpro6k-ibm-granite-sglang-fa7784d140ee)
+        104|rtxpro6k_ibm_granite_sglang_fa7784d140ee|rtxpro6k-ibm-granite-sglang-fa7784d140ee)
             echo "rtxpro6k-ibm-granite-sglang-fa7784d140ee"
             ;;
-        104|rtxpro6k_ibm_granite_vllm_73a5831127a9|rtxpro6k-ibm-granite-vllm-73a5831127a9)
+        105|rtxpro6k_ibm_granite_vllm_73a5831127a9|rtxpro6k-ibm-granite-vllm-73a5831127a9)
             echo "rtxpro6k-ibm-granite-vllm-73a5831127a9"
             ;;
-        105|rtxpro6k_inclusionai_sglang_1093c501dfef|rtxpro6k-inclusionai-sglang-1093c501dfef)
+        106|rtxpro6k_inclusionai_sglang_1093c501dfef|rtxpro6k-inclusionai-sglang-1093c501dfef)
             echo "rtxpro6k-inclusionai-sglang-1093c501dfef"
             ;;
-        106|rtxpro6k_inclusionai_vllm_73a5831127a9|rtxpro6k-inclusionai-vllm-73a5831127a9)
+        107|rtxpro6k_inclusionai_vllm_73a5831127a9|rtxpro6k-inclusionai-vllm-73a5831127a9)
             echo "rtxpro6k-inclusionai-vllm-73a5831127a9"
             ;;
-        107|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
+        108|rtxpro6k_incoai_sglang_964c45cf3|rtxpro6k-incoai-sglang-964c45cf3)
             echo "rtxpro6k-incoai-sglang-964c45cf3"
             ;;
-        108|rtxpro6k_incoai_sglang_fa7784d140ee|rtxpro6k-incoai-sglang-fa7784d140ee)
+        109|rtxpro6k_incoai_sglang_fa7784d140ee|rtxpro6k-incoai-sglang-fa7784d140ee)
             echo "rtxpro6k-incoai-sglang-fa7784d140ee"
             ;;
-        109|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
+        110|rtxpro6k_incoai_sglang_pr_028ac64f7|rtxpro6k-incoai-sglang-pr-028ac64f7)
             echo "rtxpro6k-incoai-sglang-pr-028ac64f7"
             ;;
-        110|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
+        111|rtxpro6k_incoai_vllm_73a583112|rtxpro6k-incoai-vllm-73a583112)
             echo "rtxpro6k-incoai-vllm-73a583112"
             ;;
-        111|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
+        112|rtxpro6k_incoai_vllm_pr_417b0b6aa|rtxpro6k-incoai-vllm-pr-417b0b6aa)
             echo "rtxpro6k-incoai-vllm-pr-417b0b6aa"
             ;;
-        112|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
+        113|rtxpro6k_intel_sglang|rtxpro6k-intel-sglang)
             echo "rtxpro6k-intel-sglang"
             ;;
-        113|rtxpro6k_intel_vllm_73a5831127a9|rtxpro6k-intel-vllm-73a5831127a9)
+        114|rtxpro6k_intel_vllm_73a5831127a9|rtxpro6k-intel-vllm-73a5831127a9)
             echo "rtxpro6k-intel-vllm-73a5831127a9"
             ;;
-        114|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
+        115|rtxpro6k_liquidai_sglang|rtxpro6k-liquidai-sglang)
             echo "rtxpro6k-liquidai-sglang"
             ;;
-        115|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
+        116|rtxpro6k_liquidai_sglang_pr_31041|rtxpro6k-liquidai-sglang-pr-31041)
             echo "rtxpro6k-liquidai-sglang-pr-31041"
             ;;
-        116|rtxpro6k_meta_models_sglang_fa7784d140ee|rtxpro6k-meta-models-sglang-fa7784d140ee)
+        117|rtxpro6k_meta_models_sglang_fa7784d140ee|rtxpro6k-meta-models-sglang-fa7784d140ee)
             echo "rtxpro6k-meta-models-sglang-fa7784d140ee"
             ;;
-        117|rtxpro6k_meta_models_vllm_73a5831127a9|rtxpro6k-meta-models-vllm-73a5831127a9)
+        118|rtxpro6k_meta_models_vllm_73a5831127a9|rtxpro6k-meta-models-vllm-73a5831127a9)
             echo "rtxpro6k-meta-models-vllm-73a5831127a9"
             ;;
-        118|rtxpro6k_microsoft_vllm_73a5831127a9|rtxpro6k-microsoft-vllm-73a5831127a9)
+        119|rtxpro6k_microsoft_vllm_73a5831127a9|rtxpro6k-microsoft-vllm-73a5831127a9)
             echo "rtxpro6k-microsoft-vllm-73a5831127a9"
             ;;
-        119|rtxpro6k_minimaxai_vllm_e0317b28ce3b|rtxpro6k-minimaxai-vllm-e0317b28ce3b)
+        120|rtxpro6k_minimaxai_vllm_e0317b28ce3b|rtxpro6k-minimaxai-vllm-e0317b28ce3b)
             echo "rtxpro6k-minimaxai-vllm-e0317b28ce3b"
             ;;
-        120|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
+        121|rtxpro6k_mistralai_sglang_fa7784d140ee|rtxpro6k-mistralai-sglang-fa7784d140ee)
             echo "rtxpro6k-mistralai-sglang-fa7784d140ee"
             ;;
-        121|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
+        122|rtxpro6k_mistralai_vllm_73a5831127a9|rtxpro6k-mistralai-vllm-73a5831127a9)
             echo "rtxpro6k-mistralai-vllm-73a5831127a9"
             ;;
-        122|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
+        123|rtxpro6k_mistralai_vllm_pr_678ef33584da|rtxpro6k-mistralai-vllm-pr-678ef33584da)
             echo "rtxpro6k-mistralai-vllm-pr-678ef33584da"
             ;;
-        123|rtxpro6k_moonshotai_vllm_73a5831127a9|rtxpro6k-moonshotai-vllm-73a5831127a9)
+        124|rtxpro6k_moonshotai_vllm_73a5831127a9|rtxpro6k-moonshotai-vllm-73a5831127a9)
             echo "rtxpro6k-moonshotai-vllm-73a5831127a9"
             ;;
-        124|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
+        125|rtxpro6k_nanbeige_sglang|rtxpro6k-nanbeige-sglang)
             echo "rtxpro6k-nanbeige-sglang"
             ;;
-        125|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
+        126|rtxpro6k_nanbeige_vllm_pr_62f6de733d7a|rtxpro6k-nanbeige-vllm-pr-62f6de733d7a)
             echo "rtxpro6k-nanbeige-vllm-pr-62f6de733d7a"
             ;;
-        126|rtxpro6k_nex_agi_vllm_e0317b28ce3b|rtxpro6k-nex-agi-vllm-e0317b28ce3b)
+        127|rtxpro6k_nex_agi_vllm_e0317b28ce3b|rtxpro6k-nex-agi-vllm-e0317b28ce3b)
             echo "rtxpro6k-nex-agi-vllm-e0317b28ce3b"
             ;;
-        127|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
+        128|rtxpro6k_nvidia_glm53_sglang_26fd7fd|rtxpro6k-nvidia-glm53-sglang-26fd7fd)
             echo "rtxpro6k-nvidia-glm53-sglang-26fd7fd"
             ;;
-        128|rtxpro6k_nvidia_glm53flash_dflash2_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430)
+        129|rtxpro6k_nvidia_glm53flash_dflash2_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-dflash2-sglang-pr-38430"
             ;;
-        129|rtxpro6k_nvidia_glm53flash_dflash2_vllm_8c60cf07b|rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b)
+        130|rtxpro6k_nvidia_glm53flash_dflash2_vllm_8c60cf07b|rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b)
             echo "rtxpro6k-nvidia-glm53flash-dflash2-vllm-8c60cf07b"
             ;;
-        130|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
+        131|rtxpro6k_nvidia_glm53flash_sglang_pr_38430|rtxpro6k-nvidia-glm53flash-sglang-pr-38430)
             echo "rtxpro6k-nvidia-glm53flash-sglang-pr-38430"
             ;;
-        131|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
+        132|rtxpro6k_nvidia_qwen38_vllm_9c2d21046|rtxpro6k-nvidia-qwen38-vllm-9c2d21046)
             echo "rtxpro6k-nvidia-qwen38-vllm-9c2d21046"
             ;;
-        132|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
+        133|rtxpro6k_nvidia_sglang_964c45cf3|rtxpro6k-nvidia-sglang-964c45cf3)
             echo "rtxpro6k-nvidia-sglang-964c45cf3"
             ;;
-        133|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
+        134|rtxpro6k_nvidia_sglang_pr_13e5dcf04f082f8040f46d49|rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49)
             echo "rtxpro6k-nvidia-sglang-pr-13e5dcf04f082f8040f46d49"
             ;;
-        134|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
+        135|rtxpro6k_nvidia_vllm_73a5831127a9|rtxpro6k-nvidia-vllm-73a5831127a9)
             echo "rtxpro6k-nvidia-vllm-73a5831127a9"
             ;;
-        135|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
+        136|rtxpro6k_nvidia_vllm_pr_39e0ce172|rtxpro6k-nvidia-vllm-pr-39e0ce172)
             echo "rtxpro6k-nvidia-vllm-pr-39e0ce172"
             ;;
-        136|rtxpro6k_nvidia_vllm_pr_9fedd24fa864|rtxpro6k-nvidia-vllm-pr-9fedd24fa864)
+        137|rtxpro6k_nvidia_vllm_pr_9fedd24fa864|rtxpro6k-nvidia-vllm-pr-9fedd24fa864)
             echo "rtxpro6k-nvidia-vllm-pr-9fedd24fa864"
             ;;
-        137|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
+        138|rtxpro6k_openai_vllm_73a5831127a9|rtxpro6k-openai-vllm-73a5831127a9)
             echo "rtxpro6k-openai-vllm-73a5831127a9"
             ;;
-        138|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
+        139|rtxpro6k_paradigma_inc_vllm_73a5831127a9|rtxpro6k-paradigma-inc-vllm-73a5831127a9)
             echo "rtxpro6k-paradigma-inc-vllm-73a5831127a9"
             ;;
-        139|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
+        140|rtxpro6k_poolside_vllm_73a5831127a9|rtxpro6k-poolside-vllm-73a5831127a9)
             echo "rtxpro6k-poolside-vllm-73a5831127a9"
             ;;
-        140|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
+        141|rtxpro6k_primeintellect_sglang|rtxpro6k-primeintellect-sglang)
             echo "rtxpro6k-primeintellect-sglang"
             ;;
-        141|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
+        142|rtxpro6k_primeintellect_vllm_73a5831127a9|rtxpro6k-primeintellect-vllm-73a5831127a9)
             echo "rtxpro6k-primeintellect-vllm-73a5831127a9"
             ;;
-        142|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
+        143|rtxpro6k_qwen_flash_next_vllm|rtxpro6k-qwen-flash-next-vllm)
             echo "rtxpro6k-qwen-flash-next-vllm"
             ;;
-        143|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
+        144|rtxpro6k_qwen_flash_next_vllm_pr_54129|rtxpro6k-qwen-flash-next-vllm-pr-54129)
             echo "rtxpro6k-qwen-flash-next-vllm-pr-54129"
             ;;
-        144|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
+        145|rtxpro6k_qwen_sglang|rtxpro6k-qwen-sglang)
             echo "rtxpro6k-qwen-sglang"
             ;;
-        145|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
+        146|rtxpro6k_qwen_vllm_73a5831127a9|rtxpro6k-qwen-vllm-73a5831127a9)
             echo "rtxpro6k-qwen-vllm-73a5831127a9"
             ;;
-        146|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
+        147|rtxpro6k_radixark_sglang_fa7784d140ee|rtxpro6k-radixark-sglang-fa7784d140ee)
             echo "rtxpro6k-radixark-sglang-fa7784d140ee"
             ;;
-        147|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
+        148|rtxpro6k_redhatai_vllm_73a5831127a9d2b8|rtxpro6k-redhatai-vllm-73a5831127a9d2b8)
             echo "rtxpro6k-redhatai-vllm-73a5831127a9d2b8"
             ;;
-        148|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
+        149|rtxpro6k_stepfun_ai_sglang_f92199b569d2|rtxpro6k-stepfun-ai-sglang-f92199b569d2)
             echo "rtxpro6k-stepfun-ai-sglang-f92199b569d2"
             ;;
-        149|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
+        150|rtxpro6k_xiaomimimo_flash_vllm_pr_58177|rtxpro6k-xiaomimimo-flash-vllm-pr-58177)
             echo "rtxpro6k-xiaomimimo-flash-vllm-pr-58177"
             ;;
-        150|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
+        151|rtxpro6k_z_lab_vllm_73a5831127a9|rtxpro6k-z-lab-vllm-73a5831127a9)
             echo "rtxpro6k-z-lab-vllm-73a5831127a9"
             ;;
-        151|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
+        152|rtxpro6k_z_lab_vllm_pr_e55909cad00f|rtxpro6k-z-lab-vllm-pr-e55909cad00f)
             echo "rtxpro6k-z-lab-vllm-pr-e55909cad00f"
             ;;
-        152|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
+        153|rtxpro6k_zyphra_vllm_pr_2ce2f26c282d|rtxpro6k-zyphra-vllm-pr-2ce2f26c282d)
             echo "rtxpro6k-zyphra-vllm-pr-2ce2f26c282d"
             ;;
-        153|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
+        154|rtxpro6k_zyphra_vllm_pr_b1b99a08b20f|rtxpro6k-zyphra-vllm-pr-b1b99a08b20f)
             echo "rtxpro6k-zyphra-vllm-pr-b1b99a08b20f"
             ;;
-        154|custom|custom_uv|custom-uv|env_custom_uv)
+        155|custom|custom_uv|custom-uv|env_custom_uv)
             echo "custom_uv"
             ;;
-        155|custom_pip|custom-pip|env_custom_pip)
+        156|custom_pip|custom-pip|env_custom_pip)
             echo "custom_pip"
             ;;
         *)
@@ -2226,6 +2231,35 @@ install_rtxpro6k_datalab_to_vllm_73a5831127a9() {
         "flashinfer-python==0.7.0.post1" \
         "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.7.0.post1/flashinfer_cubin-0.7.0.post1-py3-none-any.whl" \
         --torch-backend=cu130 || return 1
+}
+
+install_rtxpro6k_deepseek_v41_1017_vllm_pr_60762() {
+    ensure_active_environment_matches "rtxpro6k-deepseek-v41-1017-vllm-pr-60762" || return 1
+    # Validated unmodified upstream SM120 integration: https://github.com/vllm-project/vllm/pull/60762
+    # This Python-only PR uses its direct parent's unchanged CUDA 13.0 binaries.
+    local source_commit="48dcffbb7c8ff690ac60ae6c8b06ca0601d05e73"
+    local binary_commit="36f5ff3172eb75433e54e496d64c473e951f8ecc"
+    local wheel_url="https://wheels.vllm.ai/${binary_commit}/vllm-0.33.0rc1.dev130%2Bg36f5ff317-cp38-abi3-manylinux_2_28_x86_64.whl"
+    print_info "Installing DeepSeek V4.1 Flash 1017 vLLM PR 60762 at ${source_commit}..."
+    # Keep normal build isolation for upstream's source/build dependencies.
+    VLLM_USE_PRECOMPILED=1 \
+        VLLM_PRECOMPILED_WHEEL_LOCATION="${wheel_url}" \
+        run_uv_install -U --reinstall --prerelease=allow \
+        "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
+        "torch==2.14.0+cu130" "transformers==5.20.2" "tokenizers==0.23.3" \
+        "compressed-tensors==0.17.0" "numpy==2.3.5" \
+        "flashinfer-python==0.7.2.post1" "flashinfer-cubin==0.7.2.post1" \
+        "b12x==1.5.1" "nvidia-cutlass-dsl==4.8.0" "apache-tvm-ffi==0.1.11" \
+        "triton==3.8.0" "tilelang==0.1.12" \
+        "tokenspeed-mla==2.0.3" "tokenspeed-triton==3.9.10.post20261008" \
+        "pip==26.2.2" --torch-backend=cu130 || return 1
+    # The pinned FlashInfer CLI selects cubin==0.7.2.post1 and
+    # jit-cache==0.7.2.post1+cu130, including matching architecture providers.
+    run_command env VIRTUAL_ENV="$VIRTUAL_ENV" PATH="$VIRTUAL_ENV/bin:$PATH" \
+        "$VIRTUAL_ENV/bin/vllm" download-kernels || return 1
+    # FlashInfer and b12x overlap package files; restore b12x LAST without
+    # re-resolving the validated dependencies or reinstalling FlashInfer.
+    run_uv_install --no-deps --reinstall-package b12x "b12x==1.5.1" || return 1
 }
 
 install_rtxpro6k_deepseek_v41_vllm_pr_56509() {
@@ -3810,6 +3844,9 @@ perform_environment_action() {
             ;;
         rtxpro6k-datalab-to-vllm-73a5831127a9)
             install_rtxpro6k_datalab_to_vllm_73a5831127a9 || return 1
+            ;;
+        rtxpro6k-deepseek-v41-1017-vllm-pr-60762)
+            install_rtxpro6k_deepseek_v41_1017_vllm_pr_60762 || return 1
             ;;
         rtxpro6k-deepseek-v41-vllm-pr-56509)
             install_rtxpro6k_deepseek_v41_vllm_pr_56509 || return 1
