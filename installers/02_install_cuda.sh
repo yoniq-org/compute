@@ -81,6 +81,9 @@ trap cleanup_cuda_cache EXIT
 CUDA_PACKAGE_DOWNLOADS=()
 CONFIGURED_UBUNTU_CUDA_REPOS=()
 UBUNTU_DRIVER_APT_OPTIONS=()
+UBUNTU_DRIVER_INSTALL_ARGS=()
+UBUNTU_DRIVER_REMOVE_PACKAGES=()
+NVIDIA_DRIVER_REBOOT_PENDING=false
 INSTALLED_CUDA_VERSIONS=()
 INSTALLED_CUDA_VERSIONS_DISPLAY="None"
 CUDA_DEFAULT_CANDIDATE_VERSIONS=()
@@ -438,11 +441,206 @@ rhel_package_candidate_version() {
     printf '%s\n' "${candidates[@]}" | sort -V | tail -1
 }
 
+is_ubuntu_nvidia_driver_package() {
+    case "${1%%:*}" in
+        nvidia-container*|libnvidia-container*|nvidia-driver-pinning-*)
+            return 1
+            ;;
+        nvidia-open|nvidia-open-[0-9]*|cuda-drivers|cuda-drivers-[0-9]*|\
+        nvidia-driver|nvidia-driver-open|nvidia-driver-[0-9]*|\
+        nvidia-dkms*|nvidia-kernel-*|nvidia-firmware*|nvidia-headless*|\
+        nvidia-utils*|nvidia-compute-utils*|nvidia-modprobe|nvidia-persistenced|\
+        nvidia-settings|nvidia-prime|libnvidia-*|libcuda1*|xserver-xorg-video-nvidia*)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+ubuntu_installed_nvidia_driver_version() {
+    dpkg-query -W -f='${Status} ${Version}\n' \
+        nvidia-driver nvidia-driver-open 'nvidia-driver-[0-9]*' \
+        'nvidia-dkms*' 'libnvidia-compute*' 2>/dev/null | awk '
+        $2 == "ok" && ($3 == "installed" || $3 == "unpacked" || $3 == "half-configured") {
+            print $4
+        }
+    ' | sort -V | tail -1
+}
+
+prepare_ubuntu_nvidia_driver_install() {
+    local driver_package="$1"
+    local candidate_version="$2"
+    local target_branch="${candidate_version#*:}"
+    local inventory package status version package_name action details plan removal_plan
+    local requested_packages=("$driver_package=$candidate_version")
+    local driver_upgrade_packages=()
+    local -A held_packages=()
+    UBUNTU_DRIVER_INSTALL_ARGS=()
+    UBUNTU_DRIVER_REMOVE_PACKAGES=()
+    target_branch="${target_branch%%.*}"
+
+    if ! [[ "$target_branch" =~ ^[0-9]+$ ]]; then
+        print_error "Cannot determine the target NVIDIA driver branch from $candidate_version."
+        return 1
+    fi
+    if ! inventory=$(dpkg-query -W -f='${binary:Package}\t${Status}\t${Version}\n'); then
+        print_error "Cannot inspect installed packages before replacing the NVIDIA driver."
+        return 1
+    fi
+
+    while IFS=$'\t' read -r package status version; do
+        package_name="${package%%:*}"
+        if [[ "$status" == "hold "* ]]; then
+            held_packages["$package_name"]=true
+        fi
+        case "$status" in
+            *" ok installed"|*" ok unpacked"|*" ok half-configured") ;;
+            *) continue ;;
+        esac
+        if is_ubuntu_nvidia_driver_package "$package" && \
+            [[ "$package_name" =~ -([0-9]{3,})(-|$) ]] && \
+            [ "${BASH_REMATCH[1]}" != "$target_branch" ]; then
+            requested_packages+=("$package-")
+        fi
+    done <<< "$inventory"
+
+    # Ignore holds only during planning. Actual package changes explicitly name
+    # every approved version/removal, so unrelated holds remain effective.
+    print_info "Checking the complete NVIDIA driver replacement before installation..."
+    if ! plan=$(LC_ALL=C apt-get --simulate --ignore-hold install \
+        "${UBUNTU_DRIVER_APT_OPTIONS[@]}" "${requested_packages[@]}" 2>&1); then
+        printf '%s\n' "$plan"
+        print_error "Cannot resolve the NVIDIA driver replacement; driver packages and holds were not changed."
+        return 1
+    fi
+
+    UBUNTU_DRIVER_INSTALL_ARGS=("$driver_package=$candidate_version")
+    while read -r action package details; do
+        case "$action" in
+            Inst|Remv|Conf) ;;
+            *) continue ;;
+        esac
+        package_name="${package%%:*}"
+        if ! is_ubuntu_nvidia_driver_package "$package"; then
+            if [ "$action" = Remv ] || [ "${held_packages[$package_name]:-}" = true ]; then
+                print_error "Refusing NVIDIA driver transaction: it would change unrelated package $package."
+                return 1
+            fi
+            case "$package_name" in
+                linux-*|cuda*|libcublas*|libcudart*|libcufft*|libcufile*|\
+                libcuobjclient*|libcurand*|libcusolver*|libcusparse*|libcudnn*|libnccl*|\
+                libnpp*|libnvjitlink*|libnvfatbin*|libnvjpeg*|libnvvm*|libnvptxcompiler*|\
+                nsight*|gds-tools*|cccl*|nvidia-container*|libnvidia-container*|\
+                docker*|containerd*|runc|podman*)
+                    print_error "Refusing NVIDIA driver transaction: it would change protected package $package."
+                    return 1
+                    ;;
+            esac
+        fi
+        [ "$action" = Conf ] && continue
+        if [ "$action" = Remv ]; then
+            UBUNTU_DRIVER_INSTALL_ARGS+=("$package-")
+            UBUNTU_DRIVER_REMOVE_PACKAGES+=("$package")
+        else
+            if [[ "$details" == \[* ]] && is_ubuntu_nvidia_driver_package "$package"; then
+                driver_upgrade_packages+=("$package")
+            fi
+            if [[ "$details" != *"("* ]]; then
+                print_error "Cannot read the planned version for $package."
+                return 1
+            fi
+            version="${details#*(}"
+            version="${version%% *}"
+            version="${version%%)*}"
+            if [ -z "$version" ]; then
+                print_error "Cannot read the planned version for $package."
+                return 1
+            fi
+            if [ "$package_name" != "$driver_package" ]; then
+                UBUNTU_DRIVER_INSTALL_ARGS+=("$package=$version")
+            fi
+        fi
+    done <<< "$plan"
+
+    if [ "${#UBUNTU_DRIVER_REMOVE_PACKAGES[@]}" -gt 0 ]; then
+        # Renamed driver packages may omit Replaces metadata. Remove old file
+        # owners before unpacking replacements, including utilities that would
+        # otherwise pull replacement libraries into the removal transaction.
+        UBUNTU_DRIVER_REMOVE_PACKAGES+=("${driver_upgrade_packages[@]}")
+        if ! removal_plan=$(LC_ALL=C apt-get --simulate --ignore-hold \
+            -o APT::Get::AutomaticRemove=false remove "${UBUNTU_DRIVER_REMOVE_PACKAGES[@]}" 2>&1); then
+            printf '%s\n' "$removal_plan"
+            print_error "Cannot safely remove the old NVIDIA driver packages."
+            return 1
+        fi
+        UBUNTU_DRIVER_REMOVE_PACKAGES=()
+        while read -r action package details; do
+            case "$action" in
+                Remv)
+                    if ! is_ubuntu_nvidia_driver_package "$package"; then
+                        print_error "Refusing driver replacement: removing the old driver would also remove $package."
+                        return 1
+                    fi
+                    UBUNTU_DRIVER_REMOVE_PACKAGES+=("$package")
+                    ;;
+                Inst|Conf)
+                    print_error "Refusing driver replacement: removing the old driver would install or configure $package."
+                    return 1
+                    ;;
+            esac
+        done <<< "$removal_plan"
+    fi
+    return 0
+}
+
+verify_nvidia_driver_kernel_module() {
+    local expected_version="${1#*:}"
+    local kernel_version
+    local module_version
+    expected_version="${expected_version%%-*}"
+    kernel_version=$(uname -r)
+
+    if ! module_version=$(modinfo -k "$kernel_version" -F version nvidia 2>/dev/null) || \
+        [ "$module_version" != "$expected_version" ]; then
+        print_error "NVIDIA $expected_version was not installed as a kernel module for $kernel_version."
+        print_error "Check the DKMS build and package configuration before rebooting."
+        return 1
+    fi
+    print_info "NVIDIA kernel module $module_version is installed for Linux $kernel_version."
+}
+
 install_resolved_driver_package() {
     local driver_package="$1"
+    local candidate_version="$2"
 
     if [ "$OS_TYPE" = "ubuntu" ]; then
-        $PKG_INSTALL_CMD "${UBUNTU_DRIVER_APT_OPTIONS[@]}" "$driver_package"
+        prepare_ubuntu_nvidia_driver_install "$driver_package" "$candidate_version" || return 1
+        local argument
+        local install_packages=()
+        local apt_command=()
+        read -r -a apt_command <<< "$SUDO_PREFIX"
+        apt_command+=(apt-get)
+        for argument in "${UBUNTU_DRIVER_INSTALL_ARGS[@]}"; do
+            if [[ "$argument" == *=* ]]; then
+                install_packages+=("$argument")
+            fi
+        done
+        if [ "${#UBUNTU_DRIVER_REMOVE_PACKAGES[@]}" -gt 0 ]; then
+            print_info "Downloading all replacement packages before removing the old NVIDIA driver..."
+            if ! "${apt_command[@]}" install -y --download-only --allow-change-held-packages \
+                "${UBUNTU_DRIVER_APT_OPTIONS[@]}" "${UBUNTU_DRIVER_INSTALL_ARGS[@]}"; then
+                print_error "Could not download the replacement driver; old driver packages have not been removed."
+                return 1
+            fi
+            print_info "Removing the validated old NVIDIA driver packages before unpacking replacements..."
+            if ! "${apt_command[@]}" remove -y --allow-change-held-packages \
+                -o APT::Get::AutomaticRemove=false "${UBUNTU_DRIVER_REMOVE_PACKAGES[@]}"; then
+                print_error "Could not remove the old NVIDIA driver packages; review APT output before retrying."
+                return 1
+            fi
+        fi
+        "${apt_command[@]}" install -y --no-remove --allow-change-held-packages \
+            "${UBUNTU_DRIVER_APT_OPTIONS[@]}" "${install_packages[@]}"
         return $?
     fi
 
@@ -531,11 +729,12 @@ install_nvidia_driver_for_gpu_support() {
     local driver_package_display=""
     local driver_package_installed_version=""
     local driver_package_candidate_version=""
+    local existing_driver_version=""
+    local driver_action="Install"
     local driver_package_needs_update=false
     local driver_install_reason=""
     local driver_ready=false
     local kernel_driver_loaded=false
-    local kernel_driver_was_loaded=false
 
     if ! has_nvidia_pci_devices; then
         print_info "No NVIDIA GPU detected via PCI enumeration; skipping driver installation."
@@ -548,7 +747,6 @@ install_nvidia_driver_for_gpu_support() {
 
     if has_nvidia_kernel_driver; then
         kernel_driver_loaded=true
-        kernel_driver_was_loaded=true
     fi
 
     case "$OS_TYPE" in
@@ -580,20 +778,33 @@ install_nvidia_driver_for_gpu_support() {
         ubuntu)
             if command -v dpkg-query &> /dev/null; then
                 driver_package_installed_version=$(dpkg-query -W -f='${Status} ${Version}\n' "$driver_package" 2>/dev/null | awk '
-                    $1 == "install" && $2 == "ok" && $3 == "installed" {
+                    $2 == "ok" && $3 == "installed" {
                         print $4
                         exit
                     }
                 ')
             fi
+            existing_driver_version=$(ubuntu_installed_nvidia_driver_version)
 
             if command -v apt-cache &> /dev/null; then
                 driver_package_candidate_version=$(ubuntu_package_candidate_version "$driver_package" "${UBUNTU_DRIVER_APT_OPTIONS[@]}")
+            fi
+            if [ -n "$existing_driver_version" ] && [ -n "$driver_package_candidate_version" ] && \
+                dpkg --compare-versions "$existing_driver_version" gt "$driver_package_candidate_version"; then
+                print_warning "Installed NVIDIA driver $existing_driver_version is newer than candidate $driver_package_candidate_version; refusing a downgrade."
+                if [ "$driver_ready" != true ]; then
+                    print_error "The newer installed NVIDIA driver is not responding; refusing to replace it with an older branch."
+                    INSTALL_SUCCESS=false
+                fi
+                return 0
             fi
 
             if [ -z "$driver_package_installed_version" ]; then
                 driver_package_needs_update=true
                 driver_install_reason="required driver package is not installed"
+                if [ -n "$existing_driver_version" ]; then
+                    driver_install_reason="replace installed driver $existing_driver_version with latest candidate $driver_package_candidate_version"
+                fi
             elif [ -n "$driver_package_candidate_version" ] && [ "$driver_package_candidate_version" != "(none)" ] && [ "$driver_package_candidate_version" != "$driver_package_installed_version" ]; then
                 driver_package_needs_update=true
                 driver_install_reason="newer candidate $driver_package_candidate_version is available (installed: $driver_package_installed_version)"
@@ -606,6 +817,7 @@ install_nvidia_driver_for_gpu_support() {
                     local rpm_version=""
                     rpm_name=$(rpm -qp --qf '%{NAME}\n' "$driver_package" 2>/dev/null)
                     rpm_version=$(rpm -qp --qf '%{VERSION}-%{RELEASE}\n' "$driver_package" 2>/dev/null)
+                    driver_package_candidate_version="$rpm_version"
                     if [ -n "$rpm_name" ] && rpm -q "$rpm_name" &> /dev/null; then
                         driver_package_installed_version=$(rpm -q --qf '%{VERSION}-%{RELEASE}\n' "$rpm_name" 2>/dev/null | head -1)
                     fi
@@ -632,17 +844,32 @@ install_nvidia_driver_for_gpu_support() {
             fi
             ;;
     esac
+    if [ -n "$existing_driver_version" ] || [ -n "$driver_package_installed_version" ] || \
+        [ "$kernel_driver_loaded" = true ] || [ "$driver_ready" = true ]; then
+        driver_action="Upgrade"
+    fi
+
 
     if [ "$driver_package_needs_update" = true ]; then
         local install_driver="y"
+        print_info "$driver_action NVIDIA driver to ${driver_package_candidate_version:-the latest available version} using $driver_package_display."
+        if [ "$OS_TYPE" = ubuntu ]; then
+            print_warning "This replaces conflicting NVIDIA driver packages and permits changes to held driver packages only."
+        fi
+        print_warning "Stop GPU workloads before continuing. Package installation will finish without rebooting; reboot later before starting GPU workloads."
         if [ "$AUTO_YES" = true ]; then
-            print_info "Automatic mode enabled (-y): installing/upgrading $driver_package_display"
+            print_info "Automatic mode enabled (-y): proceeding with the NVIDIA driver transaction."
         else
-            read -p "Install or upgrade latest NVIDIA driver package $driver_package_display ($driver_install_reason)? (y/n): " install_driver
+            read -r -p "$driver_action latest NVIDIA driver package $driver_package_display ($driver_install_reason; reboot pending after installation)? (y/n): " install_driver
         fi
 
         if [[ ! "$install_driver" =~ ^[Yy]$ ]]; then
-            print_warning "Skipped NVIDIA driver installation/upgrade. CUDA apps may not work until the driver is installed."
+            print_info "Skipped NVIDIA driver installation/upgrade; leaving the existing driver unchanged."
+            return 0
+        fi
+        if [ -z "$driver_package_candidate_version" ]; then
+            print_error "Cannot determine the NVIDIA driver version to install; leaving driver packages unchanged."
+            INSTALL_SUCCESS=false
             return 0
         fi
 
@@ -652,11 +879,19 @@ install_nvidia_driver_for_gpu_support() {
         fi
 
         print_info "Installing/upgrading NVIDIA driver package: $driver_package_display"
-        if ! install_resolved_driver_package "$driver_package"; then
+        if ! install_resolved_driver_package "$driver_package" "$driver_package_candidate_version"; then
             print_warning "Failed to install $driver_package_display."
             INSTALL_SUCCESS=false
             return 0
         fi
+        if ! verify_nvidia_driver_kernel_module "$driver_package_candidate_version"; then
+            INSTALL_SUCCESS=false
+            return 0
+        fi
+        NVIDIA_DRIVER_REBOOT_PENDING=true
+        print_info "NVIDIA driver package installation complete; reboot pending to activate the new driver."
+        print_warning "The loaded driver may still be the previous version. Keep GPU workloads stopped until you reboot."
+        return 0
     elif [ "$driver_ready" = true ]; then
         print_info "NVIDIA driver package is already active and up to date: $driver_package_display"
         return 0
@@ -677,27 +912,14 @@ install_nvidia_driver_for_gpu_support() {
     fi
 
     if command -v nvidia-smi &> /dev/null && nvidia-smi >/dev/null 2>&1; then
-        if [ "$driver_package_needs_update" = true ] && [ "$kernel_driver_was_loaded" = true ]; then
-            print_warning "NVIDIA driver packages were upgraded while a kernel driver was already loaded."
-            print_warning "A reboot is recommended before relying on the upgraded NVIDIA driver."
-        else
-            print_info "✓ NVIDIA driver is active and responding to nvidia-smi"
-        fi
+        print_info "NVIDIA driver is active and responding to nvidia-smi"
         return 0
     fi
 
     if has_nvidia_kernel_driver; then
-        if [ "$driver_package_needs_update" = true ]; then
-            print_warning "NVIDIA driver packages were installed or upgraded, but nvidia-smi is still not ready."
-        else
-            print_warning "NVIDIA driver packages are installed, but nvidia-smi is still not ready."
-        fi
+        print_warning "NVIDIA driver packages are installed, but nvidia-smi is still not ready."
     else
-        if [ "$driver_package_needs_update" = true ]; then
-            print_warning "NVIDIA driver packages were installed or upgraded, but the kernel module is still not loaded."
-        else
-            print_warning "NVIDIA kernel driver is still not loaded."
-        fi
+        print_warning "NVIDIA kernel driver is still not loaded."
     fi
     print_warning "A reboot may be required before the NVIDIA driver becomes active."
     return 0
@@ -1024,12 +1246,18 @@ for arg in "$@"; do
         -h|--help)
             echo "Usage: $0 [--preflight] [-y|--auto] [cuda-version [-d] ...]"
             echo "  --preflight     Check CUDA prerequisites without installing or modifying the system"
-            echo "  -y, --auto      Install requested CUDA versions without confirmation"
+            echo "  -y, --auto      Install requested CUDA versions and approve driver changes without confirmation"
             echo "  -d              Make the immediately preceding CUDA version the default"
             echo "  cuda-version    CUDA version to install (up to 10 distinct major.minor streams)"
             echo ""
             echo "Multiple CUDA versions require exactly one -d marker."
             echo "A single CUDA version may omit -d to leave the current default unchanged."
+            echo ""
+            echo "NVIDIA driver setup runs separately, even when CUDA toolkit installation is skipped."
+            echo "On Ubuntu, approving driver setup permits replacing older branches and held driver packages."
+            echo "Ubuntu migrations download replacements before removing validated old driver packages, then install without forced overwrites."
+            echo "New driver packages and kernel modules are installed in one run; reboot manually afterward."
+            echo ""
             echo "Examples:"
             echo "  $0 -y 13.2 -d"
             echo "  $0 -y 13.2 -d 12.0 13.3"
@@ -1596,7 +1824,7 @@ cuda_preflight_check_driver() {
         if [ -n "$driver_package" ]; then
             candidate_version=$(ubuntu_package_candidate_version "$driver_package" "${UBUNTU_DRIVER_APT_OPTIONS[@]}")
             installed_version=$(dpkg-query -W -f='${Status} ${Version}\n' "$driver_package" 2>/dev/null | awk '
-                $1 == "install" && $2 == "ok" && $3 == "installed" { print $4; exit }
+                $2 == "ok" && $3 == "installed" { print $4; exit }
             ')
         fi
         headers_packages=("linux-headers-$(uname -r)")
@@ -2227,6 +2455,9 @@ if [ "$INSTALL_SUCCESS" = true ]; then
         print_info "Deleted temporary CUDA download directory: $CUDA_CACHE_DIR"
     fi
     print_info "✓ Installation complete!"
+    if [ "$NVIDIA_DRIVER_REBOOT_PENDING" = true ]; then
+        print_warning "Reboot pending: reboot before using the newly installed NVIDIA driver."
+    fi
 else
     print_error "❌ Installation had errors - check messages above"
     exit 1

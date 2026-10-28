@@ -2248,7 +2248,8 @@ install_rtxpro6k_deepseek_v41_1017_vllm_pr_60762() {
         "vllm @ git+https://github.com/vllm-project/vllm.git@${source_commit}" \
         "torch==2.14.0+cu130" "transformers==5.20.2" "tokenizers==0.23.3" \
         "compressed-tensors==0.17.0" "numpy==2.3.5" \
-        "flashinfer-python==0.7.2.post1" "flashinfer-cubin==0.7.2.post1" \
+        "flashinfer-python==0.7.2.post1" \
+        "flashinfer-cubin @ https://github.com/flashinfer-ai/flashinfer/releases/download/v0.7.2.post1/flashinfer_cubin-0.7.2.post1-py3-none-any.whl" \
         "b12x==1.5.1" "nvidia-cutlass-dsl==4.8.0" "apache-tvm-ffi==0.1.11" \
         "triton==3.8.0" "tilelang==0.1.12" \
         "tokenspeed-mla==2.0.3" "tokenspeed-triton==3.9.10.post20261008" \
