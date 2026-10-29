@@ -82,7 +82,14 @@ CUDA_PACKAGE_DOWNLOADS=()
 CONFIGURED_UBUNTU_CUDA_REPOS=()
 UBUNTU_DRIVER_APT_OPTIONS=()
 UBUNTU_DRIVER_INSTALL_ARGS=()
-UBUNTU_DRIVER_REMOVE_PACKAGES=()
+UBUNTU_DRIVER_ARCHIVE_ARGS=()
+UBUNTU_DRIVER_UPGRADE_PACKAGES=()
+declare -A UBUNTU_DRIVER_PACKAGE_SOURCES=()
+UBUNTU_PRECOMPILED_DRIVER_PACKAGE=""
+UBUNTU_PRECOMPILED_DRIVER_VERSION=""
+UBUNTU_PRECOMPILED_MODULE_ARGS=()
+UBUNTU_PRECOMPILED_KERNELS=()
+CUDA_INSTALLER_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
 NVIDIA_DRIVER_REBOOT_PENDING=false
 INSTALLED_CUDA_VERSIONS=()
 INSTALLED_CUDA_VERSIONS_DISPLAY="None"
@@ -236,9 +243,27 @@ setup_ubuntu_cuda_repo() {
 }
 
 configure_ubuntu_driver_apt() {
+    local running_kernel module_dir kernel
+    local kernels=()
     UBUNTU_DRIVER_APT_OPTIONS=()
-    # Keep the driver and its dependencies on NVIDIA's release even when the
-    # host gives that repository a low priority. Do not change persistent pins.
+    if ! source "$CUDA_INSTALLER_DIR/ubuntu_nvidia_precompiled.sh"; then
+        print_error "Cannot load Ubuntu precompiled NVIDIA package selection."
+        return 1
+    fi
+    running_kernel=$(uname -r)
+    kernels=("$running_kernel")
+    for module_dir in /lib/modules/*; do
+        kernel="${module_dir##*/}"
+        if [ "$kernel" != "$running_kernel" ] && [ -f "/boot/vmlinuz-$kernel" ]; then
+            kernels+=("$kernel")
+        fi
+    done
+    if select_ubuntu_precompiled_driver "${kernels[@]}"; then
+        UBUNTU_DRIVER_APT_OPTIONS=(--target-release 'o=Ubuntu')
+        print_info "Using Ubuntu precompiled NVIDIA modules for: ${UBUNTU_PRECOMPILED_KERNELS[*]}"
+        return 0
+    fi
+    print_warning "No complete Ubuntu precompiled driver set is available; using NVIDIA's DKMS packages."
     if apt-cache --target-release 'o=NVIDIA,l=NVIDIA CUDA' policy >/dev/null 2>&1; then
         UBUNTU_DRIVER_APT_OPTIONS=(--target-release 'o=NVIDIA,l=NVIDIA CUDA')
     fi
@@ -250,11 +275,16 @@ ubuntu_package_candidate_version() {
     local candidate repository
     local candidates=()
 
+    if [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ] && [ "$package_name" = "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ]; then
+        printf '%s\n' "$UBUNTU_PRECOMPILED_DRIVER_VERSION"
+        return 0
+    fi
+
     candidate=$(apt-cache "$@" policy "$package_name" 2>/dev/null | awk '/Candidate:/ {print $2; exit}')
     if [ -n "$candidate" ] && [ "$candidate" != "(none)" ]; then
         candidates+=("$candidate")
     fi
-    if [ "$PREFLIGHT_MODE" = true ]; then
+    if [ "$PREFLIGHT_MODE" = true ] && [ -z "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ]; then
         # Include repositories the selected toolkit installation will configure,
         # without adding them to APT merely to inspect driver availability.
         for repository in "${CUDA_REPO_VERSIONS[@]}"; do
@@ -270,6 +300,11 @@ ubuntu_package_candidate_version() {
 
 resolve_ubuntu_driver_package() {
     local cuda_stream="$1"
+
+    if [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ]; then
+        printf '%s\n' "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE"
+        return 0
+    fi
 
     if ! command -v apt-cache &> /dev/null; then
         echo ""
@@ -442,15 +477,34 @@ rhel_package_candidate_version() {
 }
 
 is_ubuntu_nvidia_driver_package() {
-    case "${1%%:*}" in
-        nvidia-container*|libnvidia-container*|nvidia-driver-pinning-*)
+    local package_name="${1%%:*}"
+    case "$package_name" in
+        nvidia-container*|libnvidia-container*|nvidia-driver-pinning*)
             return 1
             ;;
         nvidia-open|nvidia-open-[0-9]*|cuda-drivers|cuda-drivers-[0-9]*|\
+        cuda-drivers-fabricmanager*|nvidia-fabricmanager*|nvidia-imex*|nvlink[0-9]*|\
         nvidia-driver|nvidia-driver-open|nvidia-driver-[0-9]*|\
         nvidia-dkms*|nvidia-kernel-*|nvidia-firmware*|nvidia-headless*|\
         nvidia-utils*|nvidia-compute-utils*|nvidia-modprobe|nvidia-persistenced|\
-        nvidia-settings|nvidia-prime|libnvidia-*|libcuda1*|xserver-xorg-video-nvidia*)
+        nvidia-settings|nvidia-prime|nvidia-xconfig|nvidia-smi|\
+        libnvidia-*|libcuda1*|libnvsdm*|libxnvctrl*|xserver-xorg-video-nvidia*|\
+        linux-modules-nvidia-[0-9]*|linux-objects-nvidia-[0-9]*|linux-signatures-nvidia-[0-9]*)
+            return 0
+            ;;
+        cuda*|linux-*|nvidia-cuda*|nvidia-cudnn*|nvidia-opencl-dev*|nvidia-gds*|nvidia-fs*)
+            return 1
+            ;;
+    esac
+
+    # Source metadata covers renamed/new binaries without accepting every
+    # NVIDIA-branded package or applications that merely depend on the driver.
+    case "${UBUNTU_DRIVER_PACKAGE_SOURCES[$1]:-${UBUNTU_DRIVER_PACKAGE_SOURCES[$package_name]:-}}" in
+        nvidia-graphics-drivers|nvidia-graphics-drivers-[0-9]*|nvidia-kmod-open|\
+        nvidia-open|nvidia-open-[0-9]*|nvidia-modprobe|nvidia-persistenced|\
+        nvidia-settings|nvidia-xconfig|nvidia-prime|nvidia-egl-*|egl-wayland|egl-wayland2|egl-x11|\
+        nvidia-fabricmanager*|fabric-manager-[0-9]*|fabricmanager|\
+        nvidia-imex*|imex|libnvidia-nscq*|libnvsdm*|nvlink[0-9]*)
             return 0
             ;;
     esac
@@ -467,28 +521,52 @@ ubuntu_installed_nvidia_driver_version() {
     ' | sort -V | tail -1
 }
 
+ubuntu_nvidia_driver_packages_need_repair() {
+    dpkg-query -W -f='${Status}\n' 'nvidia-*' 'libnvidia-*' 2>/dev/null | awk '
+        $2 == "ok" && ($3 == "unpacked" || $3 == "half-configured") { broken=1 }
+        END { exit !broken }
+    '
+}
+
+ubuntu_precompiled_modules_installed() {
+    local specification package version installed
+    for specification in "${UBUNTU_PRECOMPILED_MODULE_ARGS[@]}"; do
+        package="${specification%%=*}"
+        version="${specification#*=}"
+        installed=$(dpkg-query -W -f='${Status} ${Version}' "$package" 2>/dev/null)
+        [[ "$installed" == *" ok installed $version" ]] || return 1
+    done
+    return 0
+}
+
 prepare_ubuntu_nvidia_driver_install() {
     local driver_package="$1"
     local candidate_version="$2"
     local target_branch="${candidate_version#*:}"
-    local inventory package status version package_name action details plan removal_plan
-    local requested_packages=("$driver_package=$candidate_version")
-    local driver_upgrade_packages=()
+    local inventory package status version source package_name action details plan repair_plan
+    local companion_base companion_key companion_package companion_version companion_upstream
+    local architecture_suffix expected_upstream="${candidate_version#*:}"
+    local requested_packages=("$driver_package=$candidate_version" "${UBUNTU_PRECOMPILED_MODULE_ARGS[@]}" "${@:3}")
+    local companion_candidates=()
     local -A held_packages=()
+    local -A companion_packages=()
     UBUNTU_DRIVER_INSTALL_ARGS=()
-    UBUNTU_DRIVER_REMOVE_PACKAGES=()
+    UBUNTU_DRIVER_ARCHIVE_ARGS=()
+    UBUNTU_DRIVER_UPGRADE_PACKAGES=()
+    UBUNTU_DRIVER_PACKAGE_SOURCES=()
+    expected_upstream="${expected_upstream%%-*}"
     target_branch="${target_branch%%.*}"
 
     if ! [[ "$target_branch" =~ ^[0-9]+$ ]]; then
         print_error "Cannot determine the target NVIDIA driver branch from $candidate_version."
         return 1
     fi
-    if ! inventory=$(dpkg-query -W -f='${binary:Package}\t${Status}\t${Version}\n'); then
+    if ! inventory=$(dpkg-query -W -f='${binary:Package}\t${Status}\t${Version}\t${source:Package}\n'); then
         print_error "Cannot inspect installed packages before replacing the NVIDIA driver."
         return 1
     fi
 
-    while IFS=$'\t' read -r package status version; do
+    while IFS=$'\t' read -r package status version source; do
         package_name="${package%%:*}"
         if [[ "$status" == "hold "* ]]; then
             held_packages["$package_name"]=true
@@ -497,17 +575,97 @@ prepare_ubuntu_nvidia_driver_install() {
             *" ok installed"|*" ok unpacked"|*" ok half-configured") ;;
             *) continue ;;
         esac
-        if is_ubuntu_nvidia_driver_package "$package" && \
-            [[ "$package_name" =~ -([0-9]{3,})(-|$) ]] && \
-            [ "${BASH_REMATCH[1]}" != "$target_branch" ]; then
-            requested_packages+=("$package-")
+        UBUNTU_DRIVER_PACKAGE_SOURCES["$package"]="$source"
+        UBUNTU_DRIVER_PACKAGE_SOURCES["$package_name"]="$source"
+
+        # These optional services/libraries are not pulled in by nvidia-open.
+        # Preserve installed roles instead of merely removing their old branch.
+        companion_base=""
+        if [[ "$package_name" =~ ^(nvidia-fabricmanager(-dev)?|nvidia-imex|libnvidia-nscq(-dev)?|libnvsdm(-dev)?)(-[0-9]+)?$ ]]; then
+            companion_base="${BASH_REMATCH[1]}"
+        elif [[ "$package_name" == cuda-drivers-fabricmanager* ]]; then
+            companion_base=nvidia-fabricmanager
+        elif [[ "$package_name" =~ ^nvlink[0-9]+$ ]]; then
+            companion_base="$package_name"
+        fi
+        if [ -n "$companion_base" ]; then
+            architecture_suffix=""
+            if [[ "$package" == *:* ]]; then
+                architecture_suffix=":${package##*:}"
+            fi
+            companion_key="${companion_base}${architecture_suffix}"
+            if [ "${companion_packages[$companion_key]:-}" != true ]; then
+                companion_candidates=("$companion_key" "${companion_base}-${target_branch}${architecture_suffix}")
+                if [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ]; then
+                    companion_candidates=("${companion_base}-${target_branch}${architecture_suffix}" "$companion_key")
+                fi
+                for companion_package in "${companion_candidates[@]}"; do
+                    companion_version=$(apt-cache "${UBUNTU_DRIVER_APT_OPTIONS[@]}" show "$companion_package" 2>/dev/null | awk -v expected="$expected_upstream" '
+                        $1 == "Version:" {
+                            upstream=$2
+                            sub(/^[0-9]+:/, "", upstream)
+                            sub(/-.*/, "", upstream)
+                            if (upstream == expected) print $2
+                        }
+                    ' | sort -V | tail -1)
+                    companion_upstream="${companion_version#*:}"
+                    companion_upstream="${companion_upstream%%-*}"
+                    if [ "$companion_upstream" = "$expected_upstream" ]; then
+                        requested_packages+=("$companion_package=$companion_version")
+                        companion_packages["$companion_key"]=true
+                        break
+                    fi
+                done
+                if [ "${companion_packages[$companion_key]:-}" != true ]; then
+                    print_error "Cannot preserve $package: no $companion_base package matches NVIDIA $expected_upstream."
+                    return 1
+                fi
+            fi
+        fi
+        if is_ubuntu_nvidia_driver_package "$package"; then
+            if [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ] && {
+                [ "$source" = nvidia-graphics-drivers ] ||
+                [[ "$package_name" == nvidia-open || "$package_name" == nvidia-dkms* ||
+                   "$package_name" == nvidia-fabricmanager || "$package_name" == nvidia-fabricmanager-dev ||
+                   "$package_name" == nvidia-imex || "$package_name" == libnvidia-nscq ||
+                   "$package_name" == libnvsdm ]];
+            }; then
+                requested_packages+=("$package-")
+            elif [[ "$package_name" != linux-signatures-nvidia-* ]] && \
+                [[ "$package_name" =~ -([0-9]{3,})(-|$) ]] && \
+                [ "${BASH_REMATCH[1]}" != "$target_branch" ]; then
+                requested_packages+=("$package-")
+            fi
         fi
     done <<< "$inventory"
+
+    # APT does not repair missing dependencies when every named package is
+    # already at the requested version. Include its proposed driver repairs.
+    if [ "$(dpkg-query -W -f='${Version}' "$driver_package" 2>/dev/null)" = "$candidate_version" ]; then
+        if ! repair_plan=$(LC_ALL=C apt-get --simulate --ignore-hold --fix-broken install \
+            "${UBUNTU_DRIVER_APT_OPTIONS[@]}" 2>&1); then
+            printf '%s\n' "$repair_plan"
+            print_error "Cannot resolve interrupted driver package dependencies."
+            return 1
+        fi
+        while read -r action package details; do
+            if [ "$action" = Inst ] && is_ubuntu_nvidia_driver_package "$package"; then
+                if [[ "$details" != *"("* ]]; then
+                    print_error "Cannot read the repair version for $package."
+                    return 1
+                fi
+                version="${details#*(}"
+                version="${version%% *}"
+                version="${version%%)*}"
+                requested_packages+=("$package=$version")
+            fi
+        done <<< "$repair_plan"
+    fi
 
     # Ignore holds only during planning. Actual package changes explicitly name
     # every approved version/removal, so unrelated holds remain effective.
     print_info "Checking the complete NVIDIA driver replacement before installation..."
-    if ! plan=$(LC_ALL=C apt-get --simulate --ignore-hold install \
+    if ! plan=$(LC_ALL=C apt-get --simulate --ignore-hold --fix-broken install \
         "${UBUNTU_DRIVER_APT_OPTIONS[@]}" "${requested_packages[@]}" 2>&1); then
         printf '%s\n' "$plan"
         print_error "Cannot resolve the NVIDIA driver replacement; driver packages and holds were not changed."
@@ -521,6 +679,11 @@ prepare_ubuntu_nvidia_driver_install() {
             *) continue ;;
         esac
         package_name="${package%%:*}"
+        if [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ] && \
+            [[ "$package_name" == nvidia-dkms* ]] && [ "$action" != Remv ]; then
+            print_error "Refusing a DKMS build: Ubuntu precompiled modules must satisfy the driver dependency."
+            return 1
+        fi
         if ! is_ubuntu_nvidia_driver_package "$package"; then
             if [ "$action" = Remv ] || [ "${held_packages[$package_name]:-}" = true ]; then
                 print_error "Refusing NVIDIA driver transaction: it would change unrelated package $package."
@@ -531,6 +694,7 @@ prepare_ubuntu_nvidia_driver_install() {
                 libcuobjclient*|libcurand*|libcusolver*|libcusparse*|libcudnn*|libnccl*|\
                 libnpp*|libnvjitlink*|libnvfatbin*|libnvjpeg*|libnvvm*|libnvptxcompiler*|\
                 nsight*|gds-tools*|cccl*|nvidia-container*|libnvidia-container*|\
+                nvidia-driver-pinning*|nvidia-cuda*|nvidia-cudnn*|nvidia-opencl-dev*|nvidia-gds*|nvidia-fs*|\
                 docker*|containerd*|runc|podman*)
                     print_error "Refusing NVIDIA driver transaction: it would change protected package $package."
                     return 1
@@ -540,11 +704,7 @@ prepare_ubuntu_nvidia_driver_install() {
         [ "$action" = Conf ] && continue
         if [ "$action" = Remv ]; then
             UBUNTU_DRIVER_INSTALL_ARGS+=("$package-")
-            UBUNTU_DRIVER_REMOVE_PACKAGES+=("$package")
         else
-            if [[ "$details" == \[* ]] && is_ubuntu_nvidia_driver_package "$package"; then
-                driver_upgrade_packages+=("$package")
-            fi
             if [[ "$details" != *"("* ]]; then
                 print_error "Cannot read the planned version for $package."
                 return 1
@@ -560,53 +720,34 @@ prepare_ubuntu_nvidia_driver_install() {
                 UBUNTU_DRIVER_INSTALL_ARGS+=("$package=$version")
             fi
         fi
+        if [ "$action" = Inst ] && is_ubuntu_nvidia_driver_package "$package"; then
+            UBUNTU_DRIVER_ARCHIVE_ARGS+=("$package=$version")
+            if [[ "$details" == \[* ]]; then
+                UBUNTU_DRIVER_UPGRADE_PACKAGES+=("$package")
+            fi
+        fi
     done <<< "$plan"
 
-    if [ "${#UBUNTU_DRIVER_REMOVE_PACKAGES[@]}" -gt 0 ]; then
-        # Renamed driver packages may omit Replaces metadata. Remove old file
-        # owners before unpacking replacements, including utilities that would
-        # otherwise pull replacement libraries into the removal transaction.
-        UBUNTU_DRIVER_REMOVE_PACKAGES+=("${driver_upgrade_packages[@]}")
-        if ! removal_plan=$(LC_ALL=C apt-get --simulate --ignore-hold \
-            -o APT::Get::AutomaticRemove=false remove "${UBUNTU_DRIVER_REMOVE_PACKAGES[@]}" 2>&1); then
-            printf '%s\n' "$removal_plan"
-            print_error "Cannot safely remove the old NVIDIA driver packages."
-            return 1
-        fi
-        UBUNTU_DRIVER_REMOVE_PACKAGES=()
-        while read -r action package details; do
-            case "$action" in
-                Remv)
-                    if ! is_ubuntu_nvidia_driver_package "$package"; then
-                        print_error "Refusing driver replacement: removing the old driver would also remove $package."
-                        return 1
-                    fi
-                    UBUNTU_DRIVER_REMOVE_PACKAGES+=("$package")
-                    ;;
-                Inst|Conf)
-                    print_error "Refusing driver replacement: removing the old driver would install or configure $package."
-                    return 1
-                    ;;
-            esac
-        done <<< "$removal_plan"
-    fi
     return 0
 }
 
 verify_nvidia_driver_kernel_module() {
     local expected_version="${1#*:}"
-    local kernel_version
-    local module_version
+    local kernel_version module_version
+    local kernels=("$(uname -r)")
     expected_version="${expected_version%%-*}"
-    kernel_version=$(uname -r)
-
-    if ! module_version=$(modinfo -k "$kernel_version" -F version nvidia 2>/dev/null) || \
-        [ "$module_version" != "$expected_version" ]; then
-        print_error "NVIDIA $expected_version was not installed as a kernel module for $kernel_version."
-        print_error "Check the DKMS build and package configuration before rebooting."
-        return 1
+    if [ "$OS_TYPE" = ubuntu ] && [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ]; then
+        kernels=("${UBUNTU_PRECOMPILED_KERNELS[@]}")
     fi
-    print_info "NVIDIA kernel module $module_version is installed for Linux $kernel_version."
+    for kernel_version in "${kernels[@]}"; do
+        if ! module_version=$(modinfo -k "$kernel_version" -F version nvidia 2>/dev/null) || \
+            [ "$module_version" != "$expected_version" ]; then
+            print_error "NVIDIA $expected_version was not installed as a kernel module for $kernel_version."
+            print_error "Check the kernel module packages and package configuration before rebooting."
+            return 1
+        fi
+        print_info "NVIDIA kernel module $module_version is installed for Linux $kernel_version."
+    done
 }
 
 install_resolved_driver_package() {
@@ -614,32 +755,67 @@ install_resolved_driver_package() {
     local candidate_version="$2"
 
     if [ "$OS_TYPE" = "ubuntu" ]; then
-        prepare_ubuntu_nvidia_driver_install "$driver_package" "$candidate_version" || return 1
-        local argument
-        local install_packages=()
+        local conflicts package added_removal
+        local conflict_removals=()
         local apt_command=()
+        local dpkg_command=()
+        local install_packages=()
+        local remove_packages=()
+        local -A inspected_owners=()
         read -r -a apt_command <<< "$SUDO_PREFIX"
         apt_command+=(apt-get)
-        for argument in "${UBUNTU_DRIVER_INSTALL_ARGS[@]}"; do
-            if [[ "$argument" == *=* ]]; then
-                install_packages+=("$argument")
-            fi
-        done
-        if [ "${#UBUNTU_DRIVER_REMOVE_PACKAGES[@]}" -gt 0 ]; then
-            print_info "Downloading all replacement packages before removing the old NVIDIA driver..."
-            if ! "${apt_command[@]}" install -y --download-only --allow-change-held-packages \
+        read -r -a dpkg_command <<< "$SUDO_PREFIX"
+        dpkg_command+=(dpkg)
+        while :; do
+            prepare_ubuntu_nvidia_driver_install "$driver_package" "$candidate_version" \
+                "${conflict_removals[@]}" || return 1
+            print_info "Downloading replacement packages before changing the installed driver..."
+            if ! "${apt_command[@]}" install -y --download-only --fix-broken \
+                --allow-change-held-packages --allow-downgrades \
                 "${UBUNTU_DRIVER_APT_OPTIONS[@]}" "${UBUNTU_DRIVER_INSTALL_ARGS[@]}"; then
-                print_error "Could not download the replacement driver; old driver packages have not been removed."
+                print_error "Could not download the replacement driver; installed packages have not been changed."
                 return 1
             fi
-            print_info "Removing the validated old NVIDIA driver packages before unpacking replacements..."
-            if ! "${apt_command[@]}" remove -y --allow-change-held-packages \
-                -o APT::Get::AutomaticRemove=false "${UBUNTU_DRIVER_REMOVE_PACKAGES[@]}"; then
-                print_error "Could not remove the old NVIDIA driver packages; review APT output before retrying."
+            if ! conflicts=$(ubuntu_nvidia_archive_conflicts "${UBUNTU_DRIVER_ARCHIVE_ARGS[@]}"); then
+                print_error "Cannot safely resolve driver package file ownership; installed packages have not been changed."
+                return 1
+            fi
+            added_removal=false
+            while IFS= read -r package; do
+                [ -n "$package" ] || continue
+                if [ "${inspected_owners[$package]:-}" != true ]; then
+                    print_info "Replacing conflicting driver file owner: $package"
+                    conflict_removals+=("$package-")
+                    inspected_owners["$package"]=true
+                    added_removal=true
+                fi
+            done <<< "$conflicts"
+            [ "$added_removal" = true ] || break
+        done
+        for package in "${UBUNTU_DRIVER_INSTALL_ARGS[@]}"; do
+            if [[ "$package" == *=* ]]; then
+                install_packages+=("$package")
+            else
+                remove_packages+=("${package%-}")
+            fi
+        done
+        if (( ${#remove_packages[@]} )); then
+            remove_packages+=("${UBUNTU_DRIVER_UPGRADE_PACKAGES[@]}")
+            if ! "${dpkg_command[@]}" --no-act --force-hold --remove "${remove_packages[@]}"; then
+                print_error "Cannot safely remove conflicting driver file owners; installed packages have not been changed."
+                return 1
+            fi
+            # APT can unpack before scheduled removals when Conflicts metadata
+            # is missing. Remove validated owners without configuring packages.
+            print_info "Removing conflicting driver file owners before unpacking replacements..."
+            if ! "${dpkg_command[@]}" --force-hold --remove "${remove_packages[@]}"; then
+                print_error "Could not remove conflicting driver file owners."
                 return 1
             fi
         fi
-        "${apt_command[@]}" install -y --no-remove --allow-change-held-packages \
+        print_info "Installing the validated driver package set and completing interrupted configuration..."
+        "${apt_command[@]}" install -y --fix-broken --no-remove --allow-change-held-packages --allow-downgrades \
+            -o APT::Get::AutomaticRemove=false \
             "${UBUNTU_DRIVER_APT_OPTIONS[@]}" "${install_packages[@]}"
         return $?
     fi
@@ -674,6 +850,10 @@ has_nvidia_kernel_driver() {
 
 ensure_nvidia_driver_build_prereqs() {
     if [ "$OS_TYPE" = "ubuntu" ]; then
+        if [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ]; then
+            print_info "Using signed Ubuntu kernel modules; no DKMS compilation or kernel-header installation is needed."
+            return 0
+        fi
         local headers_pkg="linux-headers-$(uname -r)"
         local headers_candidate
         if dpkg -s "$headers_pkg" &> /dev/null; then
@@ -751,7 +931,10 @@ install_nvidia_driver_for_gpu_support() {
 
     case "$OS_TYPE" in
         ubuntu)
-            configure_ubuntu_driver_apt
+            if ! configure_ubuntu_driver_apt; then
+                INSTALL_SUCCESS=false
+                return 0
+            fi
             driver_package=$(resolve_ubuntu_driver_package "$cuda_stream")
             ;;
         rhel)
@@ -791,12 +974,18 @@ install_nvidia_driver_for_gpu_support() {
             fi
             if [ -n "$existing_driver_version" ] && [ -n "$driver_package_candidate_version" ] && \
                 dpkg --compare-versions "$existing_driver_version" gt "$driver_package_candidate_version"; then
-                print_warning "Installed NVIDIA driver $existing_driver_version is newer than candidate $driver_package_candidate_version; refusing a downgrade."
-                if [ "$driver_ready" != true ]; then
-                    print_error "The newer installed NVIDIA driver is not responding; refusing to replace it with an older branch."
-                    INSTALL_SUCCESS=false
+                if [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ] && {
+                    [ "$driver_ready" != true ] || ubuntu_nvidia_driver_packages_need_repair;
+                }; then
+                    print_warning "Repairing the incomplete or inactive driver with Ubuntu's kernel-matched $driver_package_candidate_version packages."
+                else
+                    print_warning "Installed NVIDIA driver $existing_driver_version is newer than candidate $driver_package_candidate_version; refusing a downgrade."
+                    if [ "$driver_ready" != true ]; then
+                        print_error "The newer installed NVIDIA driver is not responding; refusing to replace it with an older branch."
+                        INSTALL_SUCCESS=false
+                    fi
+                    return 0
                 fi
-                return 0
             fi
 
             if [ -z "$driver_package_installed_version" ]; then
@@ -808,6 +997,9 @@ install_nvidia_driver_for_gpu_support() {
             elif [ -n "$driver_package_candidate_version" ] && [ "$driver_package_candidate_version" != "(none)" ] && [ "$driver_package_candidate_version" != "$driver_package_installed_version" ]; then
                 driver_package_needs_update=true
                 driver_install_reason="newer candidate $driver_package_candidate_version is available (installed: $driver_package_installed_version)"
+            elif [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ] && ! ubuntu_precompiled_modules_installed; then
+                driver_package_needs_update=true
+                driver_install_reason="matching precompiled modules are missing for an installed kernel"
             fi
             ;;
         rhel)
@@ -1255,7 +1447,12 @@ for arg in "$@"; do
             echo ""
             echo "NVIDIA driver setup runs separately, even when CUDA toolkit installation is skipped."
             echo "On Ubuntu, approving driver setup permits replacing older branches and held driver packages."
-            echo "Ubuntu migrations download replacements before removing validated old driver packages, then install without forced overwrites."
+            echo "Ubuntu prefers signed precompiled driver modules covering every installed bootable kernel, avoiding DKMS builds."
+            echo "Incomplete or inactive driver installations can be repaired with the matching Ubuntu package set."
+            echo "Driver packages are recognized by family and installed source metadata, including precompiled NVIDIA modules."
+            echo "Installed Fabric Manager, IMEX, NVLink, NSCQ, and NVSDM components are migrated to matching driver versions."
+            echo "Driver migration preserves CUDA toolkits, kernel images, container tooling, and driver pinning packages."
+            echo "Ubuntu migrations inspect downloaded package files and remove conflicting driver file owners before unpacking, without forced overwrites."
             echo "New driver packages and kernel modules are installed in one run; reboot manually afterward."
             echo ""
             echo "Examples:"
@@ -1819,7 +2016,10 @@ cuda_preflight_check_driver() {
     fi
 
     if [ "$OS_TYPE" = ubuntu ]; then
-        configure_ubuntu_driver_apt
+        if ! configure_ubuntu_driver_apt; then
+            preflight_error "Cannot select Ubuntu NVIDIA driver packages."
+            return 0
+        fi
         driver_package=$(resolve_ubuntu_driver_package "$cuda_stream")
         if [ -n "$driver_package" ]; then
             candidate_version=$(ubuntu_package_candidate_version "$driver_package" "${UBUNTU_DRIVER_APT_OPTIONS[@]}")
@@ -1857,6 +2057,13 @@ cuda_preflight_check_driver() {
             preflight_defer "NVIDIA driver candidate must be checked again after the planned core tools/package metadata refresh."
         else
             preflight_error "NVIDIA GPU is present, but a working driver or an installable driver candidate could not be confirmed."
+        fi
+        return 0
+    fi
+    if [ "$OS_TYPE" = ubuntu ] && [ -n "$UBUNTU_PRECOMPILED_DRIVER_PACKAGE" ]; then
+        preflight_info "Checking the complete precompiled driver transaction for all installed kernels."
+        if ! prepare_ubuntu_nvidia_driver_install "$driver_package" "$candidate_version"; then
+            preflight_error "The Ubuntu precompiled NVIDIA driver transaction cannot be safely completed."
         fi
         return 0
     fi
