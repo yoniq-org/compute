@@ -20,7 +20,7 @@ ENABLE_SPECULATIVE=0
 ENABLE_REASONING_PARSER=0
 SPECULATIVE="--speculative-config {\"method\":\"dspark\",\"num_speculative_tokens\":5}"
 QUANTIZATION=""
-NO_PREFIX_CACHE="--no-enable-prefix-caching"
+NO_PREFIX_CACHE="--enable-prefix-caching"
 REASONING_PARSER_PLUGIN=""
 EXTRA_ARGS="--tokenizer-mode deepseek_v41 --mm-encoder-tp-mode data --engram-config {\"cpu_offload\":true}"
 
@@ -56,7 +56,7 @@ BACKEND_FP8_GEMM_SM120="--linear-backend flashinfer_cutlass"
 BACKEND_FP4_GEMM_SM120=""
 BACKEND_MOE_RUNNER_SM120="--moe-backend b12x"
 CONTEXT_LEN_VALUE_SM120=524288
-GPU_MEM_UTIL_VALUE_SM120="0.91"
+GPU_MEM_UTIL_VALUE_SM120="0.950000"
 TENSOR_PARALLEL_SIZE_SM120=4
 
 BACKEND_ATTENTION_SM121=""
