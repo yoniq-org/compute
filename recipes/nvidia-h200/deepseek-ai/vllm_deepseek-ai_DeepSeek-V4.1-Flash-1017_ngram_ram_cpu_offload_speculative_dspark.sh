@@ -16,13 +16,13 @@ DEFAULT_PORT=8000
 API_KEY="--api-key YOUR_API_KEY"
 
 ENABLE_CACHE_FLAG=0
-ENABLE_SPECULATIVE=0
+ENABLE_SPECULATIVE=1
 ENABLE_REASONING_PARSER=0
-SPECULATIVE=""
+SPECULATIVE="--speculative-config {\"method\":\"dspark\",\"num_speculative_tokens\":5,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"block\",\"enable_adaptive_verification\":true}"
 QUANTIZATION=""
 NO_PREFIX_CACHE="--no-enable-prefix-caching"
 REASONING_PARSER_PLUGIN=""
-EXTRA_ARGS="--tokenizer-mode deepseek_v41 --mm-encoder-tp-mode data --engram-config {\"cpu_offload\":true,\"use_thp\":false} --offload-backend uva --cpu-offload-gb 23 --cpu-offload-params w13_weight w13_weight_scale w2_weight_scale"
+EXTRA_ARGS="--tokenizer-mode deepseek_v41 --mm-encoder-tp-mode data --engram-config {\"cpu_offload\":true,\"use_thp\":false} --offload-backend uva --cpu-offload-gb 48 --cpu-offload-params w13_weight w13_weight_scale w2_weight_scale"
 
 RECIPE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 source "$RECIPE_DIR/../../../tools/recipes/inference_recipe.sh"
@@ -32,7 +32,7 @@ BACKEND_FP8_GEMM_SM90=""
 BACKEND_FP4_GEMM_SM90=""
 BACKEND_MOE_RUNNER_SM90=""
 CONTEXT_LEN_VALUE_SM90=262144
-GPU_MEM_UTIL_VALUE_SM90=0.93
+GPU_MEM_UTIL_VALUE_SM90=0.94
 TENSOR_PARALLEL_SIZE_SM90=2
 
 BACKEND_ATTENTION_SM100=""
